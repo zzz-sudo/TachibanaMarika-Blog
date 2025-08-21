@@ -32,7 +32,7 @@ subtitle: "你的博客副标题"              # 替换为你的博客副标题
 
 ### 4. 推送代码
 
-```bash
+   ```bash
 git add .
 git commit -m "Initial commit for GitHub Pages deployment"
 git push origin main
@@ -58,7 +58,7 @@ npm install
 
 ### 启动本地服务器
 
-```bash
+   ```bash
 bundle exec jekyll serve
 ```
 

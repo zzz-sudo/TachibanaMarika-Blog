@@ -234,19 +234,27 @@ document.addEventListener('DOMContentLoaded', function() {
     // 页面切换鼠标样式
     function updateCursorStyle() {
         const currentPath = window.location.pathname;
-        let cursorIcon = '1.ico'; // 默认鼠标
+        let cursorIcon = 'Normal.ani'; // 默认鼠标
         
         // 根据页面路径选择不同的鼠标样式
         if (currentPath.includes('/posts/') || currentPath.includes('/categories/')) {
-            cursorIcon = '2.ico'; // 文章页面
+            cursorIcon = 'Text.ani'; // 文章页面
         } else if (currentPath.includes('/about/') || currentPath.includes('/contact/')) {
-            cursorIcon = '3.ico'; // 关于页面
+            cursorIcon = 'Person.ani'; // 关于页面
         } else if (currentPath.includes('/archive/')) {
-            cursorIcon = '4.ico'; // 归档页面
+            cursorIcon = 'Move.ani'; // 归档页面
+        } else if (currentPath.includes('/tags/')) {
+            cursorIcon = 'Link.ani'; // 标签页面
         }
         
         // 更新鼠标样式
-        document.body.style.cursor = `url(https://blog-static.cnblogs.com/files/zhangshuhao1116/${cursorIcon}), auto`;
+        document.body.style.cursor = `url('/miku/${cursorIcon}'), auto`;
+        
+        // 更新链接鼠标样式
+        const links = document.querySelectorAll('a');
+        links.forEach(link => {
+            link.style.cursor = `url('/miku/Link.ani'), auto`;
+        });
     }
     
     // 初始化
@@ -259,6 +267,20 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(updateCursorStyle, 100);
         });
     }
+    
+    // 监听DOM变化，动态更新鼠标样式
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'childList') {
+                updateCursorStyle();
+            }
+        });
+    });
+    
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
 });
 </script>
 
@@ -313,8 +335,7 @@ n=n||window.event,y.x=n.clientX,y.y=n.clientY
  
 window.onmouseout=function(){
 y.x=null,y.y=null
-};
-for(var s=[],f=0;d.n>f;f++){
+};for(var s=[],f=0;d.n>f;f++){
 var h=w()*a,g=w()*c,v=2*w()-1,p=2*w()-1;s.push({x:h,y:g,xa:v,ya:p,max:6e3})
 }
 u=s.concat([y]),

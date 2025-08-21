@@ -2,8 +2,15 @@
 
 <!-- insert favicons. use https://realfavicongenerator.net/ -->
 
-<!-- Live2D CSS -->
+<!-- Font Awesome 图标库 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<!-- Live2D jQuery -->
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- 自定义样式 -->
 <style>
+/* Live2D 样式 */
 #waifu {
     position: fixed;
     right: 0;
@@ -69,13 +76,13 @@
     transform: scale(1.1);
 }
 
-/* 自定义鼠标样式 */
+/* 自定义鼠标样式 - 使用本地miku文件夹 */
 body {
-    cursor: url(https://blog-static.cnblogs.com/files/zhangshuhao1116/1.ico), auto;
+    cursor: url('/miku/Normal.ani'), auto;
 }
 
 a, a:visited {
-    cursor: url(https://blog-static.cnblogs.com/files/zhangshuhao1116/2.ico), auto;
+    cursor: url('/miku/Link.ani'), auto;
 }
 
 /* 雪花效果 */
@@ -357,11 +364,5 @@ div.loaded div.spinner-box {
     vertical-align: middle;
 }
 </style>
-
-<!-- Font Awesome 图标库 -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-<!-- Live2D jQuery -->
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 
 <!-- end custom head snippets -->
