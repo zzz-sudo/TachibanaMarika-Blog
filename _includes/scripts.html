@@ -86,6 +86,48 @@
 <script src="https://blog-static.cnblogs.com/files/zhangshuhao1116/waifu-tips.js"></script>
 <script type="text/javascript">initModel()</script>
 
+<!-- 社交媒体链接 -->
+<div class="social-links">
+    <a href="https://gitee.com/explore" class="social-link" target="_blank">
+        <i class="fab fa-git-alt"></i>
+        <span>Gitee</span>
+    </a>
+    <a href="https://github.com/zzz-sudo/" class="social-link" target="_blank">
+        <i class="fab fa-github"></i>
+        <span>GitHub</span>
+    </a>
+    <a href="http://wpa.qq.com/msgrd?v=3&uin=2364200290&site=qq&menu=yes" class="social-link" target="_blank">
+        <i class="fab fa-qq"></i>
+        <span>QQ</span>
+    </a>
+    <a href="https://t.me/xxx" class="social-link" target="_blank">
+        <i class="fab fa-telegram"></i>
+        <span>Telegram</span>
+    </a>
+    <a href="https://mp.weixin.qq.com/s/voNUF5iV1tghQvlRCEkpzg" class="social-link" target="_blank">
+        <i class="fab fa-weixin"></i>
+        <span>微信公众号</span>
+    </a>
+    <a href="https://www.bilibili.com/video/BV1dD4y1M748/?spm_id_from=333.1387.homepage.video_card.click" class="social-link" target="_blank">
+        <i class="fab fa-bilibili"></i>
+        <span>Bilibili</span>
+    </a>
+</div>
+
+<!-- 日历功能 -->
+<div class="calendar-container">
+    <div class="calendar-header">
+        <div class="calendar-title" id="calendarTitle">2025年8月</div>
+        <div class="calendar-nav">
+            <button onclick="previousMonth()">&lt;</button>
+            <button onclick="nextMonth()">&gt;</button>
+        </div>
+    </div>
+    <div class="calendar-grid" id="calendarGrid">
+        <!-- 日历内容将通过JavaScript动态生成 -->
+    </div>
+</div>
+
 <!-- 加载动画脚本 -->
 <script>
 window.addEventListener(
@@ -205,183 +247,95 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<!-- 动态鼠标样式轮询系统 -->
+<!-- 日历功能脚本 -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // 鼠标样式数组
-    const cursorStyles = [
-        'cursor-normal',
-        'cursor-text', 
-        'cursor-link',
-        'cursor-person',
-        'cursor-move',
-        'cursor-working',
-        'cursor-help',
-        'cursor-precision'
-    ];
+    let currentDate = new Date();
+    let currentMonth = currentDate.getMonth();
+    let currentYear = currentDate.getFullYear();
     
-    let currentCursorIndex = 0;
-    let cursorChangeInterval;
-    
-    // 根据页面元素类型设置鼠标样式
-    function setCursorForElement(element) {
-        const tagName = element.tagName.toLowerCase();
-        const className = element.className || '';
-        const id = element.id || '';
+    function renderCalendar() {
+        const calendarGrid = document.getElementById('calendarGrid');
+        const calendarTitle = document.getElementById('calendarTitle');
         
-        let cursorClass = 'cursor-normal';
+        // 清空日历
+        calendarGrid.innerHTML = '';
         
-        if (tagName === 'a' || className.includes('link') || id.includes('link')) {
-            cursorClass = 'cursor-link';
-        } else if (tagName === 'input' || tagName === 'textarea' || className.includes('text')) {
-            cursorClass = 'cursor-text';
-        } else if (tagName === 'button' || className.includes('btn')) {
-            cursorClass = 'cursor-working';
-        } else if (className.includes('person') || className.includes('user')) {
-            cursorClass = 'cursor-person';
-        } else if (className.includes('move') || className.includes('drag')) {
-            cursorClass = 'cursor-move';
-        } else if (className.includes('help') || className.includes('info')) {
-            cursorClass = 'cursor-help';
-        } else if (className.includes('precision') || className.includes('select')) {
-            cursorClass = 'cursor-precision';
-        }
+        // 设置标题
+        const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+        calendarTitle.textContent = `${currentYear}年${monthNames[currentMonth]}`;
         
-        element.className = element.className.replace(/cursor-\w+/g, '') + ' ' + cursorClass;
-    }
-    
-    // 轮询鼠标样式
-    function startCursorRotation() {
-        cursorChangeInterval = setInterval(() => {
-            currentCursorIndex = (currentCursorIndex + 1) % cursorStyles.length;
-            const newCursorClass = cursorStyles[currentCursorIndex];
-            
-            // 更新body的鼠标样式
-            document.body.className = document.body.className.replace(/cursor-\w+/g, '') + ' ' + newCursorClass;
-            
-            // 更新所有元素的鼠标样式
-            const allElements = document.querySelectorAll('*');
-            allElements.forEach(element => {
-                setCursorForElement(element);
-            });
-        }, 3000); // 每3秒切换一次
-    }
-    
-    // 停止轮询
-    function stopCursorRotation() {
-        if (cursorChangeInterval) {
-            clearInterval(cursorChangeInterval);
-        }
-    }
-    
-    // 初始化鼠标样式
-    function initializeCursors() {
-        // 设置body默认鼠标样式
-        document.body.className += ' cursor-normal';
-        
-        // 为所有元素设置合适的鼠标样式
-        const allElements = document.querySelectorAll('*');
-        allElements.forEach(element => {
-            setCursorForElement(element);
+        // 添加星期标题
+        const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+        weekdays.forEach(day => {
+            const dayElement = document.createElement('div');
+            dayElement.className = 'calendar-weekday';
+            dayElement.textContent = day;
+            calendarGrid.appendChild(dayElement);
         });
         
-        // 启动轮询
-        startCursorRotation();
-    }
-    
-    // 监听鼠标移动，动态更新鼠标样式
-    document.addEventListener('mousemove', function(e) {
-        const element = document.elementFromPoint(e.clientX, e.clientY);
-        if (element) {
-            setCursorForElement(element);
+        // 获取当月第一天和最后一天
+        const firstDay = new Date(currentYear, currentMonth, 1);
+        const lastDay = new Date(currentYear, currentMonth + 1, 0);
+        const firstDayOfWeek = firstDay.getDay();
+        const lastDate = lastDay.getDate();
+        
+        // 添加上个月的日期
+        const prevMonth = new Date(currentYear, currentMonth, 0);
+        const prevMonthLastDate = prevMonth.getDate();
+        for (let i = firstDayOfWeek - 1; i >= 0; i--) {
+            const dayElement = document.createElement('div');
+            dayElement.className = 'calendar-day other-month';
+            dayElement.textContent = prevMonthLastDate - i;
+            calendarGrid.appendChild(dayElement);
         }
-    });
-    
-    // 监听DOM变化
-    const observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-            if (mutation.type === 'childList') {
-                mutation.addedNodes.forEach(function(node) {
-                    if (node.nodeType === 1) { // Element node
-                        setCursorForElement(node);
-                        // 为子元素也设置鼠标样式
-                        const children = node.querySelectorAll('*');
-                        children.forEach(child => {
-                            setCursorForElement(child);
-                        });
-                    }
-                });
-            }
-        });
-    });
-    
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true
-    });
-    
-    // 初始化
-    initializeCursors();
-    
-    // 页面卸载时清理
-    window.addEventListener('beforeunload', function() {
-        stopCursorRotation();
-    });
-});
-</script>
-
-<!-- 动态位置获取 - 修复地理位置获取 -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // 动态获取访问者位置
-    function updateLocation() {
-        const locationElement = document.querySelector('.author__location');
-        if (locationElement) {
-            // 尝试使用多个地理位置API
-            const apis = [
-                'https://ipapi.co/json/',
-                'https://ipinfo.io/json',
-                'https://api.ipify.org?format=json'
-            ];
+        
+        // 添加当月的日期
+        for (let day = 1; day <= lastDate; day++) {
+            const dayElement = document.createElement('div');
+            dayElement.className = 'calendar-day';
+            dayElement.textContent = day;
             
-            function tryAPI(apiUrl) {
-                fetch(apiUrl)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.city && data.region) {
-                            locationElement.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${data.city}, ${data.region}`;
-                        } else if (data.city && data.country) {
-                            locationElement.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${data.city}, ${data.country}`;
-                        } else if (data.country) {
-                            locationElement.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${data.country}`;
-                        } else if (data.ip) {
-                            locationElement.innerHTML = `<i class="fas fa-map-marker-alt"></i> IP: ${data.ip}`;
-                        } else {
-                            locationElement.innerHTML = '<i class="fas fa-map-marker-alt"></i> 未知位置';
-                        }
-                    })
-                    .catch(error => {
-                        console.log('API请求失败:', error);
-                        // 尝试下一个API
-                        const nextIndex = apis.indexOf(apiUrl) + 1;
-                        if (nextIndex < apis.length) {
-                            tryAPI(apis[nextIndex]);
-                        } else {
-                            locationElement.innerHTML = '<i class="fas fa-map-marker-alt"></i> 位置获取中...';
-                        }
-                    });
+            // 标记今天
+            if (day === currentDate.getDate() && currentMonth === currentDate.getMonth() && currentYear === currentDate.getFullYear()) {
+                dayElement.classList.add('today');
             }
             
-            // 开始尝试第一个API
-            tryAPI(apis[0]);
+            calendarGrid.appendChild(dayElement);
+        }
+        
+        // 添加下个月的日期
+        const remainingDays = 42 - (firstDayOfWeek + lastDate);
+        for (let day = 1; day <= remainingDays; day++) {
+            const dayElement = document.createElement('div');
+            dayElement.className = 'calendar-day other-month';
+            dayElement.textContent = day;
+            calendarGrid.appendChild(dayElement);
         }
     }
     
-    // 初始化位置获取
-    updateLocation();
+    // 上个月
+    window.previousMonth = function() {
+        currentMonth--;
+        if (currentMonth < 0) {
+            currentMonth = 11;
+            currentYear--;
+        }
+        renderCalendar();
+    };
     
-    // 5秒后重试一次
-    setTimeout(updateLocation, 5000);
+    // 下个月
+    window.nextMonth = function() {
+        currentMonth++;
+        if (currentMonth > 11) {
+            currentMonth = 0;
+            currentYear++;
+        }
+        renderCalendar();
+    };
+    
+    // 初始化日历
+    renderCalendar();
 });
 </script>
 

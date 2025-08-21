@@ -116,7 +116,8 @@ author:
   name             : "TachibanaMarika"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio              : ""  # 删除介绍
-  location         : "获取访问者位置"  # 动态获取
+  avatar           : "/touxiang.jpg"  # 添加头像
+  location         : ""  # 删除位置获取
   email            :
   links:
     - label: "Email"
