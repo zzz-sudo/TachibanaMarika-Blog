@@ -3,8 +3,72 @@
 <!-- insert favicons. use https://realfavicongenerator.net/ -->
 
 <!-- Live2D CSS -->
-<link rel="stylesheet" type="text/css" href="https://blog-static.cnblogs.com/files/zhangshuhao1116/waifu1.css"/>
-<link rel="stylesheet" type="text/css" href="https://blog-static.cnblogs.com/files/zhangshuhao1116/flat-ui.min.css"/>
+<style>
+#waifu {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    width: 280px;
+    height: 250px;
+    pointer-events: none;
+}
+
+#waifu-tips {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    text-align: center;
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: 12px;
+    line-height: 1.5;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+#waifu-tips.show {
+    opacity: 1;
+}
+
+#live2d {
+    width: 100%;
+    height: 100%;
+    pointer-events: auto;
+}
+
+.waifu-tool {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.waifu-tool span {
+    width: 30px;
+    height: 30px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    transition: all 0.3s;
+}
+
+.waifu-tool span:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: scale(1.1);
+}
+</style>
 
 <!-- Live2D jQuery -->
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>

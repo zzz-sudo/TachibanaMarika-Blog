@@ -42,12 +42,15 @@
 </div>
 </div>
 
-<script src="https://blog-static.cnblogs.com/files/zhangshuhao1116/live2d.min.js"></script>
-<script src="https://blog-static.cnblogs.com/files/zhangshuhao1116/waifu-tips.js"></script>
-<script type="text/javascript">
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof initModel === 'function') {
-        initModel();
-    }
-});
+<!-- 使用最新的Live2D实现 -->
+<script src="https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/autoload.js"></script>
+
+<!-- 备用方案：如果上面的不工作，使用这个 -->
+<script>
+if (typeof live2d === 'undefined') {
+    // 加载备用Live2D实现
+    var script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/gh/EYHN/live2d-widget@latest/autoload.js';
+    document.head.appendChild(script);
+}
 </script>
