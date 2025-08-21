@@ -78,6 +78,29 @@ a, a:visited {
     cursor: url(https://blog-static.cnblogs.com/files/zhangshuhao1116/2.ico), auto;
 }
 
+/* 雪花效果 */
+.wall {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9997;
+}
+
+#midground {
+    z-index: 9996;
+}
+
+#foreground {
+    z-index: 9995;
+}
+
+#top {
+    z-index: 9994;
+}
+
 /* 加载动画样式 */
 #loading-box .loading-left-bg,
 #loading-box .loading-right-bg {
@@ -201,7 +224,104 @@ div.loaded div.spinner-box {
         transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
     }
 }
+
+/* 音乐播放器样式 */
+.music-player {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 9998;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 25px;
+    padding: 10px 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.music-player:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.music-player audio {
+    display: none;
+}
+
+.music-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.music-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: #007bff;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.music-btn:hover {
+    background: #0056b3;
+    transform: scale(1.1);
+}
+
+.music-btn.pause {
+    background: #28a745;
+}
+
+.music-btn.pause:hover {
+    background: #1e7e34;
+}
+
+.music-info {
+    font-size: 12px;
+    color: #666;
+    white-space: nowrap;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 优化页脚样式 */
+.page__footer {
+    padding: 20px 0;
+    margin-top: 40px;
+}
+
+.page__footer-copyright {
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    margin: 0;
+}
+
+.page__footer-follow {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.page__footer-follow a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.page__footer-follow a:hover {
+    text-decoration: underline;
+}
 </style>
+
+<!-- Font Awesome 图标库 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 <!-- Live2D jQuery -->
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>

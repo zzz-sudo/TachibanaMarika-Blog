@@ -20,8 +20,8 @@ rtl                      : # true, false (default) # turns direction of the page
 title                    : "我的博客"
 title_separator          : "-"
 subtitle                 : "分享技术与生活"
-name                     : "Your Name"
-description              : "一个基于Jekyll的个人博客网站"
+name                     : "TachibanaMarika"
+description              : "TachibanaMarika的博客网站"
 url                      : "https://zzz-sudo.github.io" # 请替换为你的GitHub用户名
 baseurl                  : "/TachibanaMarika-Blog" # 请替换为你的仓库名
 repository               : "zzz-sudo/TachibanaMarika-Blog" # 请替换为你的GitHub用户名和仓库名
@@ -31,7 +31,7 @@ masthead_title           : # overrides the website title displayed in the masthe
 breadcrumbs              : true # true, false (default)
 words_per_minute         : 200
 enable_copy_code_button  : true # true, false (default)
-copyright                : "Your Name" # "copyright" name, defaults to site.title
+copyright                : "TachibanaMarika" # "copyright" name, defaults to site.title
 copyright_url            : # "copyright" URL, defaults to site.url
 comments:
   provider               : # false (default), "disqus", "discourse", "facebook", "staticman", "staticman_v2", "utterances", "giscus", "custom"
