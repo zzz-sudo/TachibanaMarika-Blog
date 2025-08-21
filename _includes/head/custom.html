@@ -27,6 +27,7 @@
 .author__content {
     text-align: center;
     margin-bottom: 30px;
+    position: relative;
 }
 
 .author__name {
@@ -529,6 +530,20 @@ div.loaded div.spinner-box {
 
 .favicon-changer.show {
     display: block;
+}
+
+/* 确保左侧边栏内容正确显示 */
+.author__content > * {
+    margin-bottom: 20px;
+}
+
+.author__content > *:last-child {
+    margin-bottom: 0;
+}
+
+/* 移除任何可能的"删除"按钮样式 */
+.delete-btn, .btn-delete, [class*="delete"] {
+    display: none !important;
 }
 </style>
 
