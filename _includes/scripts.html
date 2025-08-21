@@ -32,22 +32,6 @@
 <div id="foreground" class="wall"></div>
 <div id="top" class="wall"></div>
 
-<!-- 音乐播放器 -->
-<div class="music-player">
-    <audio id="bgMusic" loop>
-        <source src="/assets/audio/Summer (Nature's Crescendo).mp3" type="audio/mpeg">
-    </audio>
-    <div class="music-controls">
-        <button class="music-btn" id="musicBtn" title="播放/暂停">
-            <i class="fas fa-play"></i>
-        </button>
-        <div class="music-info">
-            <div>Summer</div>
-            <div style="font-size: 10px; color: #999;">Nature's Crescendo</div>
-        </div>
-    </div>
-</div>
-
 <!-- 加载动画 start -->
 <div id="loading-box">
   <div class="loading-left-bg"></div>
@@ -86,46 +70,9 @@
 <script src="https://blog-static.cnblogs.com/files/zhangshuhao1116/waifu-tips.js"></script>
 <script type="text/javascript">initModel()</script>
 
-<!-- 社交媒体链接 -->
-<div class="social-links">
-    <a href="https://gitee.com/explore" class="social-link" target="_blank">
-        <i class="fab fa-git-alt"></i>
-        <span>Gitee</span>
-    </a>
-    <a href="https://github.com/zzz-sudo/" class="social-link" target="_blank">
-        <i class="fab fa-github"></i>
-        <span>GitHub</span>
-    </a>
-    <a href="http://wpa.qq.com/msgrd?v=3&uin=2364200290&site=qq&menu=yes" class="social-link" target="_blank">
-        <i class="fab fa-qq"></i>
-        <span>QQ</span>
-    </a>
-    <a href="https://t.me/xxx" class="social-link" target="_blank">
-        <i class="fab fa-telegram"></i>
-        <span>Telegram</span>
-    </a>
-    <a href="https://mp.weixin.qq.com/s/voNUF5iV1tghQvlRCEkpzg" class="social-link" target="_blank">
-        <i class="fab fa-weixin"></i>
-        <span>微信公众号</span>
-    </a>
-    <a href="https://www.bilibili.com/video/BV1dD4y1M748/?spm_id_from=333.1387.homepage.video_card.click" class="social-link" target="_blank">
-        <i class="fab fa-bilibili"></i>
-        <span>Bilibili</span>
-    </a>
-</div>
-
-<!-- 日历功能 -->
-<div class="calendar-container">
-    <div class="calendar-header">
-        <div class="calendar-title" id="calendarTitle">2025年8月</div>
-        <div class="calendar-nav">
-            <button onclick="previousMonth()">&lt;</button>
-            <button onclick="nextMonth()">&gt;</button>
-        </div>
-    </div>
-    <div class="calendar-grid" id="calendarGrid">
-        <!-- 日历内容将通过JavaScript动态生成 -->
-    </div>
+<!-- 地址栏图标功能 -->
+<div class="favicon-changer" id="faviconChanger">
+    地址栏图标已更改为 touxiang.jpg
 </div>
 
 <!-- 加载动画脚本 -->
@@ -185,29 +132,67 @@ window.onload = function () {
 <!-- 音乐播放器脚本 - 修复自动播放 -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // 创建音乐播放器元素
+    const musicPlayer = document.createElement('div');
+    musicPlayer.className = 'music-player';
+    musicPlayer.innerHTML = `
+        <audio id="bgMusic" loop>
+            <source src="/assets/audio/Summer (Nature's Crescendo).mp3" type="audio/mpeg">
+        </audio>
+        <div class="music-controls">
+            <button class="music-btn" id="musicBtn" title="播放/暂停">
+                <i class="fas fa-play"></i>
+            </button>
+            <div class="music-info">
+                <div>Summer</div>
+                <div style="font-size: 10px; color: #999;">Nature's Crescendo</div>
+            </div>
+        </div>
+    `;
+    
+    // 将音乐播放器插入到左侧边栏
+    const sidebar = document.querySelector('.author__content');
+    if (sidebar) {
+        sidebar.appendChild(musicPlayer);
+    }
+    
     const musicBtn = document.getElementById('musicBtn');
     const bgMusic = document.getElementById('bgMusic');
     const musicIcon = musicBtn.querySelector('i');
     
     let isPlaying = false;
     
-    // 自动播放（需要用户交互）
-    function autoPlayMusic() {
+    // 强制自动播放
+    function forceAutoPlay() {
         bgMusic.play().then(() => {
             isPlaying = true;
             musicBtn.classList.add('pause');
             musicIcon.className = 'fas fa-pause';
+            console.log('音乐自动播放成功');
         }).catch(err => {
-            console.log('自动播放失败:', err);
+            console.log('强制自动播放失败:', err);
+            // 如果失败，尝试静音播放
+            bgMusic.muted = true;
+            bgMusic.play().then(() => {
+                isPlaying = true;
+                musicBtn.classList.add('pause');
+                musicIcon.className = 'fas fa-pause';
+                console.log('静音自动播放成功');
+            }).catch(err2 => {
+                console.log('静音自动播放也失败:', err2);
+            });
         });
     }
     
+    // 页面加载完成后立即尝试播放
+    setTimeout(forceAutoPlay, 1000);
+    
     // 监听用户交互事件
-    const userInteractionEvents = ['click', 'touchstart', 'keydown', 'scroll'];
+    const userInteractionEvents = ['click', 'touchstart', 'keydown', 'scroll', 'mousemove'];
     userInteractionEvents.forEach(event => {
         document.addEventListener(event, function() {
             if (!isPlaying) {
-                autoPlayMusic();
+                forceAutoPlay();
             }
         }, { once: true });
     });
@@ -247,9 +232,72 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+<!-- 社交媒体链接脚本 -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 创建社交媒体链接元素
+    const socialLinks = document.createElement('div');
+    socialLinks.className = 'social-links';
+    socialLinks.innerHTML = `
+        <a href="https://gitee.com/explore" class="social-link" target="_blank">
+            <i class="fab fa-git-alt"></i>
+            <span>Gitee</span>
+        </a>
+        <a href="https://github.com/zzz-sudo/" class="social-link" target="_blank">
+            <i class="fab fa-github"></i>
+            <span>GitHub</span>
+        </a>
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=2364200290&site=qq&menu=yes" class="social-link" target="_blank">
+            <i class="fab fa-qq"></i>
+            <span>QQ</span>
+        </a>
+        <a href="https://t.me/xxx" class="social-link" target="_blank">
+            <i class="fab fa-telegram"></i>
+            <span>Telegram</span>
+        </a>
+        <a href="https://mp.weixin.qq.com/s/voNUF5iV1tghQvlRCEkpzg" class="social-link" target="_blank">
+            <i class="fab fa-weixin"></i>
+            <span>微信公众号</span>
+        </a>
+        <a href="https://www.bilibili.com/video/BV1dD4y1M748/?spm_id_from=333.1387.homepage.video_card.click" class="social-link" target="_blank">
+            <i class="fab fa-bilibili"></i>
+            <span>Bilibili</span>
+        </a>
+    `;
+    
+    // 将社交媒体链接插入到左侧边栏
+    const sidebar = document.querySelector('.author__content');
+    if (sidebar) {
+        sidebar.appendChild(socialLinks);
+    }
+});
+</script>
+
 <!-- 日历功能脚本 -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // 创建日历元素
+    const calendarContainer = document.createElement('div');
+    calendarContainer.className = 'calendar-container';
+    calendarContainer.innerHTML = `
+        <div class="calendar-header">
+            <div class="calendar-title" id="calendarTitle">2025年8月</div>
+            <div class="calendar-nav">
+                <button onclick="previousMonth()">&lt;</button>
+                <button onclick="nextMonth()">&gt;</button>
+            </div>
+        </div>
+        <div class="calendar-grid" id="calendarGrid">
+            <!-- 日历内容将通过JavaScript动态生成 -->
+        </div>
+    `;
+    
+    // 将日历插入到左侧边栏
+    const sidebar = document.querySelector('.author__content');
+    if (sidebar) {
+        sidebar.appendChild(calendarContainer);
+    }
+    
     let currentDate = new Date();
     let currentMonth = currentDate.getMonth();
     let currentYear = currentDate.getFullYear();
@@ -336,6 +384,37 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 初始化日历
     renderCalendar();
+});
+</script>
+
+<!-- 地址栏图标更换功能 -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 设置默认图标
+    const defaultFavicon = document.querySelector('link[rel="icon"]') || document.querySelector('link[rel="shortcut icon"]');
+    
+    // 创建新的图标链接
+    const newFavicon = document.createElement('link');
+    newFavicon.rel = 'icon';
+    newFavicon.type = 'image/jpeg';
+    newFavicon.href = '/touxiang.jpg';
+    
+    // 替换默认图标
+    if (defaultFavicon) {
+        defaultFavicon.remove();
+    }
+    document.head.appendChild(newFavicon);
+    
+    // 显示提示信息
+    const faviconChanger = document.getElementById('faviconChanger');
+    if (faviconChanger) {
+        faviconChanger.classList.add('show');
+        setTimeout(() => {
+            faviconChanger.classList.remove('show');
+        }, 3000);
+    }
+    
+    console.log('地址栏图标已更改为 touxiang.jpg');
 });
 </script>
 

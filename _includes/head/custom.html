@@ -23,15 +23,30 @@
     box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
 }
 
-/* Live2D 样式 */
+/* 调整左侧边栏布局 */
+.author__content {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.author__name {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: 15px 0;
+    color: #333;
+}
+
+/* Live2D 样式 - 修复显示问题 */
 #waifu {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    z-index: 9999;
-    width: 280px;
-    height: 250px;
+    position: fixed !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 9999 !important;
+    width: 280px !important;
+    height: 250px !important;
     pointer-events: none;
+    display: block !important;
+    visibility: visible !important;
 }
 
 #waifu-tips {
@@ -56,9 +71,11 @@
 }
 
 #live2d {
-    width: 100%;
-    height: 100%;
-    pointer-events: auto;
+    width: 100% !important;
+    height: 100% !important;
+    pointer-events: auto !important;
+    display: block !important;
+    visibility: visible !important;
 }
 
 .waifu-tool {
@@ -98,10 +115,10 @@ a, a:visited {
     cursor: url(https://blog-static.cnblogs.com/files/zhangshuhao1116/2.ico), auto;
 }
 
-/* 社交媒体链接样式 */
+/* 社交媒体链接样式 - 移到左侧边栏 */
 .social-links {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 15px;
     margin: 20px 0;
     justify-content: center;
@@ -109,7 +126,6 @@ a, a:visited {
 
 .social-link {
     display: flex;
-    flex-direction: column;
     align-items: center;
     text-decoration: none;
     color: #666;
@@ -122,22 +138,23 @@ a, a:visited {
 }
 
 .social-link:hover {
-    transform: translateY(-3px);
+    transform: translateX(5px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     color: #007bff;
 }
 
 .social-link i {
-    font-size: 24px;
-    margin-bottom: 5px;
-}
-
-.social-link span {
-    font-size: 12px;
+    font-size: 20px;
+    margin-right: 10px;
+    width: 20px;
     text-align: center;
 }
 
-/* 日历样式 */
+.social-link span {
+    font-size: 14px;
+}
+
+/* 日历样式 - 移到左侧边栏 */
 .calendar-container {
     margin: 30px 0;
     padding: 20px;
@@ -155,7 +172,7 @@ a, a:visited {
 }
 
 .calendar-title {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
     color: #333;
 }
@@ -173,6 +190,7 @@ a, a:visited {
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease;
+    font-size: 12px;
 }
 
 .calendar-nav button:hover {
@@ -182,24 +200,24 @@ a, a:visited {
 .calendar-grid {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
+    gap: 3px;
 }
 
 .calendar-weekday {
     text-align: center;
     font-weight: bold;
     color: #666;
-    padding: 10px 5px;
-    font-size: 14px;
+    padding: 8px 3px;
+    font-size: 12px;
 }
 
 .calendar-day {
     text-align: center;
-    padding: 10px 5px;
+    padding: 8px 3px;
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease;
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .calendar-day:hover {
@@ -363,22 +381,19 @@ div.loaded div.spinner-box {
     }
 }
 
-/* 音乐播放器样式 */
+/* 音乐播放器样式 - 移到左侧边栏 */
 .music-player {
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    z-index: 9998;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 25px;
-    padding: 10px 15px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
     backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     transition: all 0.3s ease;
 }
 
 .music-player:hover {
-    background: rgba(255, 255, 255, 1);
+    background: rgba(255, 255, 255, 0.2);
     transform: translateY(-2px);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
@@ -496,6 +511,24 @@ div.loaded div.spinner-box {
     border: 0;
     vertical-align: middle;
     max-height: 20px; /* 限制图片高度 */
+}
+
+/* 地址栏图标功能 */
+.favicon-changer {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    display: none;
+}
+
+.favicon-changer.show {
+    display: block;
 }
 </style>
 

@@ -114,9 +114,8 @@ analytics:
 # Site Author
 author:
   name             : "TachibanaMarika"
-  avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : ""  # 删除介绍
   avatar           : "/touxiang.jpg"  # 添加头像
+  bio              : ""  # 删除介绍
   location         : ""  # 删除位置获取
   email            :
   links:
