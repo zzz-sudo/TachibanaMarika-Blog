@@ -115,7 +115,7 @@ analytics:
 author:
   name             : "TachibanaMarika"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "# I am an **amazing** person."  # 注释掉
+  bio              : ""  # 删除介绍
   location         : "获取访问者位置"  # 动态获取
   email            :
   links:

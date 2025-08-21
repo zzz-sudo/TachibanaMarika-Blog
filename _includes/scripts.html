@@ -81,18 +81,10 @@
 </div>
 </div>
 
-<!-- 使用最新的Live2D实现 -->
-<script src="https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/autoload.js"></script>
-
-<!-- 备用方案：如果上面的不工作，使用这个 -->
-<script>
-if (typeof live2d === 'undefined') {
-    // 加载备用Live2D实现
-    var script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/gh/EYHN/live2d-widget@latest/autoload.js';
-    document.head.appendChild(script);
-}
-</script>
+<!-- Live2D 脚本 -->
+<script src="https://blog-static.cnblogs.com/files/zhangshuhao1116/live2d.min.js"></script>
+<script src="https://blog-static.cnblogs.com/files/zhangshuhao1116/waifu-tips.js"></script>
+<script type="text/javascript">initModel()</script>
 
 <!-- 加载动画脚本 -->
 <script>
@@ -148,7 +140,7 @@ window.onload = function () {
 }
 </script>
 
-<!-- 音乐播放器脚本 -->
+<!-- 音乐播放器脚本 - 修复自动播放 -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const musicBtn = document.getElementById('musicBtn');
@@ -158,17 +150,25 @@ document.addEventListener('DOMContentLoaded', function() {
     let isPlaying = false;
     
     // 自动播放（需要用户交互）
-    document.addEventListener('click', function() {
-        if (!isPlaying) {
-            bgMusic.play().then(() => {
-                isPlaying = true;
-                musicBtn.classList.add('pause');
-                musicIcon.className = 'fas fa-pause';
-            }).catch(err => {
-                console.log('自动播放失败:', err);
-            });
-        }
-    }, { once: true });
+    function autoPlayMusic() {
+        bgMusic.play().then(() => {
+            isPlaying = true;
+            musicBtn.classList.add('pause');
+            musicIcon.className = 'fas fa-pause';
+        }).catch(err => {
+            console.log('自动播放失败:', err);
+        });
+    }
+    
+    // 监听用户交互事件
+    const userInteractionEvents = ['click', 'touchstart', 'keydown', 'scroll'];
+    userInteractionEvents.forEach(event => {
+        document.addEventListener(event, function() {
+            if (!isPlaying) {
+                autoPlayMusic();
+            }
+        }, { once: true });
+    });
     
     // 播放/暂停按钮
     musicBtn.addEventListener('click', function() {
@@ -205,74 +205,112 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<!-- 动态位置获取和鼠标样式切换 -->
+<!-- 动态鼠标样式轮询系统 -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // 动态获取访问者位置
-    function updateLocation() {
-        const locationElement = document.querySelector('.author__location');
-        if (locationElement) {
-            // 使用IP地理位置API
-            fetch('https://ipapi.co/json/')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.city && data.region) {
-                        locationElement.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${data.city}, ${data.region}`;
-                    } else if (data.country) {
-                        locationElement.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${data.country}`;
-                    } else {
-                        locationElement.innerHTML = '<i class="fas fa-map-marker-alt"></i> 未知位置';
-                    }
-                })
-                .catch(error => {
-                    console.log('位置获取失败:', error);
-                    locationElement.innerHTML = '<i class="fas fa-map-marker-alt"></i> 位置获取中...';
-                });
+    // 鼠标样式数组
+    const cursorStyles = [
+        'cursor-normal',
+        'cursor-text', 
+        'cursor-link',
+        'cursor-person',
+        'cursor-move',
+        'cursor-working',
+        'cursor-help',
+        'cursor-precision'
+    ];
+    
+    let currentCursorIndex = 0;
+    let cursorChangeInterval;
+    
+    // 根据页面元素类型设置鼠标样式
+    function setCursorForElement(element) {
+        const tagName = element.tagName.toLowerCase();
+        const className = element.className || '';
+        const id = element.id || '';
+        
+        let cursorClass = 'cursor-normal';
+        
+        if (tagName === 'a' || className.includes('link') || id.includes('link')) {
+            cursorClass = 'cursor-link';
+        } else if (tagName === 'input' || tagName === 'textarea' || className.includes('text')) {
+            cursorClass = 'cursor-text';
+        } else if (tagName === 'button' || className.includes('btn')) {
+            cursorClass = 'cursor-working';
+        } else if (className.includes('person') || className.includes('user')) {
+            cursorClass = 'cursor-person';
+        } else if (className.includes('move') || className.includes('drag')) {
+            cursorClass = 'cursor-move';
+        } else if (className.includes('help') || className.includes('info')) {
+            cursorClass = 'cursor-help';
+        } else if (className.includes('precision') || className.includes('select')) {
+            cursorClass = 'cursor-precision';
+        }
+        
+        element.className = element.className.replace(/cursor-\w+/g, '') + ' ' + cursorClass;
+    }
+    
+    // 轮询鼠标样式
+    function startCursorRotation() {
+        cursorChangeInterval = setInterval(() => {
+            currentCursorIndex = (currentCursorIndex + 1) % cursorStyles.length;
+            const newCursorClass = cursorStyles[currentCursorIndex];
+            
+            // 更新body的鼠标样式
+            document.body.className = document.body.className.replace(/cursor-\w+/g, '') + ' ' + newCursorClass;
+            
+            // 更新所有元素的鼠标样式
+            const allElements = document.querySelectorAll('*');
+            allElements.forEach(element => {
+                setCursorForElement(element);
+            });
+        }, 3000); // 每3秒切换一次
+    }
+    
+    // 停止轮询
+    function stopCursorRotation() {
+        if (cursorChangeInterval) {
+            clearInterval(cursorChangeInterval);
         }
     }
     
-    // 页面切换鼠标样式
-    function updateCursorStyle() {
-        const currentPath = window.location.pathname;
-        let cursorIcon = 'Normal.ani'; // 默认鼠标
+    // 初始化鼠标样式
+    function initializeCursors() {
+        // 设置body默认鼠标样式
+        document.body.className += ' cursor-normal';
         
-        // 根据页面路径选择不同的鼠标样式
-        if (currentPath.includes('/posts/') || currentPath.includes('/categories/')) {
-            cursorIcon = 'Text.ani'; // 文章页面
-        } else if (currentPath.includes('/about/') || currentPath.includes('/contact/')) {
-            cursorIcon = 'Person.ani'; // 关于页面
-        } else if (currentPath.includes('/archive/')) {
-            cursorIcon = 'Move.ani'; // 归档页面
-        } else if (currentPath.includes('/tags/')) {
-            cursorIcon = 'Link.ani'; // 标签页面
+        // 为所有元素设置合适的鼠标样式
+        const allElements = document.querySelectorAll('*');
+        allElements.forEach(element => {
+            setCursorForElement(element);
+        });
+        
+        // 启动轮询
+        startCursorRotation();
+    }
+    
+    // 监听鼠标移动，动态更新鼠标样式
+    document.addEventListener('mousemove', function(e) {
+        const element = document.elementFromPoint(e.clientX, e.clientY);
+        if (element) {
+            setCursorForElement(element);
         }
-        
-        // 更新鼠标样式
-        document.body.style.cursor = `url('/miku/${cursorIcon}'), auto`;
-        
-        // 更新链接鼠标样式
-        const links = document.querySelectorAll('a');
-        links.forEach(link => {
-            link.style.cursor = `url('/miku/Link.ani'), auto`;
-        });
-    }
+    });
     
-    // 初始化
-    updateLocation();
-    updateCursorStyle();
-    
-    // 监听页面变化（SPA应用）
-    if (window.history && window.history.pushState) {
-        window.addEventListener('popstate', function() {
-            setTimeout(updateCursorStyle, 100);
-        });
-    }
-    
-    // 监听DOM变化，动态更新鼠标样式
+    // 监听DOM变化
     const observer = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
             if (mutation.type === 'childList') {
-                updateCursorStyle();
+                mutation.addedNodes.forEach(function(node) {
+                    if (node.nodeType === 1) { // Element node
+                        setCursorForElement(node);
+                        // 为子元素也设置鼠标样式
+                        const children = node.querySelectorAll('*');
+                        children.forEach(child => {
+                            setCursorForElement(child);
+                        });
+                    }
+                });
             }
         });
     });
@@ -281,6 +319,69 @@ document.addEventListener('DOMContentLoaded', function() {
         childList: true,
         subtree: true
     });
+    
+    // 初始化
+    initializeCursors();
+    
+    // 页面卸载时清理
+    window.addEventListener('beforeunload', function() {
+        stopCursorRotation();
+    });
+});
+</script>
+
+<!-- 动态位置获取 - 修复地理位置获取 -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 动态获取访问者位置
+    function updateLocation() {
+        const locationElement = document.querySelector('.author__location');
+        if (locationElement) {
+            // 尝试使用多个地理位置API
+            const apis = [
+                'https://ipapi.co/json/',
+                'https://ipinfo.io/json',
+                'https://api.ipify.org?format=json'
+            ];
+            
+            function tryAPI(apiUrl) {
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.city && data.region) {
+                            locationElement.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${data.city}, ${data.region}`;
+                        } else if (data.city && data.country) {
+                            locationElement.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${data.city}, ${data.country}`;
+                        } else if (data.country) {
+                            locationElement.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${data.country}`;
+                        } else if (data.ip) {
+                            locationElement.innerHTML = `<i class="fas fa-map-marker-alt"></i> IP: ${data.ip}`;
+                        } else {
+                            locationElement.innerHTML = '<i class="fas fa-map-marker-alt"></i> 未知位置';
+                        }
+                    })
+                    .catch(error => {
+                        console.log('API请求失败:', error);
+                        // 尝试下一个API
+                        const nextIndex = apis.indexOf(apiUrl) + 1;
+                        if (nextIndex < apis.length) {
+                            tryAPI(apis[nextIndex]);
+                        } else {
+                            locationElement.innerHTML = '<i class="fas fa-map-marker-alt"></i> 位置获取中...';
+                        }
+                    });
+            }
+            
+            // 开始尝试第一个API
+            tryAPI(apis[0]);
+        }
+    }
+    
+    // 初始化位置获取
+    updateLocation();
+    
+    // 5秒后重试一次
+    setTimeout(updateLocation, 5000);
 });
 </script>
 

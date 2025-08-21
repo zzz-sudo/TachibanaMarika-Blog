@@ -8,6 +8,10 @@
 <!-- Live2D jQuery -->
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 
+<!-- Live2D CSS -->
+<link rel="stylesheet" type="text/css" href="https://blog-static.cnblogs.com/files/zhangshuhao1116/waifu1.css"/>
+<link rel="stylesheet" type="text/css" href="https://blog-static.cnblogs.com/files/zhangshuhao1116/flat-ui.min.css"/>
+
 <!-- 自定义样式 -->
 <style>
 /* Live2D 样式 */
@@ -74,15 +78,6 @@
 .waifu-tool span:hover {
     background: rgba(255, 255, 255, 1);
     transform: scale(1.1);
-}
-
-/* 自定义鼠标样式 - 使用本地miku文件夹 */
-body {
-    cursor: url('/miku/Normal.ani'), auto;
-}
-
-a, a:visited {
-    cursor: url('/miku/Link.ani'), auto;
 }
 
 /* 雪花效果 */
@@ -298,29 +293,31 @@ div.loaded div.spinner-box {
     text-overflow: ellipsis;
 }
 
-/* 优化页脚样式 */
+/* 优化页脚样式 - 减少黑色占比 */
 .page__footer {
-    padding: 20px 0;
-    margin-top: 40px;
+    padding: 10px 0; /* 减少padding */
+    margin-top: 20px; /* 减少margin */
+    background: rgba(255, 255, 255, 0.1); /* 半透明背景 */
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .page__footer-copyright {
-    font-size: 14px;
-    color: #666;
+    font-size: 12px; /* 减小字体 */
+    color: #999;
     text-align: center;
     margin: 0;
-    line-height: 1.4;
+    line-height: 1.2; /* 减少行高 */
 }
 
 .page__footer-follow {
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 8px; /* 减少margin */
 }
 
 .page__footer-follow a {
     color: #007bff;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 12px; /* 减小字体 */
 }
 
 .page__footer-follow a:hover {
@@ -356,13 +353,24 @@ div.loaded div.spinner-box {
 /* 联系QQ样式 */
 .qq-contact {
     text-align: center;
-    margin: 10px 0;
+    margin: 5px 0; /* 减少margin */
 }
 
 .qq-contact img {
     border: 0;
     vertical-align: middle;
+    max-height: 20px; /* 限制图片高度 */
 }
+
+/* 动态鼠标样式 */
+.cursor-normal { cursor: url('/miku/Normal.ani'), auto; }
+.cursor-text { cursor: url('/miku/Text.ani'), auto; }
+.cursor-link { cursor: url('/miku/Link.ani'), auto; }
+.cursor-person { cursor: url('/miku/Person.ani'), auto; }
+.cursor-move { cursor: url('/miku/Move.ani'), auto; }
+.cursor-working { cursor: url('/miku/Working.ani'), auto; }
+.cursor-help { cursor: url('/miku/Help.ani'), auto; }
+.cursor-precision { cursor: url('/miku/Precision.ani'), auto; }
 </style>
 
 <!-- end custom head snippets -->
