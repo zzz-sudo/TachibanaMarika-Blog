@@ -205,6 +205,63 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+<!-- 动态位置获取和鼠标样式切换 -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 动态获取访问者位置
+    function updateLocation() {
+        const locationElement = document.querySelector('.author__location');
+        if (locationElement) {
+            // 使用IP地理位置API
+            fetch('https://ipapi.co/json/')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.city && data.region) {
+                        locationElement.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${data.city}, ${data.region}`;
+                    } else if (data.country) {
+                        locationElement.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${data.country}`;
+                    } else {
+                        locationElement.innerHTML = '<i class="fas fa-map-marker-alt"></i> 未知位置';
+                    }
+                })
+                .catch(error => {
+                    console.log('位置获取失败:', error);
+                    locationElement.innerHTML = '<i class="fas fa-map-marker-alt"></i> 位置获取中...';
+                });
+        }
+    }
+    
+    // 页面切换鼠标样式
+    function updateCursorStyle() {
+        const currentPath = window.location.pathname;
+        let cursorIcon = '1.ico'; // 默认鼠标
+        
+        // 根据页面路径选择不同的鼠标样式
+        if (currentPath.includes('/posts/') || currentPath.includes('/categories/')) {
+            cursorIcon = '2.ico'; // 文章页面
+        } else if (currentPath.includes('/about/') || currentPath.includes('/contact/')) {
+            cursorIcon = '3.ico'; // 关于页面
+        } else if (currentPath.includes('/archive/')) {
+            cursorIcon = '4.ico'; // 归档页面
+        }
+        
+        // 更新鼠标样式
+        document.body.style.cursor = `url(https://blog-static.cnblogs.com/files/zhangshuhao1116/${cursorIcon}), auto`;
+    }
+    
+    // 初始化
+    updateLocation();
+    updateCursorStyle();
+    
+    // 监听页面变化（SPA应用）
+    if (window.history && window.history.pushState) {
+        window.addEventListener('popstate', function() {
+            setTimeout(updateCursorStyle, 100);
+        });
+    }
+});
+</script>
+
 <!-- 网站动态背景线条跟随鼠标移动 -->
 <script>
 !function(){

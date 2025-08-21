@@ -113,10 +113,10 @@ analytics:
 
 # Site Author
 author:
-  name             : "Your Name"
+  name             : "TachibanaMarika"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "I am an **amazing** person."
-  location         : "Somewhere"
+  bio              : "# I am an **amazing** person."  # 注释掉
+  location         : "获取访问者位置"  # 动态获取
   email            :
   links:
     - label: "Email"
