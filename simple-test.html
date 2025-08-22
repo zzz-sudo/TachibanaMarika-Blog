@@ -57,6 +57,14 @@
         .instructions li {
             margin: 8px 0;
         }
+        .path-info {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-family: monospace;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -72,6 +80,13 @@
             <p>⏳ 等待Live2D系统初始化...</p>
         </div>
         
+        <div class="path-info">
+            <h4>🔍 路径信息</h4>
+            <p><strong>当前域名:</strong> <span id="current-hostname"></span></p>
+            <p><strong>检测到的基础路径:</strong> <span id="detected-path"></span></p>
+            <p><strong>Live2D路径:</strong> <span id="live2d-path"></span></p>
+        </div>
+        
         <div class="instructions">
             <h4>🎯 测试说明</h4>
             <ul>
@@ -84,7 +99,7 @@
         
         <div class="status">
             <h4>🔧 当前配置</h4>
-            <p>• 使用相对路径加载资源</p>
+            <p>• 自动路径检测（兼容本地和GitHub Pages）</p>
             <p>• 简化版初始化逻辑</p>
             <p>• 基础容器创建</p>
             <p>• 错误处理和日志输出</p>
@@ -92,6 +107,32 @@
     </div>
     
     <!-- Live2D 看板娘系统 -->
-    <script src="./assets/js/live2d/autoload.js"></script>
+    <script>
+        // 动态路径检测
+        function getBasePath() {
+            if (window.location.hostname === 'zzz-sudo.github.io') {
+                return '/TachibanaMarika-Blog';
+            }
+            return '';
+        }
+        
+        const basePath = getBasePath();
+        const live2dPath = basePath + '/assets/js/live2d/autoload.js';
+        
+        // 显示路径信息
+        document.getElementById('current-hostname').textContent = window.location.hostname;
+        document.getElementById('detected-path').textContent = basePath || '(本地开发)';
+        document.getElementById('live2d-path').textContent = live2dPath;
+        
+        // 动态加载Live2D脚本
+        const script = document.createElement('script');
+        script.src = live2dPath;
+        script.onerror = function() {
+            console.error('❌ 无法加载Live2D脚本:', live2dPath);
+            document.querySelector('.status h4').textContent = '❌ 加载失败';
+            document.querySelector('.status p:nth-child(2)').textContent = '❌ Live2D脚本加载失败';
+        };
+        document.head.appendChild(script);
+    </script>
 </body>
 </html> 

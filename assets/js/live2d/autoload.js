@@ -3,8 +3,21 @@
  * 基于 stevenjoezhang/live2d-widget 项目
  */
 
-// 使用相对路径
-const live2d_path = './assets/js/live2d/';
+// 自动检测路径 - 兼容本地开发和GitHub Pages
+function getBasePath() {
+  // 检查是否在GitHub Pages上
+  if (window.location.hostname === 'zzz-sudo.github.io') {
+    return '/TachibanaMarika-Blog';
+  }
+  // 本地开发
+  return '';
+}
+
+const basePath = getBasePath();
+const live2d_path = basePath + '/assets/js/live2d/';
+
+console.log('🎭 检测到基础路径:', basePath);
+console.log('🎭 Live2D路径:', live2d_path);
 
 // 简化的资源加载函数
 function loadExternalResource(url, type) {
@@ -34,19 +47,19 @@ const localModels = [
     "id": 1,
     "name": "alya",
     "message": "Alya - 可爱的毛妹",
-    "paths": ["./assets/2d/alya/Alya.model3.json"]
+    "paths": [basePath + '/assets/2d/alya/Alya.model3.json']
   },
   {
     "id": 2,
     "name": "mihari", 
     "message": "MIHARI - 温柔的女孩",
-    "paths": ["./assets/2d/MIHARI/Mihari_V1.model3.json"]
+    "paths": [basePath + '/assets/2d/MIHARI/Mihari_V1.model3.json']
   },
   {
     "id": 3,
     "name": "rory",
     "message": "Rory - 活泼的少女", 
-    "paths": ["./assets/2d/Rory_VTS/Roxy_V1.model3.json"]
+    "paths": [basePath + '/assets/2d/Rory_VTS/Roxy_V1.model3.json']
   }
 ];
 
