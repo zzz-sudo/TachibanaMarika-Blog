@@ -1,7 +1,7 @@
 <!-- Live2D 三位置板娘 - 左侧布局 -->
-<link rel="stylesheet" type="text/css" href="https://blog-static.cnblogs.com/files/zhangshuhao1116/waifu1.css"/>
-<link rel="stylesheet" type="text/css" href="https://blog-static.cnblogs.com/files/zhangshuhao1116/flat-ui.min.css"/>
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/waifu.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/flat-ui.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 
 <!-- 板娘1 - MIHARI (左侧偏上) -->
 <div class="waifu" id="waifu1" style="left: 20px; top: 100px; z-index: 9999; position: fixed;">
@@ -49,8 +49,8 @@
 </div>
 
 <!-- 引入Live2D脚本 -->
-<script src="https://blog-static.cnblogs.com/files/zhangshuhao1116/live2d.min.js"></script>
-<script src="https://blog-static.cnblogs.com/files/zhangshuhao1116/waifu-tips.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/live2d.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/waifu-tips.js"></script>
 
 <!-- 初始化多个模型 -->
 <script type="text/javascript">
@@ -61,14 +61,14 @@
     // 检查jQuery是否加载
     if (typeof $ === 'undefined') {
       console.error('❌ jQuery未加载，Live2D无法正常工作');
-      showFallbackContent();
+      showAllFallbackContent();
       return;
     }
     
     // 检查Live2D脚本是否加载
     if (typeof Live2DModel === 'undefined' && typeof initModel === 'undefined') {
       console.error('❌ Live2D核心脚本未加载，请检查网络连接');
-      showFallbackContent();
+      showAllFallbackContent();
       return;
     }
     
@@ -90,15 +90,19 @@
       
       console.log('✅ DOM元素检查通过');
       
-      // 尝试初始化板娘1（MIHARI - 偏上）
+        // 尝试初始化板娘1（MIHARI - 偏上）
       try {
         console.log('🎭 正在初始化板娘1 (MIHARI)...');
         if (typeof initModel === 'function') {
+          // 使用默认模型初始化
           initModel("live2d1", "waifu1");
           console.log('✅ 板娘1 (MIHARI) 初始化成功');
+        } else if (typeof initWidget === 'function') {
+          // 尝试使用initWidget
+          initWidget("live2d1", "waifu1");
+          console.log('✅ 板娘1 (MIHARI) 使用initWidget初始化成功');
         } else {
-          console.warn('⚠️ initModel函数不存在，尝试其他方法');
-          // 这里可以添加备用的初始化方法
+          console.warn('⚠️ 没有找到可用的初始化函数');
           showFallbackContent('waifu1', 'MIHARI');
         }
       } catch (error) {
@@ -112,6 +116,9 @@
         if (typeof initModel === 'function') {
           initModel("live2d2", "waifu2");
           console.log('✅ 板娘2 (Rory) 初始化成功');
+        } else if (typeof initWidget === 'function') {
+          initWidget("live2d2", "waifu2");
+          console.log('✅ 板娘2 (Rory) 使用initWidget初始化成功');
         } else {
           showFallbackContent('waifu2', 'Rory');
         }
@@ -126,6 +133,9 @@
         if (typeof initModel === 'function') {
           initModel("live2d3", "waifu3");
           console.log('✅ 板娘3 (Alya) 初始化成功');
+        } else if (typeof initWidget === 'function') {
+          initWidget("live2d3", "waifu3");
+          console.log('✅ 板娘3 (Alya) 使用initWidget初始化成功');
         } else {
           showFallbackContent('waifu3', 'Alya');
         }
@@ -167,7 +177,7 @@
     }
     
     // 全局备用内容显示
-    function showFallbackContent() {
+    function showAllFallbackContent() {
       showFallbackContent('waifu1', 'MIHARI');
       showFallbackContent('waifu2', 'Rory');
       showFallbackContent('waifu3', 'Alya');
@@ -216,10 +226,10 @@
 </script>
 
 <!-- 音乐，只在PC端宽度>1000px时显示 -->
-<link rel="stylesheet" href="https://blog-static.cnblogs.com/files/zhangshuhao1116/APlayer.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
 <div id="player" class="aplayer aplayer-withlist aplayer-fixed" data-id="14177411150" data-server="netease" data-type="playlist" data-order="random" data-fixed="true" data-listfolded="true" data-theme="#2D8CF0"></div>
-<script src="https://blog-static.cnblogs.com/files/zhangshuhao1116/APlayer.min.js"></script>
-<script src="https://blog-static.cnblogs.com/files/zhangshuhao1116/Meting.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2.0.1/dist/Meting.min.js"></script>
 
 <!--自动播放-->
 <script> 
