@@ -1,22 +1,98 @@
-<!-- Live2D -->
+<!-- Live2D 三位置板娘 -->
 <link rel="stylesheet" type="text/css" href="https://blog-static.cnblogs.com/files/zhangshuhao1116/waifu1.css"/>
+<link rel="stylesheet" type="text/css" href="https://blog-static.cnblogs.com/files/zhangshuhao1116/flat-ui.min.css"/>
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 
-<div class="waifu" id="waifu">
-<div class="waifu-tips" style="opacity: 1;"></div>
-<canvas id="live2d" width="280" height="250" class="live2d"></canvas>
-<div class="waifu-tool">
-<span class="fui-home"></span>
-<span class="fui-chat"></span>
-<span class="fui-eye"></span>
-<span class="fui-user"></span>
-<span class="fui-photo"></span>
-<span class="fui-info-circle"></span>
-<span class="fui-cross"></span>
+<!-- 板娘1 - MIHARI (左侧) -->
+<div class="waifu" id="waifu1" style="left: 20px; bottom: 0; z-index: 9999;">
+  <div class="waifu-tips" style="opacity: 1;"></div>
+  <canvas id="live2d1" width="280" height="250" class="live2d"></canvas>
+  <div class="waifu-tool">
+    <span class="fui-home"></span>
+    <span class="fui-chat"></span>
+    <span class="fui-eye"></span>
+    <span class="fui-user"></span>
+    <span class="fui-photo"></span>
+    <span class="fui-info-circle"></span>
+    <span class="fui-cross"></span>
+  </div>
 </div>
+
+<!-- 板娘2 - Rory (中间) -->
+<div class="waifu" id="waifu2" style="left: 320px; bottom: 0; z-index: 9999;">
+  <div class="waifu-tips" style="opacity: 1;"></div>
+  <canvas id="live2d2" width="280" height="250" class="live2d"></canvas>
+  <div class="waifu-tool">
+    <span class="fui-home"></span>
+    <span class="fui-chat"></span>
+    <span class="fui-eye"></span>
+    <span class="fui-user"></span>
+    <span class="fui-photo"></span>
+    <span class="fui-info-circle"></span>
+    <span class="fui-cross"></span>
+  </div>
 </div>
+
+<!-- 板娘3 - Alya (右侧) -->
+<div class="waifu" id="waifu3" style="left: 620px; bottom: 0; z-index: 9999;">
+  <div class="waifu-tips" style="opacity: 1;"></div>
+  <canvas id="live2d3" width="280" height="250" class="live2d"></canvas>
+  <div class="waifu-tool">
+    <span class="fui-home"></span>
+    <span class="fui-chat"></span>
+    <span class="fui-eye"></span>
+    <span class="fui-user"></span>
+    <span class="fui-photo"></span>
+    <span class="fui-info-circle"></span>
+    <span class="fui-cross"></span>
+  </div>
+</div>
+
+<!-- 引入Live2D脚本 -->
 <script src="https://blog-static.cnblogs.com/files/zhangshuhao1116/live2d.min.js"></script>
 <script src="https://blog-static.cnblogs.com/files/zhangshuhao1116/waifu-tips.js"></script>
-<script type="text/javascript">initModel()</script>
 
-<link rel="stylesheet" type="text/css" href="https://blog-static.cnblogs.com/files/zhangshuhao1116/flat-ui.min.css"/>
+<!-- 初始化多个模型 -->
+<script type="text/javascript">
+  // 等待页面加载完成后初始化
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('开始初始化三个Live2D板娘');
+    
+    // 初始化板娘1（MIHARI）
+    try {
+      initModel("live2d1", "waifu1");
+      console.log('板娘1 (MIHARI) 初始化成功');
+    } catch (error) {
+      console.error('板娘1初始化失败:', error);
+    }
+    
+    // 初始化板娘2（Rory）
+    try {
+      initModel("live2d2", "waifu2");
+      console.log('板娘2 (Rory) 初始化成功');
+    } catch (error) {
+      console.error('板娘2初始化失败:', error);
+    }
+    
+    // 初始化板娘3（Alya）
+    try {
+      initModel("live2d3", "waifu3");
+      console.log('板娘3 (Alya) 初始化成功');
+    } catch (error) {
+      console.error('板娘3初始化失败:', error);
+    }
+  });
+</script>
+
+<!-- 网易云音乐插件 -->
+<div style="position: fixed; right: 20px; bottom: 20px; z-index: 10000; background: rgba(255,255,255,0.9); border-radius: 10px; padding: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+  <iframe 
+    frameborder="no" 
+    border="0" 
+    marginwidth="0" 
+    marginheight="0" 
+    width="330" 
+    height="86" 
+    src="https://music.163.com/outchain/player?type=2&id=14177411150&auto=1&height=66">
+  </iframe>
+</div>
