@@ -2,28 +2,37 @@
  * 侧边栏控制器样式 - 实现平滑的动画效果和美观的界面
  */
 
-/* 侧边栏动画效果 */
+/* 侧边栏基础样式 - 确保完全靠左 */
 .sidebar {
-    transition: transform 0.3s ease, margin-left 0.3s ease;
-    will-change: transform;
-    /* 确保侧边栏靠左显示 */
-    position: fixed;
-    left: 0;
-    top: 0;
-    height: 100vh;
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 300px !important;
+    min-width: 300px !important;
+    max-width: 300px !important;
+    height: 100vh !important;
     z-index: 1000;
+    margin: 0 !important;
+    padding: 20px;
+    box-sizing: border-box;
+    transition: transform 0.3s ease;
+    will-change: transform;
+    /* 添加阴影效果，与主内容区域分离 */
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar.collapsed {
     transform: translateX(-100%);
 }
 
-/* 主内容区域动画 */
+/* 主内容区域样式 */
 .main {
     transition: margin-left 0.3s ease;
     /* 确保主内容区域不被侧边栏遮挡 */
-    margin-left: 320px; /* 侧边栏宽度 + 一些间距 */
+    margin-left: 320px !important; /* 侧边栏宽度 + 一些间距 */
     min-height: 100vh;
+    padding-left: 20px;
+    box-sizing: border-box;
 }
 
 /* 侧边栏切换按钮样式 */
@@ -234,26 +243,6 @@ html {
     100% { transform: rotate(360deg); }
 }
 
-/* 侧边栏靠左优化 */
-.sidebar {
-    /* 确保侧边栏完全靠左 */
-    left: 0 !important;
-    margin-left: 0 !important;
-    padding-left: 20px;
-    padding-right: 20px;
-    box-sizing: border-box;
-    /* 添加阴影效果，与主内容区域分离 */
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-}
-
-/* 主内容区域调整 */
-.main {
-    /* 确保主内容区域有足够的左边距 */
-    margin-left: 320px !important;
-    padding-left: 20px;
-    box-sizing: border-box;
-}
-
 /* 响应式设计 - 移动设备 */
 @media (max-width: 768px) {
     .sidebar {
@@ -290,11 +279,4 @@ html {
     text-align: left;
     margin-left: 0;
     padding-left: 0;
-}
-
-/* 确保侧边栏宽度固定 */
-.sidebar {
-    width: 300px;
-    min-width: 300px;
-    max-width: 300px;
 } 
