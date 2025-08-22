@@ -27,104 +27,54 @@
   {% endfor %}
 {% endif %}
 
-<!-- 雪花效果 -->
-<div id="midground" class="wall"></div>
-<div id="foreground" class="wall"></div>
-<div id="top" class="wall"></div>
-
-<!-- 加载动画 start -->
-<div id="loading-box">
-  <div class="loading-left-bg"></div>
-  <div class="loading-right-bg"></div>
-  <div class="spinner-box">
-    <div class="loader">
-      <div class="inner one"></div>
-      <div class="inner two"></div>
-      <div class="inner three"></div>
-    </div>
-    <div class="loading-word">
-      <p class="loading-title" id="loading-title">我的博客</p>
-      <span id="loading-text">Loading...</span>
-    </div>
-  </div>
-</div>
-<!-- 加载动画 end -->
-
-<!-- Live2D 将由JavaScript自动创建 -->
-
-<!-- 网易云音乐播放器已移至 _includes/after-content.html 中，这里不再需要 -->
-
-<!-- Live2D 已移至 _includes/after-content.html 中，这里不再需要 -->
-
-<!-- 测试用的#list元素已移除 -->
-
 <!-- 地址栏图标功能 -->
 <div class="favicon-changer" id="faviconChanger">
     地址栏图标已更改为 touxiang.jpg
 </div>
 
-<!-- 加载动画脚本 -->
+<!-- 地址栏图标更换功能 -->
 <script>
-window.addEventListener(
-  'load',
-  function () {
-    //载入动画
-    $('#loading-box').attr('class', 'loaded')
-    $('#bg').css(
-      'cssText',
-      'transform: scale(1);filter: blur(0px);transition: ease 1.5s;'
-    )
-    $('.cover').css('cssText', 'opacity: 1;transition: ease 1.5s;')
-    $('#section').css(
-      'cssText',
-      'transform: scale(1) !important;opacity: 1 !important;filter: blur(0px) !important'
-    )
-  },
-  false
-)
+document.addEventListener('DOMContentLoaded', function() {
+    // 设置默认图标
+    const defaultFavicon = document.querySelector('link[rel="icon"]') || document.querySelector('link[rel="shortcut icon"]');
+    
+    // 创建新的图标链接
+    const newFavicon = document.createElement('link');
+    newFavicon.rel = 'icon';
+    newFavicon.type = 'image/jpeg';
+    newFavicon.href = '/touxiang.jpg';
+    
+    // 替换图标
+    if (defaultFavicon) {
+        defaultFavicon.remove();
+    }
+    document.head.appendChild(newFavicon);
+    
+    console.log('地址栏图标已更改为 touxiang.jpg');
+    
+    // 显示提示信息
+    const faviconChanger = document.getElementById('faviconChanger');
+    if (faviconChanger) {
+        faviconChanger.classList.add('show');
+        setTimeout(() => {
+            faviconChanger.classList.remove('show');
+        }, 3000);
+    }
+});
 </script>
 
-<!-- 雪花效果脚本 -->
-<script type="text/javascript">
-window.onload = function () {
-    var minSize = 10; //最小字体
-    var maxSize = 40;//最大字体
-    var newOne = 500; //生成雪花间隔
-    var flakColor = "#f5f5f5fa"; //雪花颜色
-    var flak = $("<div></div>").css({position:"absolute","top":"0px"}).html("✽");//定义一个雪花
-    var dhight = $(window).height(); //定义视图高度
-    var dw =$(window).width()-80; //定义视图宽度
-    setInterval(function(){
-    var sizeflak = minSize+Math.random()*maxSize; //产生大小不等的雪花
-    var startLeft = Math.random()*dw; //雪花生成是随机的left值
-    var startOpacity = 0.7+Math.random()*0.3; //随机透明度
-    var endTop= dhight-100; //雪花停止top的位置
-    var endLeft= Math.random()*dw; //雪花停止的left位置
-    var durationfull = 5000+Math.random()*3000; //雪花飘落速度不同
-    flak.clone().appendTo($("body")).css({
-    "left":startLeft ,
-    "opacity":startOpacity,
-    "font-size":sizeflak,
-    "color":flakColor
-    }).animate({
-    "top":endTop,
-    "left":endLeft,
-    "apacity":0.1
-    },durationfull,function(){
-    $(this).remove()
-    });
-    },newOne);
-}
-</script>
-
-<!-- 网易云音乐播放器已在上方添加，这里移除旧的音乐播放器代码 -->
-
-<!-- 社交媒体链接脚本 -->
+<!-- 社交媒体链接和日历功能 -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // 等待侧边栏加载完成
     setTimeout(function() {
-        // 创建社交媒体链接元素
+        const sidebar = document.querySelector('.author__content');
+        if (!sidebar) {
+            console.log('未找到侧边栏');
+            return;
+        }
+        
+        // 添加社交媒体链接
         const socialLinks = document.createElement('div');
         socialLinks.className = 'social-links';
         socialLinks.innerHTML = `
@@ -153,87 +103,64 @@ document.addEventListener('DOMContentLoaded', function() {
                 <span>Bilibili</span>
             </a>
         `;
+        sidebar.appendChild(socialLinks);
+        console.log('社交媒体链接已添加到侧边栏');
         
-        // 将社交媒体链接插入到左侧边栏
-        const sidebar = document.querySelector('.author__content');
-        if (sidebar) {
-            sidebar.appendChild(socialLinks);
-            console.log('社交媒体链接已添加到侧边栏');
-        } else {
-            console.log('未找到侧边栏，社交媒体链接添加失败');
-        }
-    }, 1000); // 等待1秒后执行
-});
-</script>
-
-<!-- 日历功能脚本 -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // 创建日历元素
-    const calendarContainer = document.createElement('div');
-    calendarContainer.className = 'calendar-container';
-    calendarContainer.innerHTML = `
-        <div class="calendar-header">
-            <div class="calendar-title" id="calendarTitle">2025年8月</div>
-            <div class="calendar-nav">
-                <button onclick="previousMonth()">&lt;</button>
-                <button onclick="nextMonth()">&gt;</button>
+        // 添加日历
+        const calendarContainer = document.createElement('div');
+        calendarContainer.className = 'calendar-container';
+        calendarContainer.innerHTML = `
+            <div class="calendar-header">
+                <div class="calendar-title" id="calendarTitle">2025年8月</div>
+                <div class="calendar-nav">
+                    <button onclick="previousMonth()">&lt;</button>
+                    <button onclick="nextMonth()">&gt;</button>
+                </div>
             </div>
-        </div>
-        <div class="calendar-grid" id="calendarGrid">
-            <!-- 日历内容将通过JavaScript动态生成 -->
-        </div>
-    `;
+            <div class="calendar-grid" id="calendarGrid"></div>
+        `;
+        sidebar.appendChild(calendarContainer);
+        console.log('日历已添加到侧边栏');
+        
+        // 初始化日历
+        initCalendar();
+    }, 1000);
     
-    // 等待侧边栏加载完成
-    setTimeout(function() {
-        // 将日历插入到左侧边栏
-        const sidebar = document.querySelector('.author__content');
-        if (sidebar) {
-            sidebar.appendChild(calendarContainer);
-            console.log('日历已添加到侧边栏');
-        } else {
-            console.log('未找到侧边栏，日历添加失败');
-        }
-    }, 1000); // 等待1秒后执行
-    
+    // 日历功能
     let currentDate = new Date();
     let currentMonth = currentDate.getMonth();
     let currentYear = currentDate.getFullYear();
+    
+    function initCalendar() {
+        renderCalendar();
+    }
     
     function renderCalendar() {
         const calendarGrid = document.getElementById('calendarGrid');
         const calendarTitle = document.getElementById('calendarTitle');
         
-        // 检查元素是否存在
-        if (!calendarGrid || !calendarTitle) {
-            console.warn('⚠️ 找不到日历元素，跳过日历渲染');
-            return;
-        }
+        if (!calendarGrid || !calendarTitle) return;
         
-        // 清空日历
         calendarGrid.innerHTML = '';
         
-        // 设置标题
         const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
         calendarTitle.textContent = `${currentYear}年${monthNames[currentMonth]}`;
         
-        // 添加星期标题
-        const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
-        weekdays.forEach(day => {
+        // 星期标题
+        ['日', '一', '二', '三', '四', '五', '六'].forEach(day => {
             const dayElement = document.createElement('div');
             dayElement.className = 'calendar-weekday';
             dayElement.textContent = day;
             calendarGrid.appendChild(dayElement);
         });
         
-        // 获取当月第一天和最后一天
+        // 日期
         const firstDay = new Date(currentYear, currentMonth, 1);
         const lastDay = new Date(currentYear, currentMonth + 1, 0);
         const firstDayOfWeek = firstDay.getDay();
         const lastDate = lastDay.getDate();
         
-        // 添加上个月的日期
+        // 上个月日期
         const prevMonth = new Date(currentYear, currentMonth, 0);
         const prevMonthLastDate = prevMonth.getDate();
         for (let i = firstDayOfWeek - 1; i >= 0; i--) {
@@ -243,13 +170,12 @@ document.addEventListener('DOMContentLoaded', function() {
             calendarGrid.appendChild(dayElement);
         }
         
-        // 添加当月的日期
+        // 当月日期
         for (let day = 1; day <= lastDate; day++) {
             const dayElement = document.createElement('div');
             dayElement.className = 'calendar-day';
             dayElement.textContent = day;
             
-            // 标记今天
             if (day === currentDate.getDate() && currentMonth === currentDate.getMonth() && currentYear === currentDate.getFullYear()) {
                 dayElement.classList.add('today');
             }
@@ -257,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
             calendarGrid.appendChild(dayElement);
         }
         
-        // 添加下个月的日期
+        // 下个月日期
         const remainingDays = 42 - (firstDayOfWeek + lastDate);
         for (let day = 1; day <= remainingDays; day++) {
             const dayElement = document.createElement('div');
@@ -267,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // 上个月
+    // 全局函数
     window.previousMonth = function() {
         currentMonth--;
         if (currentMonth < 0) {
@@ -277,7 +203,6 @@ document.addEventListener('DOMContentLoaded', function() {
         renderCalendar();
     };
     
-    // 下个月
     window.nextMonth = function() {
         currentMonth++;
         if (currentMonth > 11) {
@@ -286,98 +211,5 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         renderCalendar();
     };
-    
-    // 初始化日历
-    renderCalendar();
 });
-</script>
-
-<!-- 地址栏图标更换功能 -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // 设置默认图标
-    const defaultFavicon = document.querySelector('link[rel="icon"]') || document.querySelector('link[rel="shortcut icon"]');
-    
-    // 创建新的图标链接
-    const newFavicon = document.createElement('link');
-    newFavicon.rel = 'icon';
-    newFavicon.type = 'image/jpeg';
-    newFavicon.href = '/touxiang.jpg';
-    
-    // 替换默认图标
-    if (defaultFavicon) {
-        defaultFavicon.remove();
-    }
-    document.head.appendChild(newFavicon);
-    
-    // 显示提示信息
-    const faviconChanger = document.getElementById('faviconChanger');
-    if (faviconChanger) {
-        faviconChanger.classList.add('show');
-        setTimeout(() => {
-            faviconChanger.classList.remove('show');
-        }, 3000);
-    }
-    
-    console.log('地址栏图标已更改为 touxiang.jpg');
-});
-</script>
-
-<!-- 网站动态背景线条跟随鼠标移动 -->
-<script>
-!function(){
-function n(n,e,t){
-return n.getAttribute(e)||t
-}
- 
-function e(n){
-return document.getElementsByTagName(n)
-}
- 
-function t(){
-var t=e("script"),o=t.length,i=t[o-1];
- 
-return{
-l:o,z:n(i,"zIndex",-1),o:n(i,"opacity",3),c:n(i,"color","255,0,0"),n:n(i,"count",160)
-}
-}
- 
-function o(){
-a=m.width=window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth,
-c=m.height=window.innerHeight||document.documentElement.clientHeight||document.body.clientHeight
-}
- 
-function i(){
-r.clearRect(0,0,a,c);
-var n,e,t,o,m,l;
- 
-s.forEach(function(i,x){
-for(i.x+=i.xa,i.y+=i.ya,i.xa*=i.x>a||i.x<0?-1:1,i.ya*=i.y>c||i.y<0?-1:1,r.fillRect(i.x-.5,i.y-.5,1,1),e=x+1;e<u.length;e++)n=u[e],
-null!==n.x&&null!==n.y&&(o=i.x-n.x,m=i.y-n.y,
-l=o*o+m*m,l<n.max&&(n===y&&l>=n.max/2&&(i.x-=.03*o,i.y-=.03*m),
-t=(n.max-l)/n.max,r.beginPath(),r.lineWidth=t/2,r.strokeStyle="rgba("+d.c+","+(t+.2)+")",r.moveTo(i.x,i.y),r.lineTo(n.x,n.y),r.stroke()))
-}),
-x(i)
-}
-var a,c,u,m=document.createElement("canvas"),
-d=t(),l="c_n"+d.l,r=m.getContext("2d"),
-x=window.requestAnimationFrame||window.webkitRequestAnimationFrame||window.mozRequestAnimationFrame||window.oRequestAnimationFrame||window.msRequestAnimationFrame||
- 
-function(n){
-window.setTimeout(n,1e3/45)
-},
- 
-w=Math.random,y={x:null,y:null,max:2e4};m.id=l,m.style.cssText="position:fixed;top:0;left:0;z-index:"+d.z+";opacity:"+d.o,e("body")[0].appendChild(m),o(),window.onresize=o,
-window.onmousemove=function(n){
-n=n||window.event,y.x=n.clientX,y.y=n.clientY
-},
- 
-window.onmouseout=function(){
-y.x=null,y.y=null
-};for(var s=[],f=0;d.n>f;f++){
-var h=w()*a,g=w()*c,v=2*w()-1,p=2*w()-1;s.push({x:h,y:g,xa:v,ya:p,max:6e3})
-}
-u=s.concat([y]),
-setTimeout(function(){i()},100)
-}();
 </script>
