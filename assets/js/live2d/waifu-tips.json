@@ -1,0 +1,76 @@
+{
+  "mouseover": [
+    {
+      "selector": ".title a",
+      "text": ["要看看 {text} 吗？", "点一下看看 {text} 吧~"]
+    },
+    {
+      "selector": ".author a",
+      "text": ["要看看 {text} 吗？", "点一下看看 {text} 吧~"]
+    },
+    {
+      "selector": ".tag a",
+      "text": ["要看看 {text} 吗？", "点一下看看 {text} 吧~"]
+    },
+    {
+      "selector": ".category a",
+      "text": ["要看看 {text} 吗？", "点一下看看 {text} 吧~"]
+    },
+    {
+      "selector": ".social-link",
+      "text": ["要看看 {text} 吗？", "点一下看看 {text} 吧~"]
+    }
+  ],
+  "click": [
+    {
+      "selector": ".title a",
+      "text": ["要看看 {text} 吗？", "点一下看看 {text} 吧~"]
+    },
+    {
+      "selector": ".author a",
+      "text": ["要看看 {text} 吗？", "点一下看看 {text} 吧~"]
+    },
+    {
+      "selector": ".tag a",
+      "text": ["要看看 {text} 吗？", "点一下看看 {text} 吧~"]
+    },
+    {
+      "selector": ".category a",
+      "text": ["要看看 {text} 吗？", "点一下看看 {text} 吧~"]
+    },
+    {
+      "selector": ".social-link",
+      "text": ["要看看 {text} 吗？", "点一下看看 {text} 吧~"]
+    }
+  ],
+  "seasons": [
+    {
+      "date": "01/01",
+      "text": ["新年快乐！", "新的一年开始了~"]
+    },
+    {
+      "date": "02/14",
+      "text": ["情人节快乐！", "今天是个特别的日子~"]
+    },
+    {
+      "date": "03/08",
+      "text": ["妇女节快乐！", "向所有女性致敬~"]
+    },
+    {
+      "date": "05/01",
+      "text": ["劳动节快乐！", "辛苦了~"]
+    },
+    {
+      "date": "06/01",
+      "text": ["儿童节快乐！", "保持童心~"]
+    },
+    {
+      "date": "10/01",
+      "text": ["国庆节快乐！", "祖国生日快乐~"]
+    },
+    {
+      "date": "12/25",
+      "text": ["圣诞节快乐！", "Merry Christmas~"]
+    }
+  ]
+} 

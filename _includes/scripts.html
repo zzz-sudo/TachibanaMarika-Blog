@@ -68,9 +68,9 @@
 </div>
 </div>
 
-<!-- Live2D 脚本 - 使用你提供的配置 -->
-<script src="https://fastly.jsdelivr.net/gh/wwwzsh/live2d@master/live2d.min.js"></script>
-<script src="https://fastly.jsdelivr.net/gh/wwwzsh/live2d@master/waifu-tips.js"></script>
+<!-- Live2D 脚本 - 使用本地文件 -->
+<script src="/assets/js/live2d/live2d.min.js"></script>
+<script src="/assets/js/live2d/waifu-tips.js"></script>
 <script type="text/javascript">
 // Live2D切换功能
 document.addEventListener('DOMContentLoaded', function() {
@@ -92,18 +92,24 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // 确保Live2D正确初始化
-    if (typeof initModel === 'function') {
-        initModel();
-    } else {
-        console.log('等待Live2D脚本加载...');
-        setTimeout(function() {
-            if (typeof initModel === 'function') {
-                initModel();
-            } else {
-                console.log('Live2D脚本加载失败');
-            }
-        }, 2000);
-    }
+if (typeof initWidget === 'function') {
+    initWidget({
+        waifuPath: '/assets/js/live2d/waifu-tips.json',
+        cdnPath: '/assets/js/live2d/'
+    });
+} else {
+    console.log('等待Live2D脚本加载...');
+    setTimeout(function() {
+        if (typeof initWidget === 'function') {
+            initWidget({
+                waifuPath: '/assets/js/live2d/waifu-tips.json',
+                cdnPath: '/assets/js/live2d/'
+            });
+        } else {
+            console.log('Live2D脚本加载失败');
+        }
+    }, 2000);
+}
 });
 </script>
 
