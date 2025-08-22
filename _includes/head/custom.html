@@ -12,6 +12,76 @@
 <link rel="stylesheet" type="text/css" href="https://blog-static.cnblogs.com/files/zhangshuhao1116/waifu1.css"/>
 <link rel="stylesheet" type="text/css" href="https://blog-static.cnblogs.com/files/zhangshuhao1116/flat-ui.min.css"/>
 
+<!-- 自定义鼠标样式及列表样式 -->
+<style type="text/css">
+    #list{
+        margin: 0;
+        padding: 0;
+        width: 125px;
+        text-align: left;
+        cursor: url(https://files.cnblogs.com/files/zhangshuhao1116/AlternateSelect-ezgif.com-resize.gif?t=1716651820&download=true),auto; /* 自定义鼠标样式 */
+        font:13px/30px  '宋体';
+        background-color: #fff;
+        position:fixed;
+        display:none;
+        box-shadow: 0 0 6px #0000FF;
+        border:1px solid #FF0000;
+        border-radius:8px ;
+        z-index:9999999999999999999;
+    }
+    #list li{
+        list-style:none;
+        color:black;
+        font-weight:bold;
+        padding-left:10px;
+    }
+    #list li:hover{
+        background-color: #2daebf;
+        color: white;
+        font-weight:bold;
+        border-radius:8px ;
+    }
+    #favourNum {color:red;font-weight:bold;}
+    #list .icon{width: 1.1em;height: 1.1em;}
+    #menuCommand{border-bottom: 1.5px solid #cacfdc;}
+    #scrollToBottom{border-bottom: 1.5px solid #cacfdc;}
+</style>
+
+<!-- 自定义鼠标样式及列表样式 -->
+<style type="text/css">
+    #list{
+        margin: 0;
+        padding: 0;
+        width: 125px;
+        text-align: left;
+        cursor: url(https://files.cnblogs.com/files/zhangshuhao1116/AlternateSelect-ezgif.com-resize.gif?t=1716651820&download=true),auto; /* 自定义鼠标样式 */
+        font:13px/30px  '宋体';
+        background-color: #fff;
+        position:fixed;
+        display:none;
+        box-shadow: 0 0 6px #0000FF;
+        border:1px solid #FF0000;
+        border-radius:8px ;
+        z-index:9999999999999999999;
+    }
+    #list li{
+        list-style:none;
+        color:black;
+        font-weight:bold;
+        padding-left:10px;
+    }
+    #list li:hover{
+        background-color: #2daebf;
+        color: white;
+        font-weight:bold;
+        border-radius:8px ;
+    }
+    #favourNum {color:red;font-weight:bold;}
+    #list .icon{width: 1.1em;height: 1.1em;}
+    #menuCommand{border-bottom: 1.5px solid #cacfdc;}
+    #scrollToBottom{border-bottom: 1.5px solid #cacfdc;}
+</style>
+
 <!-- 自定义样式 -->
 <style>
 /* 头像样式 */
@@ -107,7 +177,24 @@
     transform: scale(1.1);
 }
 
-/* 鼠标样式 - 使用外部链接 */
+/* 自定义鼠标样式 - 特定元素悬停效果 */
+.author__avatar:hover {
+    cursor: url(https://files.cnblogs.com/files/zhangshuhao1116/AlternateSelect-ezgif.com-resize.gif?t=1716651820&download=true), auto;
+}
+
+.social-link:hover {
+    cursor: url(https://files.cnblogs.com/files/zhangshuhao1116/AlternateSelect-ezgif.com-resize.gif?t=1716651820&download=true), auto;
+}
+
+.calendar-day:hover {
+    cursor: url(https://files.cnblogs.com/files/zhangshuhao1116/AlternateSelect-ezgif.com-resize.gif?t=1716651820&download=true), auto;
+}
+
+.music-btn:hover {
+    cursor: url(https://files.cnblogs.com/files/zhangshuhao1116/AlternateSelect-ezgif.com-resize.gif?t=1716651820&download=true), auto;
+}
+
+/* 默认鼠标样式 */
 body {
     cursor: url(https://blog-static.cnblogs.com/files/zhangshuhao1116/1.ico), auto;
 }
