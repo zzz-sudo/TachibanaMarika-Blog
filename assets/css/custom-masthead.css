@@ -1,6 +1,11 @@
 /*!
- * 自定义Masthead样式 - 隐藏标题和副标题
+ * 自定义Masthead样式 - 完全隐藏顶部导航栏
  */
+
+/* 完全隐藏整个masthead */
+.masthead {
+  display: none !important;
+}
 
 /* 隐藏站点标题 */
 .site-title {
@@ -12,35 +17,172 @@
   display: none !important;
 }
 
-/* 调整masthead布局，移除标题占用的空间 */
-.masthead__menu {
-  justify-content: flex-end;
+/* 调整页面主体，移除masthead占用的空间 */
+body {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
 }
 
-/* 如果没有logo，调整导航菜单的位置 */
-.masthead__menu:not(:has(.site-logo)) .visible-links {
-  margin-left: 0;
+/* 确保主要内容区域从顶部开始 */
+.page__content,
+.entry__content,
+.main-content {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
-/* 确保导航菜单居中显示 */
-.greedy-nav {
-  justify-content: center;
+/* 调整侧边栏位置，如果没有顶部导航 */
+.sidebar {
+  top: 0 !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
-/* 隐藏masthead的背景，使其更透明 */
-.masthead {
-  background: transparent !important;
-  border-bottom: none !important;
+/* 调整作者信息区域位置 */
+.author__content {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
-/* 调整导航链接的样式 */
-.masthead__menu-item a {
-  color: rgba(255, 255, 255, 0.9) !important;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
-  font-weight: 500 !important;
+/* 确保页面内容不会被遮挡 */
+.container {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
 }
 
-.masthead__menu-item a:hover {
-  color: rgba(255, 255, 255, 1) !important;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+/* 调整页面主体容器 */
+.page__inner-wrap {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* 调整文章内容区域 */
+.entry__content {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* 调整侧边栏容器 */
+.sidebar__right {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* 确保所有主要内容区域从顶部开始 */
+.main,
+.content,
+#main-content {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* 调整页面标题区域 */
+.page__title {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* 调整面包屑导航 */
+.breadcrumbs {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* 调整初始内容区域 */
+.initial-content {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* 调整页面包装器 */
+.page__wrapper {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* 调整主要内容区域 */
+#main {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* 调整文章区域 */
+.article {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* 调整页面头部 */
+.page__header {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* 调整页面主体 */
+.page__body {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* 调整侧边栏左侧 */
+.sidebar__left {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* 调整侧边栏右侧 */
+.sidebar__right {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* 调整网格布局 */
+.grid__item {
+  margin-top: 0 !important;
+}
+
+/* 调整卡片布局 */
+.card {
+  margin-top: 0 !important;
+}
+
+/* 调整通知区域 */
+.notice {
+  margin-top: 0 !important;
+}
+
+/* 调整搜索区域 */
+.search-content {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* 调整页脚区域 */
+.page__footer {
+  margin-top: 0 !important;
+}
+
+/* 确保所有可能的顶部间距都被移除 */
+* {
+  margin-top: 0 !important;
+}
+
+/* 但保留必要的垂直间距 */
+p, h1, h2, h3, h4, h5, h6, ul, ol, li, blockquote, pre, table, form {
+  margin-top: 0 !important;
+}
+
+/* 调整列表项之间的间距 */
+li + li {
+  margin-top: 0.5em !important;
+}
+
+/* 调整段落之间的间距 */
+p + p {
+  margin-top: 1em !important;
+}
+
+/* 调整标题之间的间距 */
+h1 + h2, h2 + h3, h3 + h4, h4 + h5, h5 + h6 {
+  margin-top: 0.5em !important;
 } 
