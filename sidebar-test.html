@@ -202,11 +202,18 @@
         body .sidebar .profile,
         html body .sidebar .profile,
         .container .sidebar .profile {
-            margin-left: 80px !important;
-            padding-left: 80px !important;
+            margin-left: 120px !important;
+            padding-left: 120px !important;
             text-align: center !important; /* 确保头像居中 */
             position: relative !important;
             z-index: 1001 !important; /* 确保在装饰元素上方 */
+        }
+        
+        /* 强制头像位置 - 使用transform确保生效 */
+        .sidebar .profile {
+            transform: translateX(120px) !important;
+            margin-left: 0 !important;
+            padding-left: 0 !important;
         }
         
         /* 修复日历被截断的问题 */
