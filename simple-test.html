@@ -12,66 +12,152 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             color: white;
+            position: relative;
         }
+        
+        /* 添加动态背景效果 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('../images/background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            opacity: 0.3;
+            z-index: -2;
+            pointer-events: none;
+        }
+        
         .container {
             max-width: 800px;
             margin: 0 auto;
             text-align: center;
+            position: relative;
+            z-index: 1;
         }
+        
+        /* 改进标题栏样式 */
+        .header-section {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
         h1 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
+            font-size: 3em;
+            margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
+        
         .description {
-            font-size: 1.2em;
-            margin-bottom: 40px;
+            font-size: 1.3em;
+            margin-bottom: 20px;
             line-height: 1.6;
             opacity: 0.9;
+            color: #e8f4fd;
         }
+        
         .status {
-            background: rgba(0,0,0,0.3);
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
-        }
-        .status h4 {
-            margin-top: 0;
-            color: #4CAF50;
-        }
-        .instructions {
-            background: rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.2);
+            backdrop-filter: blur(5px);
             padding: 20px;
             border-radius: 15px;
             margin-top: 20px;
-            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
+        
+        .status h4 {
+            margin-top: 0;
+            color: #4CAF50;
+            font-size: 1.2em;
+        }
+        
+        .instructions {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(5px);
+            padding: 25px;
+            border-radius: 20px;
+            margin-top: 25px;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
         .instructions h4 {
             color: #ffd700;
             margin-top: 0;
+            font-size: 1.3em;
         }
+        
         .instructions ul {
-            margin: 10px 0;
-            padding-left: 20px;
+            margin: 15px 0;
+            padding-left: 25px;
         }
+        
         .instructions li {
-            margin: 8px 0;
+            margin: 12px 0;
+            line-height: 1.6;
         }
+        
         .path-info {
             background: rgba(255,255,255,0.1);
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
-            font-family: monospace;
+            backdrop-filter: blur(5px);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 25px;
+            font-family: 'Consolas', 'Monaco', monospace;
             font-size: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
+        
+        .path-info h4 {
+            color: #00d4ff;
+            margin-top: 0;
+            font-size: 1.2em;
+        }
+        
+        /* 添加动画效果 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .container > div {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        
+        .container > div:nth-child(2) { animation-delay: 0.1s; }
+        .container > div:nth-child(3) { animation-delay: 0.2s; }
+        .container > div:nth-child(4) { animation-delay: 0.3s; }
+        .container > div:nth-child(5) { animation-delay: 0.4s; }
+        .container > div:nth-child(6) { animation-delay: 0.5s; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🎭 Live2D 简化测试页面</h1>
-        <div class="description">
-            这是一个简化版本的Live2D看板娘系统测试页面，用于验证基本功能是否正常。
+        <div class="header-section">
+            <h1>🎭 Live2D 简化测试页面</h1>
+            <div class="description">
+                这是一个简化版本的Live2D看板娘系统测试页面，用于验证基本功能是否正常。
+            </div>
         </div>
         
         <div class="status">
@@ -111,6 +197,15 @@
             <p><strong>背景图片:</strong> <span id="background-path"></span></p>
             <p><strong>图片状态:</strong> <span id="image-status"></span></p>
         </div>
+        
+        <div class="path-info">
+            <h4>👤 头像显示测试</h4>
+            <div style="text-align: center; margin: 20px 0;">
+                <img id="test-avatar" src="" alt="测试头像" style="width: 100px; height: 100px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.3); object-fit: cover;">
+                <p style="margin-top: 10px; font-size: 14px;">头像预览</p>
+            </div>
+            <p><strong>头像状态:</strong> <span id="avatar-status">等待加载...</span></p>
+        </div>
     </div>
     
     <!-- 路径修复器 -->
@@ -143,9 +238,8 @@
         
         // 测试图片路径
         function testImagePaths() {
-            const basePath = getBasePath();
-            const avatarPath = basePath + '/assets/images/touxiang.jpg';
-            const backgroundPath = basePath + '/assets/images/background.jpg';
+            const avatarPath = getBasePath() + '/assets/images/touxiang.jpg';
+            const backgroundPath = getBasePath() + '/assets/images/background.jpg';
             
             document.getElementById('avatar-path').textContent = avatarPath;
             document.getElementById('background-path').textContent = backgroundPath;
@@ -155,10 +249,13 @@
             avatarImg.onload = function() {
                 console.log('✅ 头像图片加载成功:', avatarPath);
                 document.getElementById('image-status').innerHTML = '✅ 头像和背景图片路径正常';
+                document.getElementById('test-avatar').src = avatarPath; // 更新预览图片
+                document.getElementById('avatar-status').textContent = '✅ 头像加载成功';
             };
             avatarImg.onerror = function() {
                 console.error('❌ 头像图片加载失败:', avatarPath);
                 document.getElementById('image-status').innerHTML = '❌ 头像图片路径错误';
+                document.getElementById('avatar-status').textContent = '❌ 头像加载失败';
             };
             avatarImg.src = avatarPath;
             

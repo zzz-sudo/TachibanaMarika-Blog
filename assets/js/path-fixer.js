@@ -108,6 +108,69 @@ function fixCSSBackgroundPaths() {
   }
 }
 
+// 修复头像图片路径
+function fixAvatarImage() {
+  try {
+    // 查找所有头像相关的图片元素
+    const avatarImages = document.querySelectorAll('img[src*="touxiang.jpg"], img[src*="avatar"]');
+    avatarImages.forEach(img => {
+      const oldSrc = img.getAttribute('src');
+      if (oldSrc) {
+        // 检查是否路径重复
+        if (oldSrc.includes('/TachibanaMarika-Blog/TachibanaMarika-Blog/')) {
+          const newSrc = oldSrc.replace('/TachibanaMarika-Blog/TachibanaMarika-Blog/', '/TachibanaMarika-Blog/');
+          img.setAttribute('src', newSrc);
+          console.log('🖼️ 头像图片路径已修复:', oldSrc, '->', newSrc);
+        }
+        // 检查是否缺少基础路径
+        else if (oldSrc.startsWith('/assets/') && !oldSrc.startsWith('/TachibanaMarika-Blog/')) {
+          const newSrc = fixImagePath(oldSrc);
+          img.setAttribute('src', newSrc);
+          console.log('🖼️ 头像图片路径已修复:', oldSrc, '->', newSrc);
+        }
+      }
+    });
+    
+    // 修复CSS中的头像图片路径
+    const styleSheets = document.styleSheets;
+    for (let i = 0; i < styleSheets.length; i++) {
+      try {
+        const rules = styleSheets[i].cssRules || styleSheets[i].rules;
+        if (rules) {
+          for (let j = 0; j < rules.length; j++) {
+            const rule = rules[j];
+            if (rule.style && rule.style.backgroundImage) {
+              const bgImage = rule.style.backgroundImage;
+              if (bgImage.includes('touxiang.jpg')) {
+                const newBgImage = bgImage.replace(
+                  /url\(['"]?([^'"]*touxiang\.jpg)['"]?\)/g,
+                  (match, url) => {
+                    if (url.includes('/TachibanaMarika-Blog/TachibanaMarika-Blog/')) {
+                      return `url('${url.replace('/TachibanaMarika-Blog/TachibanaMarika-Blog/', '/TachibanaMarika-Blog/')}')`;
+                    }
+                    if (url.startsWith('/assets/') && !url.startsWith('/TachibanaMarika-Blog/')) {
+                      return `url('${fixImagePath(url)}')`;
+                    }
+                    return match;
+                  }
+                );
+                rule.style.backgroundImage = newBgImage;
+              }
+            }
+          }
+        }
+      } catch (e) {
+        // 跨域样式表可能无法访问
+        console.log('⚠️ 无法访问样式表:', e);
+      }
+    }
+    
+    console.log('✅ 头像图片路径已修复');
+  } catch (error) {
+    console.error('❌ 修复头像图片路径失败:', error);
+  }
+}
+
 // 修复所有图片路径
 function fixAllImagePaths() {
   try {
@@ -116,6 +179,9 @@ function fixAllImagePaths() {
     
     // 修复CSS背景图片
     fixCSSBackgroundPaths();
+
+    // 修复头像图片
+    fixAvatarImage();
     
     // 修复其他可能的图片路径
     const images = document.querySelectorAll('img[src^="/assets/"]');
@@ -146,6 +212,7 @@ window.PathFixer = {
   getBasePath,
   fixImagePath,
   fixFavicon,
+  fixAvatarImage,
   fixAllImagePaths
 };
 
