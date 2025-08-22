@@ -287,6 +287,6 @@ html {
 
 /* 头像位置调整 - 避免被蓝色三角形装饰元素遮挡 */
 .sidebar .profile {
-    margin-left: 20px !important;
-    padding-left: 20px !important;
+    margin-left: 60px !important;
+    padding-left: 60px !important;
 } 
