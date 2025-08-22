@@ -1,34 +1,36 @@
-<!-- Live2D看板娘系统 - 简洁2D动画版本 -->
-<div id="live2d-container" style="position: fixed; left: 20px; bottom: 20px; z-index: 99999; width: 280px; height: 250px; border-radius: 20px; overflow: hidden; background: rgba(0,0,0,0.1); border: 2px solid rgba(255,255,255,0.2); backdrop-filter: blur(15px); pointer-events: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
-  
-  <!-- Live2D画布 -->
-  <canvas id="live2d-canvas" width="280" height="250" style="width: 100%; height: 100%; display: block; border-radius: 20px;"></canvas>
-  
-  <!-- 模型信息显示 -->
-  <div id="model-info" style="position: absolute; top: 15px; left: 15px; background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(0,0,0,0.6)); color: white; padding: 8px 15px; border-radius: 15px; font-size: 13px; font-weight: 600; opacity: 0.9; z-index: 100000; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(10px);">
-    <span id="current-model">MIHARI</span>
-  </div>
-  
-  <!-- 控制按钮 -->
-  <div id="model-controls" style="position: absolute; top: 15px; right: 15px; display: flex; gap: 8px; z-index: 100000;">
-    <button id="prev-model" class="live2d-btn" style="width: 32px; height: 32px; border: none; border-radius: 50%; background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7)); color: #333; cursor: pointer; font-size: 14px; font-weight: bold; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: all 0.3s ease;">←</button>
-    <button id="next-model" class="live2d-btn" style="width: 32px; height: 32px; border: none; border-radius: 50%; background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7)); color: #333; cursor: pointer; font-size: 14px; font-weight: bold; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: all 0.3s ease;">→</button>
-  </div>
-  
-  <!-- 状态指示器 -->
-  <div id="status-indicator" style="position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.7); color: #00ff88; padding: 6px 12px; border-radius: 12px; font-size: 11px; opacity: 0.8; z-index: 100000; border: 1px solid rgba(0,255,136,0.3);">
-    <span id="status-text">2D动画角色</span>
-  </div>
-  
-  <!-- 装饰性边框 -->
-  <div style="position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; background: linear-gradient(45deg, #00ff88, #00d4aa, #00ff88); border-radius: 20px; z-index: -1; opacity: 0.6; filter: blur(8px);"></div>
+<!-- Live2D看板娘系统 -->
+<link rel="stylesheet" type="text/css" href="https://blog-static.cnblogs.com/files/zhangshuhao1116/waifu1.css"/>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+<div class="waifu" id="waifu">
+<div class="waifu-tips" style="opacity: 1;"></div>
+<canvas id="live2d" width="280" height="250" class="live2d"></canvas>
+<div class="waifu-tool">
+<span class="fui-home"></span>
+<span class="fui-chat"></span>
+<span class="fui-eye"></span>
+<span class="fui-user"></span>
+<span class="fui-photo"></span>
+<span class="fui-info-circle"></span>
+<span class="fui-cross"></span>
+</div>
+</div>
+<script src="https://blog-static.cnblogs.com/files/zhangshuhao1116/live2d.min.js"></script>
+<script src="https://blog-static.cnblogs.com/files/zhangshuhao1116/waifu-tips.js"></script>
+<script type="text/javascript">initModel()</script>
+
+<link rel="stylesheet" type="text/css" href="https://blog-static.cnblogs.com/files/zhangshuhao1116/flat-ui.min.css"/>
+
+<!-- 备用Live2D实现 - 如果第一份源码无法工作 -->
+<div id="backup-live2d" style="display: none; position: fixed; left: 20px; bottom: 20px; z-index: 99999; width: 300px; height: 500px;">
+  <!-- 备用Live2D将在这里显示 -->
 </div>
 
-<!-- 简化的音乐播放器 - 单按钮版本 -->
-<div id="music-player" style="position: fixed; right: 20px; bottom: 20px; z-index: 99999; width: 80px; height: 80px; background: rgba(0,0,0,0.8); border-radius: 50%; box-shadow: 0 8px 25px rgba(0,0,0,0.5); pointer-events: auto; border: 2px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease;">
+<!-- 简化的音乐播放器 - 圆形小控件 -->
+<div id="music-player" style="position: fixed; right: 20px; bottom: 20px; z-index: 99999; width: 60px; height: 60px; background: rgba(0,0,0,0.8); border-radius: 50%; box-shadow: 0 4px 15px rgba(0,0,0,0.5); pointer-events: auto; border: 2px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease;">
   
   <!-- 音乐按钮 -->
-  <button id="music-toggle" style="width: 60px; height: 60px; border: none; border-radius: 50%; background: linear-gradient(145deg, #4CAF50, #45a049); color: white; cursor: pointer; font-size: 24px; font-weight: bold; box-shadow: 0 4px 15px rgba(76,175,80,0.4); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center;">
+  <button id="music-toggle" style="width: 50px; height: 50px; border: none; border-radius: 50%; background: linear-gradient(145deg, #4CAF50, #45a049); color: white; cursor: pointer; font-size: 20px; font-weight: bold; box-shadow: 0 2px 10px rgba(76,175,80,0.4); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center;">
     ▶️
   </button>
   
@@ -40,271 +42,97 @@
 <canvas id="dynamic-bg" style="position: fixed; top: 0; left: 0; z-index: 1; opacity: 0.4; pointer-events: none; width: 100%; height: 100%;"></canvas>
 
 <script>
-// Live2D看板娘系统 - 简洁2D动画版本
-(function() {
-    'use strict';
-    
-    console.log('🎭 开始初始化2D动画角色系统...');
-    
-    // 角色配置
-    const characterConfigs = [
-        {
-            name: 'MIHARI',
-            color: '#ff6b6b',
-            description: '可爱的MIHARI',
-            eyeColor: '#ff4757',
-            mouthStyle: 'smile'
-        },
-        {
-            name: 'Rory',
-            color: '#74b9ff',
-            description: '优雅的Rory',
-            eyeColor: '#0984e3',
-            mouthStyle: 'neutral'
-        },
-        {
-            name: 'Alya',
-            color: '#a29bfe',
-            description: '神秘的Alya',
-            eyeColor: '#6c5ce7',
-            mouthStyle: 'wink'
+// 检查第一份Live2D源码是否正常工作
+function checkLive2DWorking() {
+    // 等待一段时间后检查Live2D是否正常显示
+    setTimeout(() => {
+        const waifu = document.getElementById('waifu');
+        const live2dCanvas = document.getElementById('live2d');
+        
+        // 如果Live2D没有正常显示，启用备用方案
+        if (!waifu || !live2dCanvas || live2dCanvas.width === 0 || live2dCanvas.height === 0) {
+            console.log('第一份Live2D源码无法正常工作，启用备用方案');
+            enableBackupLive2D();
+        } else {
+            console.log('第一份Live2D源码工作正常');
         }
-    ];
+    }, 3000); // 等待3秒检查
+}
+
+// 启用备用Live2D实现
+function enableBackupLive2D() {
+    const waifu = document.getElementById('waifu');
+    const backupLive2d = document.getElementById('backup-live2d');
     
-    let currentCharacterIndex = 0;
-    let autoSwitchInterval;
-    let animationId;
+    if (waifu) {
+        waifu.style.display = 'none';
+    }
     
-    // DOM元素
-    const container = document.getElementById('live2d-container');
-    const canvas = document.getElementById('live2d-canvas');
-    const modelInfo = document.getElementById('current-model');
-    const prevBtn = document.getElementById('prev-model');
-    const nextBtn = document.getElementById('next-model');
-    const statusText = document.getElementById('status-text');
-    
-    // 创建2D动画角色
-    function create2DCharacter(character) {
-        if (!canvas) return;
+    if (backupLive2d) {
+        backupLive2d.style.display = 'block';
         
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-        
-        // 停止之前的动画
-        if (animationId) {
-            cancelAnimationFrame(animationId);
-        }
-        
-        function animate(currentTime) {
-            if (!canvas) return;
-            
-            // 清空画布
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // 绘制背景渐变
-            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            gradient.addColorStop(0, 'rgba(0,0,0,0.1)');
-            gradient.addColorStop(1, 'rgba(0,0,0,0.3)');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // 计算动画参数
-            const time = currentTime * 0.001;
-            const bounce = Math.sin(time * 2) * 5;
-            const scale = 1 + Math.sin(time * 3) * 0.05;
-            const rotation = Math.sin(time * 1.5) * 0.1;
-            const blink = Math.sin(time * 4) > 0.8 ? 0 : 1;
-            
-            // 保存当前状态
-            ctx.save();
-            ctx.translate(canvas.width/2, canvas.height/2 + bounce);
-            ctx.scale(scale, scale);
-            ctx.rotate(rotation);
-            
-            // 绘制角色身体
-            ctx.fillStyle = character.color;
-            ctx.beginPath();
-            ctx.arc(0, -20, 40, 0, 2 * Math.PI);
-            ctx.fill();
-            
-            // 绘制眼睛
-            ctx.fillStyle = '#fff';
-            ctx.beginPath();
-            ctx.arc(-15, -30, 8, 0, 2 * Math.PI);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.arc(15, -30, 8, 0, 2 * Math.PI);
-            ctx.fill();
-            
-            // 绘制瞳孔（带眨眼效果）
-            ctx.fillStyle = character.eyeColor;
-            ctx.beginPath();
-            ctx.arc(-15, -30, 4 * blink, 0, 2 * Math.PI);
-            ctx.fill();
-            ctx.beginPath();
-            ctx.arc(15, -30, 4 * blink, 0, 2 * Math.PI);
-            ctx.fill();
-            
-            // 绘制嘴巴（根据角色风格）
-            ctx.strokeStyle = '#fff';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            
-            if (character.mouthStyle === 'smile') {
-                ctx.arc(0, -15, 15, 0.2 * Math.PI, 0.8 * Math.PI);
-            } else if (character.mouthStyle === 'wink') {
-                ctx.arc(0, -15, 12, 0.3 * Math.PI, 0.7 * Math.PI);
+        // 首先尝试加载本地备用Live2D
+        const localScript = document.createElement('script');
+        localScript.src = '{{ "/assets/js/backup-live2d.js" | relative_url }}';
+        localScript.onload = function() {
+            if (typeof BackupLive2D !== 'undefined') {
+                BackupLive2D.create();
+                console.log('本地备用Live2D初始化成功');
             } else {
-                ctx.arc(0, -15, 10, 0.4 * Math.PI, 0.6 * Math.PI);
+                // 如果本地版本失败，尝试在线版本
+                loadOnlineBackupLive2D();
             }
-            ctx.stroke();
-            
-            // 恢复状态
-            ctx.restore();
-            
-            // 绘制角色名称
-            ctx.fillStyle = '#fff';
-            ctx.font = 'bold 18px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText(character.name, canvas.width/2, canvas.height/2 + 60);
-            
-            // 绘制描述
-            ctx.font = '12px Arial';
-            ctx.fillStyle = 'rgba(255,255,255,0.8)';
-            ctx.fillText(character.description, canvas.width/2, canvas.height/2 + 80);
-            
-            // 绘制状态
-            ctx.font = '10px Arial';
-            ctx.fillStyle = 'rgba(255,255,255,0.6)';
-            ctx.fillText('2D动画角色', canvas.width/2, canvas.height/2 + 100);
-            
-            // 继续动画
-            animationId = requestAnimationFrame(animate);
-        }
-        
-        // 启动动画
-        animationId = requestAnimationFrame(animate);
-        
-        console.log(`✅ 创建2D动画角色: ${character.name}`);
-        return true;
+        };
+        localScript.onerror = function() {
+            console.log('本地备用Live2D加载失败，尝试在线版本');
+            loadOnlineBackupLive2D();
+        };
+        document.head.appendChild(localScript);
     }
-    
-    // 切换到指定角色
-    function switchToCharacter(index) {
-        if (index < 0 || index >= characterConfigs.length) return;
-        
-        currentCharacterIndex = index;
-        const character = characterConfigs[currentCharacterIndex];
-        
-        console.log(`🔄 切换到角色: ${character.name}`);
-        
-        // 更新显示
-        modelInfo.textContent = character.name;
-        modelInfo.style.color = character.color;
-        
-        // 创建角色
-        create2DCharacter(character);
-    }
-    
-    // 下一个角色
-    function nextCharacter() {
-        const nextIndex = (currentCharacterIndex + 1) % characterConfigs.length;
-        switchToCharacter(nextIndex);
-    }
-    
-    // 上一个角色
-    function prevCharacter() {
-        const prevIndex = (currentCharacterIndex - 1 + characterConfigs.length) % characterConfigs.length;
-        switchToCharacter(prevIndex);
-    }
-    
-    // 自动切换
-    function startAutoSwitch() {
-        if (autoSwitchInterval) {
-            clearInterval(autoSwitchInterval);
-        }
-        
-        autoSwitchInterval = setInterval(() => {
-            nextCharacter();
-        }, 120000); // 2分钟切换一次
-        
-        console.log('🔄 启动自动切换，每2分钟切换一次角色');
-    }
-    
-    // 事件监听
-    function setupEventListeners() {
-        // 按钮事件
-        if (prevBtn) {
-            prevBtn.addEventListener('click', prevCharacter);
-        }
-        
-        if (nextBtn) {
-            nextBtn.addEventListener('click', nextCharacter);
-        }
-        
-        // 鼠标悬停效果
-        if (container) {
-            container.addEventListener('mouseenter', function() {
-                this.style.transform = 'scale(1.05)';
-                this.style.transition = 'transform 0.3s ease';
+}
+
+// 加载在线备用Live2D
+function loadOnlineBackupLive2D() {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/L2Dwidget.min.js';
+    script.onload = function() {
+        if (typeof L2Dwidget !== 'undefined') {
+            L2Dwidget.init({
+                "model": {
+                    jsonPath: "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+                    "scale": 1
+                },
+                "display": {
+                    "position": "left",
+                    "width": 300,
+                    "height": 500,
+                    "hOffset": 0,
+                    "vOffset": -20
+                },
+                "mobile": {
+                    "show": true,
+                    "scale": 1
+                },
+                "react": {
+                    "opacityDefault": 1,
+                    "opacityOnHover": 1
+                }
             });
-            
-            container.addEventListener('mouseleave', function() {
-                this.style.transform = 'scale(1)';
-            });
+            console.log('在线备用Live2D初始化成功');
+        } else {
+            console.log('所有备用Live2D方案都失败了');
         }
-        
-        // 按钮悬停效果
-        const live2dBtns = document.querySelectorAll('.live2d-btn');
-        live2dBtns.forEach(btn => {
-            btn.addEventListener('mouseenter', function() {
-                this.style.transform = 'scale(1.1)';
-                this.style.boxShadow = '0 6px 16px rgba(0,0,0,0.4)';
-            });
-            
-            btn.addEventListener('mouseleave', function() {
-                this.style.transform = 'scale(1)';
-                this.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
-            });
-        });
-    }
-    
-    // 初始化函数
-    function init() {
-        console.log('🎭 开始初始化2D动画角色系统...');
-        
-        // 设置事件监听
-        setupEventListeners();
-        
-        // 创建第一个角色
-        switchToCharacter(0);
-        
-        // 启动自动切换
-        startAutoSwitch();
-        
-        console.log('✅ 2D动画角色系统初始化完成');
-    }
-    
-    // 页面加载完成后初始化
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-    } else {
-        init();
-    }
-    
-    // 暴露控制函数到全局
-    window.CharacterControls = {
-        nextCharacter,
-        prevCharacter,
-        switchToCharacter,
-        startAutoSwitch,
-        getCurrentCharacter: () => characterConfigs[currentCharacterIndex],
-        getCharacterCount: () => characterConfigs.length
     };
-    
-    console.log('🎭 2D动画角色系统脚本加载完成');
-    
-})();
+    script.onerror = function() {
+        console.log('在线备用Live2D加载失败');
+    };
+    document.head.appendChild(script);
+}
+
+// 页面加载完成后检查Live2D状态
+document.addEventListener('DOMContentLoaded', function() {
+    checkLive2DWorking();
+});
 
 // 简化的音乐播放器控制
 document.addEventListener('DOMContentLoaded', function() {
@@ -353,12 +181,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // 音乐播放器悬停效果
     musicPlayer.addEventListener('mouseenter', function() {
         this.style.transform = 'scale(1.1)';
-        this.style.boxShadow = '0 12px 30px rgba(0,0,0,0.6)';
+        this.style.boxShadow = '0 8px 20px rgba(0,0,0,0.6)';
     });
     
     musicPlayer.addEventListener('mouseleave', function() {
         this.style.transform = 'scale(1)';
-        this.style.boxShadow = '0 8px 25px rgba(0,0,0,0.5)';
+        this.style.boxShadow = '0 4px 15px rgba(0,0,0,0.5)';
     });
     
     console.log('🎵 音乐播放器初始化完成');
