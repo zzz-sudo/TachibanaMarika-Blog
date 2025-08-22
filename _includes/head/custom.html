@@ -95,6 +95,8 @@
     height: 200px !important;
     display: block !important;
     visibility: visible !important;
+    border-radius: 15px !important;
+    overflow: hidden !important;
 }
 
 .live2d-model-container.left {
@@ -139,6 +141,26 @@
 /* 网易云音乐播放器样式 */
 #player {
     z-index: 10000 !important;
+    display: block !important;
+    visibility: visible !important;
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    width: 300px !important;
+    height: auto !important;
+}
+
+/* 确保播放器在PC端显示 */
+@media (min-width: 1000px) {
+    #player {
+        display: block !important;
+    }
+}
+
+@media (max-width: 999px) {
+    #player {
+        display: none !important;
+    }
 }
 
 .model-preview:hover {

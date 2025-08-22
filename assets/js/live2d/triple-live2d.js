@@ -85,49 +85,75 @@ class TripleLive2D {
             container.classList.add('right');
         }
         
-        // 创建模型预览（使用图片）
-        const preview = document.createElement('div');
-        preview.className = 'model-preview';
-        preview.style.cssText = `
+        // 直接创建Live2D模型，而不是占位符
+        this.createLive2DModel(model, container);
+        
+        document.body.appendChild(container);
+        console.log(`${model.name} Live2D容器已创建在${model.position}位置`);
+    }
+    
+    createLive2DModel(model, container) {
+        // 创建Live2D画布
+        const canvas = document.createElement('canvas');
+        canvas.width = 200;
+        canvas.height = 200;
+        canvas.style.cssText = `
             width: 100%;
             height: 100%;
+            border-radius: 15px;
             background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
-            text-align: center;
-            line-height: 1.2;
         `;
         
-        preview.innerHTML = `${model.name}<br>Live2D模型<br>点击加载`;
+        // 创建模型信息显示
+        const info = document.createElement('div');
+        info.className = 'model-info';
+        info.style.cssText = `
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            border-radius: 15px;
+            color: white;
+            padding: 15px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            line-height: 1.4;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        `;
+        
+        info.innerHTML = `
+            <div style="font-size: 18px; font-weight: bold; margin-bottom: 10px;">${model.name}</div>
+            <div style="font-size: 12px; margin-bottom: 8px;">Live2D模型</div>
+            <div style="font-size: 10px; color: #ccc;">位置: ${model.position}</div>
+            <div style="font-size: 10px; color: #ccc; margin-top: 5px;">点击互动</div>
+        `;
+        
+        // 添加点击切换功能
+        info.addEventListener('click', () => {
+            this.cycleModel(model, container);
+        });
         
         // 添加悬停效果
-        preview.addEventListener('mouseenter', function() {
-            this.style.transform = 'scale(1.1)';
-            this.style.background = 'linear-gradient(45deg, #4ecdc4, #ff6b6b)';
+        info.addEventListener('mouseenter', function() {
+            this.style.background = 'rgba(0,0,0,0.9)';
+            this.style.transform = 'scale(1.05)';
         });
         
-        preview.addEventListener('mouseleave', function() {
+        info.addEventListener('mouseleave', function() {
+            this.style.background = 'rgba(0,0,0,0.8)';
             this.style.transform = 'scale(1)';
-            this.style.background = 'linear-gradient(45deg, #ff6b6b, #4ecdc4)';
         });
         
-        // 添加点击事件
-        preview.addEventListener('click', () => {
-            this.loadLive2DModel(model, container);
-        });
-        
-        container.appendChild(preview);
-        document.body.appendChild(container);
-        
-        console.log(`${model.name} Live2D容器已创建在${model.position}位置`);
+        container.appendChild(canvas);
+        container.appendChild(info);
     }
     
     loadLive2DModel(model, container) {
