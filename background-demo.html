@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>背景图片效果演示</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #333;
+        }
+        
+        /* 背景图片样式 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080"><defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23667eea;stop-opacity:1" /><stop offset="50%" style="stop-color:%23764ba2;stop-opacity:1" /><stop offset="100%" style="stop-color:%23f093fb;stop-opacity:1" /></linearGradient></defs><rect width="100%" height="100%" fill="url(%23grad1)"/><circle cx="200" cy="200" r="100" fill="rgba(255,255,255,0.1)"/><circle cx="1600" cy="300" r="150" fill="rgba(255,255,255,0.1)"/><circle cx="400" cy="800" r="120" fill="rgba(255,255,255,0.1)"/><circle cx="1400" cy="700" r="80" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            opacity: 0.3; /* 30%透明度 */
+            z-index: -2;
+            pointer-events: none;
+        }
+        
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1000;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .demo-section {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        .demo-section h3 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        
+        .transparency-controls {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .transparency-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .transparency-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .transparency-btn.active {
+            background: linear-gradient(45deg, #f093fb, #f5576c);
+        }
+        
+        .info-box {
+            background: rgba(102, 126, 234, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .info-box h4 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        
+        .code-block {
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>🖼️ 背景图片效果演示</h1>
+        
+        <div class="demo-section">
+            <h3>✨ 当前效果</h3>
+            <p>这是一个演示页面，展示了如何添加背景图片并调整透明度。当前背景透明度设置为 <strong>30%</strong>。</p>
+            <p>您可以看到背景图片不会影响文字的可读性，同时为页面增添了美观的视觉效果。</p>
+        </div>
+        
+        <div class="demo-section">
+            <h3>🎨 透明度控制</h3>
+            <p>点击下面的按钮来体验不同的透明度效果：</p>
+            <div class="transparency-controls">
+                <button class="transparency-btn" onclick="setTransparency(0.1)">10% 透明度</button>
+                <button class="transparency-btn active" onclick="setTransparency(0.3)">30% 透明度</button>
+                <button class="transparency-btn" onclick="setTransparency(0.5)">50% 透明度</button>
+                <button class="transparency-btn" onclick="setTransparency(0.7)">70% 透明度</button>
+                <button class="transparency-btn" onclick="setTransparency(1.0)">100% 透明度</button>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <h4>📸 如何添加您的背景图片</h4>
+            <ol>
+                <li>将您的背景图片命名为 <code>background.jpg</code></li>
+                <li>将图片放置在 <code>assets/images/</code> 目录中</li>
+                <li>刷新页面即可看到效果</li>
+            </ol>
+        </div>
+        
+        <div class="demo-section">
+            <h3>🔧 CSS代码示例</h3>
+            <p>以下是添加背景图片的CSS代码：</p>
+            <div class="code-block">
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/assets/images/background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    opacity: 0.3; /* 调整透明度 */
+    z-index: -2;
+    pointer-events: none;
+}
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h3>💡 使用建议</h3>
+            <ul>
+                <li><strong>图片尺寸</strong>: 建议使用 1920x1080 或更高分辨率</li>
+                <li><strong>文件格式</strong>: JPG格式最佳，文件大小建议小于2MB</li>
+                <li><strong>透明度</strong>: 30%透明度通常最适合，不会影响文字阅读</li>
+                <li><strong>响应式</strong>: 背景图片会自动适应不同屏幕尺寸</li>
+            </ul>
+        </div>
+        
+        <div class="info-box">
+            <h4>🎯 当前演示说明</h4>
+            <p>此页面使用了一个SVG渐变背景作为演示。在实际使用中，您需要将 <code>background-image</code> 替换为您的图片路径。</p>
+        </div>
+    </div>
+
+    <script>
+        function setTransparency(opacity) {
+            // 更新背景透明度
+            document.body.style.setProperty('--bg-opacity', opacity);
+            document.body.style.setProperty('--bg-opacity', opacity);
+            
+            // 更新按钮状态
+            document.querySelectorAll('.transparency-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // 更新CSS变量
+            document.documentElement.style.setProperty('--bg-opacity', opacity);
+            
+            // 直接更新伪元素样式（通过CSS变量）
+            const style = document.createElement('style');
+            style.textContent = `
+                body::before {
+                    opacity: ${opacity} !important;
+                }
+            `;
+            
+            // 移除旧的样式
+            const oldStyle = document.getElementById('transparency-style');
+            if (oldStyle) oldStyle.remove();
+            
+            style.id = 'transparency-style';
+            document.head.appendChild(style);
+            
+            // 显示提示
+            const percentage = Math.round(opacity * 100);
+            alert(`背景透明度已设置为 ${percentage}%`);
+        }
+        
+        // 页面加载完成后的提示
+        window.addEventListener('load', function() {
+            console.log('背景图片演示页面已加载完成！');
+            console.log('当前背景透明度: 30%');
+        });
+    </script>
+</body>
+</html> 
