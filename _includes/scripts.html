@@ -50,67 +50,26 @@
 </div>
 <!-- 加载动画 end -->
 
-<!-- Live2D 切换按钮 -->
-<div id="waifu-toggle" style="display: block;">显示看板娘</div>
-
-<!-- Live2D -->
-<div id="waifu">
-    <div id="waifu-tips"></div>
-    <canvas id="live2d" width="800" height="800"></canvas>
-    <div id="waifu-tool">
-        <span class="fa fa-lg fa-comment"></span>
-        <span class="fa fa-lg fa-paper-plane"></span>
-        <span class="fa fa-lg fa-user-circle"></span>
-        <span class="fa fa-lg fa-street-view"></span>
-        <span class="fa fa-lg fa-camera-retro"></span>
-        <span class="fa fa-lg fa-info-circle"></span>
-        <span class="fa fa-lg fa-times"></span>
-    </div>
-</div>
+<!-- Live2D 将由JavaScript自动创建 -->
 
 <!-- Live2D 脚本 - 使用本地文件 -->
 <script src="/assets/js/live2d/live2d.min.js"></script>
 <script src="/assets/js/live2d/waifu-tips.js"></script>
 <script type="text/javascript">
-// Live2D切换功能
+// Live2D初始化
 document.addEventListener('DOMContentLoaded', function() {
-    const waifuToggle = document.getElementById('waifu-toggle');
-    const waifu = document.getElementById('waifu');
-    
-    if (waifuToggle && waifu) {
-        waifuToggle.addEventListener('click', function() {
-            if (waifu.style.bottom === '0px') {
-                waifu.style.bottom = '-1000px';
-                waifuToggle.textContent = '显示看板娘';
-                waifuToggle.classList.remove('waifu-toggle-active');
-                localStorage.setItem('waifu-display', Date.now());
-            } else {
-                waifu.style.bottom = '0px';
-                waifuToggle.textContent = '隐藏看板娘';
-                waifuToggle.classList.add('waifu-toggle-active');
-                localStorage.removeItem('waifu-display');
-            }
-        });
-        
-        // 检查是否应该显示Live2D
-        if (localStorage.getItem('waifu-display') && Date.now() - localStorage.getItem('waifu-display') <= 86400000) {
-            waifuToggle.classList.add('waifu-toggle-active');
-            waifuToggle.textContent = '隐藏看板娘';
+    // 确保Live2D正确初始化
+    setTimeout(function() {
+        if (typeof initWidget === 'function') {
+            initWidget({
+                waifuPath: '/assets/js/live2d/waifu-tips.json',
+                cdnPath: '/assets/js/live2d/'
+            });
+            console.log('Live2D初始化成功');
+        } else {
+            console.log('Live2D脚本加载失败，请检查文件路径');
         }
-    }
-    
-         // 确保Live2D正确初始化
-     setTimeout(function() {
-         if (typeof initWidget === 'function') {
-             initWidget({
-                 waifuPath: '/assets/js/live2d/waifu-tips.json',
-                 cdnPath: '/assets/js/live2d/'
-             });
-             console.log('Live2D初始化成功');
-         } else {
-             console.log('Live2D脚本加载失败，请检查文件路径');
-         }
-     }, 1000);
+    }, 1000);
 });
 </script>
 
@@ -183,31 +142,36 @@ window.onload = function () {
 <!-- 音乐播放器脚本 - 修复自动播放 -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // 创建音乐播放器元素
-    const musicPlayer = document.createElement('div');
-    musicPlayer.className = 'music-player';
-    musicPlayer.innerHTML = `
-        <audio id="bgMusic" loop>
-            <source src="/assets/audio/Summer%20(Nature's%20Crescendo).mp3" type="audio/mpeg">
-        </audio>
-        <div class="music-controls">
-            <button class="music-btn" id="musicBtn" title="播放/暂停">
-                <i class="fas fa-play"></i>
-            </button>
-            <div class="music-info">
-                <div>Summer</div>
-                <div style="font-size: 10px; color: #999;">Nature's Crescendo</div>
+    // 等待侧边栏加载完成
+    setTimeout(function() {
+        // 创建音乐播放器元素
+        const musicPlayer = document.createElement('div');
+        musicPlayer.className = 'music-player';
+        musicPlayer.innerHTML = `
+            <audio id="bgMusic" loop>
+                <source src="/assets/audio/Summer%20(Nature's%20Crescendo).mp3" type="audio/mpeg">
+            </audio>
+            <div class="music-controls">
+                <button class="music-btn" id="musicBtn" title="播放/暂停">
+                    <i class="fas fa-play"></i>
+                </button>
+                <div class="music-info">
+                    <div>Summer</div>
+                    <div style="font-size: 10px; color: #999;">Nature's Crescendo</div>
+                </div>
             </div>
-        </div>
-    `;
-    
-    // 将音乐播放器插入到左侧边栏
-    const sidebar = document.querySelector('.author__content');
-    if (sidebar) {
-        sidebar.appendChild(musicPlayer);
-    }
-    
-    const musicBtn = document.getElementById('musicBtn');
+        `;
+        
+                // 将音乐播放器插入到左侧边栏
+        const sidebar = document.querySelector('.author__content');
+        if (sidebar) {
+            sidebar.appendChild(musicPlayer);
+            console.log('音乐播放器已添加到侧边栏');
+        } else {
+            console.log('未找到侧边栏，音乐播放器添加失败');
+        }
+        
+        const musicBtn = document.getElementById('musicBtn');
     const bgMusic = document.getElementById('bgMusic');
     const musicIcon = musicBtn.querySelector('i');
     
@@ -281,47 +245,54 @@ document.addEventListener('DOMContentLoaded', function() {
     bgMusic.addEventListener('ended', function() {
         bgMusic.play();
     });
+    }, 1000); // 等待1秒后执行
 });
 </script>
 
 <!-- 社交媒体链接脚本 -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // 创建社交媒体链接元素
-    const socialLinks = document.createElement('div');
-    socialLinks.className = 'social-links';
-    socialLinks.innerHTML = `
-        <a href="https://gitee.com/explore" class="social-link" target="_blank">
-            <i class="fab fa-git-alt"></i>
-            <span>Gitee</span>
-        </a>
-        <a href="https://github.com/zzz-sudo/" class="social-link" target="_blank">
-            <i class="fab fa-github"></i>
-            <span>GitHub</span>
-        </a>
-        <a href="http://wpa.qq.com/msgrd?v=3&uin=2364200290&site=qq&menu=yes" class="social-link" target="_blank">
-            <i class="fab fa-qq"></i>
-            <span>QQ</span>
-        </a>
-        <a href="https://t.me/xxx" class="social-link" target="_blank">
-            <i class="fab fa-telegram"></i>
-            <span>Telegram</span>
-        </a>
-        <a href="https://mp.weixin.qq.com/s/voNUF5iV1tghQvlRCEkpzg" class="social-link" target="_blank">
-            <i class="fab fa-weixin"></i>
-            <span>微信公众号</span>
-        </a>
-        <a href="https://www.bilibili.com/video/BV1dD4y1M748/?spm_id_from=333.1387.homepage.video_card.click" class="social-link" target="_blank">
-            <i class="fab fa-bilibili"></i>
-            <span>Bilibili</span>
-        </a>
-    `;
-    
-    // 将社交媒体链接插入到左侧边栏
-    const sidebar = document.querySelector('.author__content');
-    if (sidebar) {
-        sidebar.appendChild(socialLinks);
-    }
+    // 等待侧边栏加载完成
+    setTimeout(function() {
+        // 创建社交媒体链接元素
+        const socialLinks = document.createElement('div');
+        socialLinks.className = 'social-links';
+        socialLinks.innerHTML = `
+            <a href="https://gitee.com/explore" class="social-link" target="_blank">
+                <i class="fab fa-git-alt"></i>
+                <span>Gitee</span>
+            </a>
+            <a href="https://github.com/zzz-sudo/" class="social-link" target="_blank">
+                <i class="fab fa-github"></i>
+                <span>GitHub</span>
+            </a>
+            <a href="http://wpa.qq.com/msgrd?v=3&uin=2364200290&site=qq&menu=yes" class="social-link" target="_blank">
+                <i class="fab fa-qq"></i>
+                <span>QQ</span>
+            </a>
+            <a href="https://t.me/xxx" class="social-link" target="_blank">
+                <i class="fab fa-telegram"></i>
+                <span>Telegram</span>
+            </a>
+            <a href="https://mp.weixin.qq.com/s/voNUF5iV1tghQvlRCEkpzg" class="social-link" target="_blank">
+                <i class="fab fa-weixin"></i>
+                <span>微信公众号</span>
+            </a>
+            <a href="https://www.bilibili.com/video/BV1dD4y1M748/?spm_id_from=333.1387.homepage.video_card.click" class="social-link" target="_blank">
+                <i class="fab fa-bilibili"></i>
+                <span>Bilibili</span>
+            </a>
+        `;
+        
+        // 将社交媒体链接插入到左侧边栏
+        const sidebar = document.querySelector('.author__content');
+        if (sidebar) {
+            sidebar.appendChild(socialLinks);
+            console.log('社交媒体链接已添加到侧边栏');
+        } else {
+            console.log('未找到侧边栏，社交媒体链接添加失败');
+        }
+    }, 1000); // 等待1秒后执行
 });
 </script>
 
@@ -344,11 +315,17 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     `;
     
-    // 将日历插入到左侧边栏
-    const sidebar = document.querySelector('.author__content');
-    if (sidebar) {
-        sidebar.appendChild(calendarContainer);
-    }
+    // 等待侧边栏加载完成
+    setTimeout(function() {
+        // 将日历插入到左侧边栏
+        const sidebar = document.querySelector('.author__content');
+        if (sidebar) {
+            sidebar.appendChild(calendarContainer);
+            console.log('日历已添加到侧边栏');
+        } else {
+            console.log('未找到侧边栏，日历添加失败');
+        }
+    }, 1000); // 等待1秒后执行
     
     let currentDate = new Date();
     let currentMonth = currentDate.getMonth();
