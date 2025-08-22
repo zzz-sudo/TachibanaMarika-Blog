@@ -1,4 +1,4 @@
-<!-- Live2D看板娘系统 - 稳定可靠版本 -->
+<!-- Live2D看板娘系统 - 最终修复版本 -->
 <div id="live2d-container" style="position: fixed; left: 20px; bottom: 20px; z-index: 99999; width: 280px; height: 250px; border-radius: 20px; overflow: hidden; background: rgba(0,0,0,0.1); border: 2px solid rgba(255,255,255,0.2); backdrop-filter: blur(15px); pointer-events: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
   
   <!-- Live2D画布容器 -->
@@ -30,13 +30,13 @@
 <script src="https://cdn.jsdelivr.net/npm/live2d-widget@3.1.4/lib/L2Dwidget.min.js"></script>
 
 <script>
-// Live2D看板娘系统 - 修复版本
+// Live2D看板娘系统 - 最终修复版本
 (function() {
     'use strict';
     
     console.log('🎭 开始初始化Live2D系统...');
     
-    // 模型配置 - 使用正确的路径
+    // 模型配置 - 使用经过验证的可用路径
     const modelConfigs = [
         {
             name: 'MIHARI',
@@ -123,8 +123,52 @@
         ctx.fillText('Live2D模型加载中...', canvas.width/2, canvas.height/2 + 80);
     }
     
+    // 测试模型路径是否可用
+    async function testModelPath(path) {
+        try {
+            const response = await fetch(path, { method: 'HEAD' });
+            return response.ok;
+        } catch (error) {
+            console.log(`❌ 路径测试失败: ${path}`, error);
+            return false;
+        }
+    }
+    
+    // 查找可用的模型路径
+    async function findAvailableModel(modelConfig) {
+        console.log(`🔍 查找可用路径: ${modelConfig.name}`);
+        
+        // 备用路径列表
+        const alternativePaths = [
+            // 主要路径
+            modelConfig.path,
+            // 备用路径1
+            `https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/assets/${modelConfig.name.toLowerCase()}/${modelConfig.name.toLowerCase()}.model.json`,
+            // 备用路径2
+            `https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/assets/${modelConfig.name.toLowerCase()}/model.json`,
+            // 备用路径3 - 使用不同的CDN
+            `https://unpkg.com/live2d-widget@latest/assets/${modelConfig.name.toLowerCase()}/${modelConfig.name.toLowerCase()}.model.json`,
+            // 备用路径4 - 使用jsdelivr的特定版本
+            `https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@3.1.4/assets/${modelConfig.name.toLowerCase()}/${modelConfig.name.toLowerCase()}.model.json`
+        ];
+        
+        // 测试每个路径
+        for (let i = 0; i < alternativePaths.length; i++) {
+            const path = alternativePaths[i];
+            console.log(`🔍 测试路径 ${i + 1}: ${path}`);
+            
+            if (await testModelPath(path)) {
+                console.log(`✅ 找到可用路径: ${path}`);
+                return path;
+            }
+        }
+        
+        console.log(`❌ 所有路径都不可用: ${modelConfig.name}`);
+        return null;
+    }
+    
     // 初始化Live2D模型
-    function initLive2DModel(modelConfig) {
+    async function initLive2DModel(modelConfig) {
         if (!checkLive2DLibrary()) {
             console.log('⏳ Live2D库未就绪，绘制占位符');
             drawPlaceholder(modelConfig);
@@ -149,10 +193,23 @@
                 canvas.style.display = 'block';
             }
             
-            // 使用正确的L2Dwidget API
-            L2Dwidget.init({
+            // 查找可用的模型路径
+            const availablePath = await findAvailableModel(modelConfig);
+            if (!availablePath) {
+                console.log(`❌ 模型 ${modelConfig.name} 没有可用路径`);
+                statusText.textContent = `无可用路径: ${modelConfig.name}`;
+                statusText.style.color = '#ff6b6b';
+                drawPlaceholder(modelConfig);
+                return false;
+            }
+            
+            // 更新模型配置
+            modelConfig.path = availablePath;
+            
+            // 使用L2Dwidget加载模型
+            const widget = await L2Dwidget.init({
                 model: {
-                    jsonPath: modelConfig.path,
+                    jsonPath: availablePath,
                     scale: 1.0
                 },
                 display: {
@@ -171,19 +228,21 @@
                 dialog: {
                     enable: false
                 }
-            }).then(function(widget) {
-                console.log(`✅ 模型 ${modelConfig.name} 加载成功`);
-                currentWidget = widget;
-                statusText.textContent = `${modelConfig.name} 已就绪`;
-                statusText.style.color = '#00ff88';
-                isInitialized = true;
-                
-                // 隐藏占位符
-                if (canvas) {
-                    canvas.style.display = 'none';
-                }
-                
-                // 调整widget位置到我们的容器内
+            });
+            
+            console.log(`✅ 模型 ${modelConfig.name} 加载成功`);
+            currentWidget = widget;
+            statusText.textContent = `${modelConfig.name} 已就绪`;
+            statusText.style.color = '#00ff88';
+            isInitialized = true;
+            
+            // 隐藏占位符
+            if (canvas) {
+                canvas.style.display = 'none';
+            }
+            
+            // 调整widget位置到我们的容器内
+            setTimeout(() => {
                 const widgetElement = document.querySelector('#live2d-widget');
                 if (widgetElement) {
                     widgetElement.style.position = 'absolute';
@@ -199,53 +258,17 @@
                         canvasContainer.appendChild(widgetElement);
                     }
                 }
-                
-            }).catch(function(error) {
-                console.error(`❌ 模型 ${modelConfig.name} 加载失败:`, error);
-                statusText.textContent = `加载失败: ${modelConfig.name}`;
-                statusText.style.color = '#ff6b6b';
-                drawPlaceholder(modelConfig);
-                
-                // 尝试备用模型路径
-                tryAlternativeModel(modelConfig);
-            });
+            }, 100);
             
             return true;
+            
         } catch (error) {
             console.error(`❌ 初始化Live2D模型失败:`, error);
-            statusText.textContent = '初始化失败';
+            statusText.textContent = `加载失败: ${modelConfig.name}`;
             statusText.style.color = '#ff6b6b';
             drawPlaceholder(modelConfig);
             return false;
         }
-    }
-    
-    // 尝试备用模型路径
-    function tryAlternativeModel(modelConfig) {
-        console.log(`🔄 尝试备用模型路径: ${modelConfig.name}`);
-        
-        // 备用路径列表
-        const alternativePaths = [
-            `https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/assets/${modelConfig.name.toLowerCase()}/${modelConfig.name.toLowerCase()}.model.json`,
-            `https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/assets/${modelConfig.name.toLowerCase()}/model.json`,
-            `https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/assets/${modelConfig.name.toLowerCase()}.model.json`
-        ];
-        
-        // 测试备用路径
-        alternativePaths.forEach((path, index) => {
-            fetch(path, { method: 'HEAD' })
-                .then(response => {
-                    if (response.ok) {
-                        console.log(`✅ 找到备用路径: ${path}`);
-                        modelConfig.path = path;
-                        // 重新尝试加载
-                        setTimeout(() => initLive2DModel(modelConfig), 1000);
-                    }
-                })
-                .catch(err => {
-                    console.log(`❌ 备用路径 ${index + 1} 失败: ${path}`);
-                });
-        });
     }
     
     // 切换到指定模型
