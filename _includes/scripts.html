@@ -50,6 +50,9 @@
 </div>
 <!-- 加载动画 end -->
 
+<!-- Live2D 切换按钮 -->
+<div id="waifu-toggle">显示看板娘</div>
+
 <!-- Live2D -->
 <div class="waifu" id="waifu">
 <div class="waifu-tips" style="opacity: 1;"></div>
@@ -69,8 +72,26 @@
 <script src="https://fastly.jsdelivr.net/gh/wwwzsh/live2d@master/live2d.min.js"></script>
 <script src="https://fastly.jsdelivr.net/gh/wwwzsh/live2d@master/waifu-tips.js"></script>
 <script type="text/javascript">
-// 确保Live2D正确初始化
+// Live2D切换功能
 document.addEventListener('DOMContentLoaded', function() {
+    const waifuToggle = document.getElementById('waifu-toggle');
+    const waifu = document.getElementById('waifu');
+    
+    if (waifuToggle && waifu) {
+        waifuToggle.addEventListener('click', function() {
+            if (waifu.style.bottom === '0px') {
+                waifu.style.bottom = '-1000px';
+                waifuToggle.textContent = '显示看板娘';
+                waifuToggle.classList.remove('waifu-toggle-active');
+            } else {
+                waifu.style.bottom = '0px';
+                waifuToggle.textContent = '隐藏看板娘';
+                waifuToggle.classList.add('waifu-toggle-active');
+            }
+        });
+    }
+    
+    // 确保Live2D正确初始化
     if (typeof initModel === 'function') {
         initModel();
     } else {
@@ -160,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function() {
     musicPlayer.className = 'music-player';
     musicPlayer.innerHTML = `
         <audio id="bgMusic" loop>
-            <source src="/assets/audio/Summer (Nature's Crescendo).mp3" type="audio/mpeg">
+            <source src="/assets/audio/Summer%20(Nature's%20Crescendo).mp3" type="audio/mpeg">
         </audio>
         <div class="music-controls">
             <button class="music-btn" id="musicBtn" title="播放/暂停">
