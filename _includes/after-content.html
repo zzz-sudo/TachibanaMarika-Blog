@@ -30,13 +30,13 @@
 <script src="https://cdn.jsdelivr.net/npm/live2d-widget@3.1.4/lib/L2Dwidget.min.js"></script>
 
 <script>
-// Live2D看板娘系统 - 稳定可靠版本
+// Live2D看板娘系统 - 修复版本
 (function() {
     'use strict';
     
     console.log('🎭 开始初始化Live2D系统...');
     
-    // 模型配置
+    // 模型配置 - 使用正确的路径
     const modelConfigs = [
         {
             name: 'MIHARI',
@@ -61,19 +61,20 @@
     let currentModelIndex = 0;
     let autoSwitchInterval;
     let isInitialized = false;
+    let currentWidget = null;
     
     // DOM元素
     const container = document.getElementById('live2d-container');
     const canvas = document.getElementById('live2d-canvas');
     const modelInfo = document.getElementById('current-model');
     const prevBtn = document.getElementById('prev-model');
-    const nextBtn = document.getElementById('model-controls');
+    const nextBtn = document.getElementById('next-model');
     const statusIndicator = document.getElementById('status-indicator');
     const statusText = document.getElementById('status-text');
     
     // 检查Live2D库是否加载
     function checkLive2DLibrary() {
-        if (typeof L2Dwidget !== 'undefined') {
+        if (typeof L2Dwidget !== 'undefined' && L2Dwidget.init) {
             console.log('✅ Live2D库加载成功');
             return true;
         } else {
@@ -114,12 +115,12 @@
         // 绘制描述
         ctx.font = '12px Arial';
         ctx.fillStyle = 'rgba(255,255,255,0.8)';
-        ctx.fillText(model.description, canvas.width/2, canvas.height/2 + 40);
+        ctx.fillText(model.description, canvas.width/2, canvas.height/2 + 60);
         
         // 绘制状态
         ctx.font = '10px Arial';
         ctx.fillStyle = 'rgba(255,255,255,0.6)';
-        ctx.fillText('Live2D模型加载中...', canvas.width/2, canvas.height/2 + 60);
+        ctx.fillText('Live2D模型加载中...', canvas.width/2, canvas.height/2 + 80);
     }
     
     // 初始化Live2D模型
@@ -134,7 +135,21 @@
             console.log(`🎭 正在加载模型: ${modelConfig.name}`);
             statusText.textContent = `加载中: ${modelConfig.name}`;
             
-            // 使用L2Dwidget加载模型
+            // 先销毁之前的widget
+            if (currentWidget && currentWidget.destroy) {
+                try {
+                    currentWidget.destroy();
+                } catch (e) {
+                    console.log('清理之前的widget时出错:', e);
+                }
+            }
+            
+            // 显示画布作为占位符
+            if (canvas) {
+                canvas.style.display = 'block';
+            }
+            
+            // 使用正确的L2Dwidget API
             L2Dwidget.init({
                 model: {
                     jsonPath: modelConfig.path,
@@ -152,9 +167,13 @@
                 react: {
                     opacityDefault: 1.0,
                     opacityOnHover: 1.0
+                },
+                dialog: {
+                    enable: false
                 }
-            }).then(() => {
+            }).then(function(widget) {
                 console.log(`✅ 模型 ${modelConfig.name} 加载成功`);
+                currentWidget = widget;
                 statusText.textContent = `${modelConfig.name} 已就绪`;
                 statusText.style.color = '#00ff88';
                 isInitialized = true;
@@ -163,11 +182,32 @@
                 if (canvas) {
                     canvas.style.display = 'none';
                 }
-            }).catch(error => {
+                
+                // 调整widget位置到我们的容器内
+                const widgetElement = document.querySelector('#live2d-widget');
+                if (widgetElement) {
+                    widgetElement.style.position = 'absolute';
+                    widgetElement.style.left = '0';
+                    widgetElement.style.top = '0';
+                    widgetElement.style.width = '100%';
+                    widgetElement.style.height = '100%';
+                    widgetElement.style.zIndex = '1000';
+                    
+                    // 将widget移动到我们的容器内
+                    const canvasContainer = document.getElementById('live2d-canvas-container');
+                    if (canvasContainer) {
+                        canvasContainer.appendChild(widgetElement);
+                    }
+                }
+                
+            }).catch(function(error) {
                 console.error(`❌ 模型 ${modelConfig.name} 加载失败:`, error);
                 statusText.textContent = `加载失败: ${modelConfig.name}`;
                 statusText.style.color = '#ff6b6b';
                 drawPlaceholder(modelConfig);
+                
+                // 尝试备用模型路径
+                tryAlternativeModel(modelConfig);
             });
             
             return true;
@@ -178,6 +218,34 @@
             drawPlaceholder(modelConfig);
             return false;
         }
+    }
+    
+    // 尝试备用模型路径
+    function tryAlternativeModel(modelConfig) {
+        console.log(`🔄 尝试备用模型路径: ${modelConfig.name}`);
+        
+        // 备用路径列表
+        const alternativePaths = [
+            `https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/assets/${modelConfig.name.toLowerCase()}/${modelConfig.name.toLowerCase()}.model.json`,
+            `https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/assets/${modelConfig.name.toLowerCase()}/model.json`,
+            `https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/assets/${modelConfig.name.toLowerCase()}.model.json`
+        ];
+        
+        // 测试备用路径
+        alternativePaths.forEach((path, index) => {
+            fetch(path, { method: 'HEAD' })
+                .then(response => {
+                    if (response.ok) {
+                        console.log(`✅ 找到备用路径: ${path}`);
+                        modelConfig.path = path;
+                        // 重新尝试加载
+                        setTimeout(() => initLive2DModel(modelConfig), 1000);
+                    }
+                })
+                .catch(err => {
+                    console.log(`❌ 备用路径 ${index + 1} 失败: ${path}`);
+                });
+        });
     }
     
     // 切换到指定模型
@@ -192,11 +260,6 @@
         // 更新显示
         modelInfo.textContent = modelConfig.name;
         modelInfo.style.color = modelConfig.color;
-        
-        // 显示画布
-        if (canvas) {
-            canvas.style.display = 'block';
-        }
         
         // 初始化模型
         initLive2DModel(modelConfig);
