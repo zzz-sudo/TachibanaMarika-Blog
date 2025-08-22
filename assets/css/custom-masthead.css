@@ -1,0 +1,46 @@
+/*!
+ * 自定义Masthead样式 - 隐藏标题和副标题
+ */
+
+/* 隐藏站点标题 */
+.site-title {
+  display: none !important;
+}
+
+/* 隐藏站点副标题 */
+.site-subtitle {
+  display: none !important;
+}
+
+/* 调整masthead布局，移除标题占用的空间 */
+.masthead__menu {
+  justify-content: flex-end;
+}
+
+/* 如果没有logo，调整导航菜单的位置 */
+.masthead__menu:not(:has(.site-logo)) .visible-links {
+  margin-left: 0;
+}
+
+/* 确保导航菜单居中显示 */
+.greedy-nav {
+  justify-content: center;
+}
+
+/* 隐藏masthead的背景，使其更透明 */
+.masthead {
+  background: transparent !important;
+  border-bottom: none !important;
+}
+
+/* 调整导航链接的样式 */
+.masthead__menu-item a {
+  color: rgba(255, 255, 255, 0.9) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+  font-weight: 500 !important;
+}
+
+.masthead__menu-item a:hover {
+  color: rgba(255, 255, 255, 1) !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4) !important;
+} 

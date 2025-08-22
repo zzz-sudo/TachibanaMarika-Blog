@@ -17,9 +17,9 @@ minimal_mistakes_skin    : "default" # "air", "aqua", "contrast", "dark", "dirt"
 # Site Settings
 locale                   : "zh-CN"
 rtl                      : # true, false (default) # turns direction of the page into right to left for RTL languages
-title                    : "我的博客"
+title                    : "" # 移除博客标题
 title_separator          : "-"
-subtitle                 : "分享技术与生活"
+subtitle                 : "" # 移除副标题
 name                     : "TachibanaMarika"
 description              : "TachibanaMarika的博客网站"
 url                      : "https://zzz-sudo.github.io" # 请替换为你的GitHub用户名
@@ -27,7 +27,7 @@ baseurl                  : "/TachibanaMarika-Blog" # 请替换为你的仓库名
 repository               : "zzz-sudo/TachibanaMarika-Blog" # 请替换为你的GitHub用户名和仓库名
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
 logo                     : # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
-masthead_title           : # overrides the website title displayed in the masthead, use " " for no title
+masthead_title           : " " # overrides the website title displayed in the masthead, use " " for no title
 breadcrumbs              : true # true, false (default)
 words_per_minute         : 200
 enable_copy_code_button  : true # true, false (default)
