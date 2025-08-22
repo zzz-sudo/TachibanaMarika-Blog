@@ -51,21 +51,21 @@
 <!-- 加载动画 end -->
 
 <!-- Live2D 切换按钮 -->
-<div id="waifu-toggle">显示看板娘</div>
+<div id="waifu-toggle" style="display: block;">显示看板娘</div>
 
 <!-- Live2D -->
-<div class="waifu" id="waifu">
-<div class="waifu-tips" style="opacity: 1;"></div>
-<canvas id="live2d" width="280" height="250" class="live2d"></canvas>
-<div class="waifu-tool">
-<span class="fui-home"></span>
-<span class="fui-chat"></span>
-<span class="fui-eye"></span>
-<span class="fui-user"></span>
-<span class="fui-photo"></span>
-<span class="fui-info-circle"></span>
-<span class="fui-cross"></span>
-</div>
+<div id="waifu">
+    <div id="waifu-tips"></div>
+    <canvas id="live2d" width="800" height="800"></canvas>
+    <div id="waifu-tool">
+        <span class="fa fa-lg fa-comment"></span>
+        <span class="fa fa-lg fa-paper-plane"></span>
+        <span class="fa fa-lg fa-user-circle"></span>
+        <span class="fa fa-lg fa-street-view"></span>
+        <span class="fa fa-lg fa-camera-retro"></span>
+        <span class="fa fa-lg fa-info-circle"></span>
+        <span class="fa fa-lg fa-times"></span>
+    </div>
 </div>
 
 <!-- Live2D 脚本 - 使用本地文件 -->
@@ -83,33 +83,34 @@ document.addEventListener('DOMContentLoaded', function() {
                 waifu.style.bottom = '-1000px';
                 waifuToggle.textContent = '显示看板娘';
                 waifuToggle.classList.remove('waifu-toggle-active');
+                localStorage.setItem('waifu-display', Date.now());
             } else {
                 waifu.style.bottom = '0px';
                 waifuToggle.textContent = '隐藏看板娘';
                 waifuToggle.classList.add('waifu-toggle-active');
+                localStorage.removeItem('waifu-display');
             }
         });
+        
+        // 检查是否应该显示Live2D
+        if (localStorage.getItem('waifu-display') && Date.now() - localStorage.getItem('waifu-display') <= 86400000) {
+            waifuToggle.classList.add('waifu-toggle-active');
+            waifuToggle.textContent = '隐藏看板娘';
+        }
     }
     
-    // 确保Live2D正确初始化
-if (typeof initWidget === 'function') {
-    initWidget({
-        waifuPath: '/assets/js/live2d/waifu-tips.json',
-        cdnPath: '/assets/js/live2d/'
-    });
-} else {
-    console.log('等待Live2D脚本加载...');
-    setTimeout(function() {
-        if (typeof initWidget === 'function') {
-            initWidget({
-                waifuPath: '/assets/js/live2d/waifu-tips.json',
-                cdnPath: '/assets/js/live2d/'
-            });
-        } else {
-            console.log('Live2D脚本加载失败');
-        }
-    }, 2000);
-}
+         // 确保Live2D正确初始化
+     setTimeout(function() {
+         if (typeof initWidget === 'function') {
+             initWidget({
+                 waifuPath: '/assets/js/live2d/waifu-tips.json',
+                 cdnPath: '/assets/js/live2d/'
+             });
+             console.log('Live2D初始化成功');
+         } else {
+             console.log('Live2D脚本加载失败，请检查文件路径');
+         }
+     }, 1000);
 });
 </script>
 
