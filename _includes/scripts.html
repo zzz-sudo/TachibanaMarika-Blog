@@ -77,37 +77,36 @@ function isaplay(){
 <!-- 三位置Live2D实现 -->
 <script src="/assets/js/live2d/triple-live2d.js"></script>
 <script type="text/javascript">
-// Live2D初始化
+// Live2D初始化 - 简化版本，避免冲突
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM加载完成，开始初始化Live2D');
     
-    // 确保Live2D正确初始化
+    // 等待页面完全加载后初始化
     setTimeout(function() {
         console.log('开始创建三位置Live2D模型');
         
-        // 直接创建三位置Live2D模型
-        if (typeof TripleLive2D === 'function') {
-            console.log('TripleLive2D类已找到，开始创建');
-            new TripleLive2D();
-            console.log('三位置Live2D模型创建成功');
-        } else {
-            console.log('TripleLive2D类未找到，尝试备用方案');
-            createBackupLive2D();
+        // 检查是否已经存在Live2D模型
+        const existingModels = document.querySelectorAll('.live2d-model-container');
+        if (existingModels.length > 0) {
+            console.log('Live2D模型已存在，跳过重复创建');
+            return;
         }
         
-        // 同时尝试初始化原有的Live2D
-        if (typeof initWidget === 'function') {
-            initWidget({
-                waifuPath: '/assets/js/live2d/waifu-tips.json',
-                cdnPath: '/assets/js/live2d/',
-                apiPath: '/assets/js/live2d/',
-                modelList: '/assets/js/live2d/model_list.json'
-            });
-            console.log('原有Live2D初始化成功');
+        // 创建三位置Live2D模型
+        if (typeof TripleLive2D === 'function') {
+            console.log('TripleLive2D类已找到，开始创建');
+            try {
+                new TripleLive2D();
+                console.log('三位置Live2D模型创建成功');
+            } catch (error) {
+                console.error('创建Live2D模型时出错:', error);
+                createBackupLive2D();
+            }
         } else {
-            console.log('initWidget函数未找到');
+            console.log('TripleLive2D类未找到，使用备用方案');
+            createBackupLive2D();
         }
-    }, 2000); // 减少等待时间
+    }, 1000); // 减少等待时间
 });
 
 // 备用Live2D创建函数

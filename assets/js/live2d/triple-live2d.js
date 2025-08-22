@@ -232,9 +232,4 @@ class TripleLive2D {
     }
 }
 
-// 初始化三位置Live2D
-document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(() => {
-        new TripleLive2D();
-    }, 2000);
-}); 
+// 注意：这个类由 _includes/scripts.html 中的脚本调用，不要在这里重复初始化
