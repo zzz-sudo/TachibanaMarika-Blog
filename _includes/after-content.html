@@ -58,28 +58,96 @@
   document.addEventListener('DOMContentLoaded', function() {
     console.log('开始初始化三个Live2D板娘');
     
-    // 初始化板娘1（MIHARI）
-    try {
-      initModel("live2d1", "waifu1");
-      console.log('板娘1 (MIHARI) 初始化成功');
-    } catch (error) {
-      console.error('板娘1初始化失败:', error);
+    // 检查必要的函数和元素
+    if (typeof initModel === 'undefined') {
+      console.error('initModel函数未定义，请检查waifu-tips.js是否正确加载');
+      // 显示备用内容
+      showFallbackContent();
+      return;
     }
     
-    // 初始化板娘2（Rory）
-    try {
-      initModel("live2d2", "waifu2");
-      console.log('板娘2 (Rory) 初始化成功');
-    } catch (error) {
-      console.error('板娘2初始化失败:', error);
+    // 延迟初始化，确保页面完全加载
+    setTimeout(function() {
+      console.log('开始初始化Live2D模型...');
+      
+      // 初始化板娘1（MIHARI - 偏上）
+      try {
+        console.log('正在初始化板娘1 (MIHARI)...');
+        const waifu1 = document.getElementById('waifu1');
+        if (waifu1) {
+          initModel("live2d1", "waifu1");
+          console.log('板娘1 (MIHARI) 初始化成功');
+        } else {
+          console.error('找不到waifu1元素');
+        }
+      } catch (error) {
+        console.error('板娘1初始化失败:', error);
+        showFallbackContent('waifu1', 'MIHARI');
+      }
+      
+      // 初始化板娘2（Rory - 中间）
+      try {
+        console.log('正在初始化板娘2 (Rory)...');
+        const waifu2 = document.getElementById('waifu2');
+        if (waifu2) {
+          initModel("live2d2", "waifu2");
+          console.log('板娘2 (Rory) 初始化成功');
+        } else {
+          console.error('找不到waifu2元素');
+        }
+      } catch (error) {
+        console.error('板娘2初始化失败:', error);
+        showFallbackContent('waifu2', 'Rory');
+      }
+      
+      // 初始化板娘3（Alya - 偏下）
+      try {
+        console.log('正在初始化板娘3 (Alya)...');
+        const waifu3 = document.getElementById('waifu3');
+        if (waifu3) {
+          initModel("live2d3", "waifu3");
+          console.log('板娘3 (Alya) 初始化成功');
+        } else {
+          console.error('找不到waifu3元素');
+        }
+      } catch (error) {
+        console.error('板娘3初始化失败:', error);
+        showFallbackContent('waifu3', 'Alya');
+      }
+    }, 3000); // 延迟3秒初始化
+    
+    // 备用内容显示函数
+    function showFallbackContent(elementId, name) {
+      const element = document.getElementById(elementId);
+      if (element) {
+        element.innerHTML = `
+          <div style="
+            background: linear-gradient(135deg, rgba(0,0,0,0.9), rgba(100,100,100,0.8));
+            color: white;
+            padding: 30px 20px;
+            border-radius: 15px;
+            text-align: center;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(255,255,255,0.3);
+          ">
+            <div style="font-size: 24px; margin-bottom: 10px;">🎭</div>
+            <div style="font-size: 18px; font-weight: bold; margin-bottom: 5px;">${name}</div>
+            <div style="font-size: 12px; opacity: 0.8;">Live2D模型</div>
+            <div style="font-size: 10px; opacity: 0.6; margin-top: 10px;">加载中...</div>
+          </div>
+        `;
+      }
     }
     
-    // 初始化板娘3（Alya）
-    try {
-      initModel("live2d3", "waifu3");
-      console.log('板娘3 (Alya) 初始化成功');
-    } catch (error) {
-      console.error('板娘3初始化失败:', error);
+    // 全局备用内容显示
+    function showFallbackContent() {
+      showFallbackContent('waifu1', 'MIHARI');
+      showFallbackContent('waifu2', 'Rory');
+      showFallbackContent('waifu3', 'Alya');
     }
   });
 </script>

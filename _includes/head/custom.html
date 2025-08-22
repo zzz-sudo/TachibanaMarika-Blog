@@ -72,48 +72,97 @@
 }
 
 /* Live2D 样式 - 修复显示问题 */
-#waifu {
+.waifu {
     position: fixed !important;
-    right: 0 !important;
-    bottom: 0 !important;
+    left: 20px !important;
     z-index: 9999 !important;
-    width: 280px !important;
-    height: 250px !important;
-    pointer-events: none;
+    pointer-events: auto !important;
     display: block !important;
     visibility: visible !important;
-}
-
-/* 三位置Live2D容器样式 */
-.live2d-model-container {
-    position: fixed !important;
-    bottom: 20px !important;
-    z-index: 9999 !important;
-    pointer-events: auto !important; /* 允许鼠标交互 */
-    transition: all 0.3s ease !important;
     width: 200px !important;
-    height: 200px !important;
-    display: block !important;
-    visibility: visible !important;
+    height: 180px !important;
     border-radius: 15px !important;
     overflow: hidden !important;
+    background: rgba(0,0,0,0.1) !important;
+    border: 2px solid rgba(255,255,255,0.2) !important;
+    backdrop-filter: blur(10px) !important;
 }
 
-.live2d-model-container.left {
-    left: 20px !important;
+/* 三个板娘的具体位置 */
+#waifu1 {
+    top: 100px !important;
 }
 
-.live2d-model-container.center {
-    left: 50% !important;
-    transform: translateX(-50%) !important;
+#waifu2 {
+    top: 50% !important;
+    transform: translateY(-50%) !important;
 }
 
-.live2d-model-container.right {
-    right: 20px !important;
+#waifu3 {
+    bottom: 100px !important;
 }
 
-.live2d-model-container:hover {
-    transform: translateY(-5px) !important; /* 悬停效果 */
+/* Live2D Canvas样式 */
+.live2d {
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+}
+
+/* 板娘提示样式 */
+.waifu-tips {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: rgba(0,0,0,0.7) !important;
+    color: white !important;
+    text-align: center !important;
+    padding: 20px !important;
+    box-sizing: border-box !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    opacity: 0 !important;
+    transition: opacity 0.3s !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.waifu-tips:hover {
+    opacity: 1 !important;
+}
+
+/* 板娘工具按钮样式 */
+.waifu-tool {
+    position: absolute !important;
+    top: 10px !important;
+    right: 10px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 5px !important;
+}
+
+.waifu-tool span {
+    width: 25px !important;
+    height: 25px !important;
+    background: rgba(255,255,255,0.8) !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    font-size: 12px !important;
+    color: #333 !important;
+    transition: all 0.3s !important;
+}
+
+.waifu-tool span:hover {
+    background: rgba(255,255,255,1) !important;
+    transform: scale(1.1) !important;
 }
 
 .model-preview {
