@@ -13,12 +13,11 @@ function getBasePath() {
   return '';
 }
 
-const basePath = getBasePath();
-console.log('🔧 路径修复器 - 检测到基础路径:', basePath);
+console.log('🔧 路径修复器 - 检测到基础路径:', getBasePath());
 
 // 修复图片路径
 function fixImagePath(relativePath) {
-  return basePath + relativePath;
+  return getBasePath() + relativePath;
 }
 
 // 修复头像图标路径
@@ -111,22 +110,34 @@ function fixCSSBackgroundPaths() {
 // 修复头像图片路径
 function fixAvatarImage() {
   try {
+    console.log('🔧 开始修复头像图片路径...');
+    
     // 查找所有头像相关的图片元素
     const avatarImages = document.querySelectorAll('img[src*="touxiang.jpg"], img[src*="avatar"]');
-    avatarImages.forEach(img => {
+    console.log('🔍 找到头像图片元素数量:', avatarImages.length);
+    
+    avatarImages.forEach((img, index) => {
       const oldSrc = img.getAttribute('src');
       if (oldSrc) {
+        console.log(`🔍 检查头像图片 ${index + 1}:`, oldSrc);
+        
         // 检查是否路径重复
         if (oldSrc.includes('/TachibanaMarika-Blog/TachibanaMarika-Blog/')) {
           const newSrc = oldSrc.replace('/TachibanaMarika-Blog/TachibanaMarika-Blog/', '/TachibanaMarika-Blog/');
           img.setAttribute('src', newSrc);
-          console.log('🖼️ 头像图片路径已修复:', oldSrc, '->', newSrc);
+          console.log('🖼️ 头像图片路径重复已修复:', oldSrc, '->', newSrc);
         }
         // 检查是否缺少基础路径
         else if (oldSrc.startsWith('/assets/') && !oldSrc.startsWith('/TachibanaMarika-Blog/')) {
           const newSrc = fixImagePath(oldSrc);
           img.setAttribute('src', newSrc);
           console.log('🖼️ 头像图片路径已修复:', oldSrc, '->', newSrc);
+        }
+        // 检查是否为空或无效路径
+        else if (!oldSrc || oldSrc === '') {
+          const newSrc = fixImagePath('/assets/images/touxiang.jpg');
+          img.setAttribute('src', newSrc);
+          console.log('🖼️ 头像图片空路径已修复: ->', newSrc);
         }
       }
     });
@@ -155,6 +166,7 @@ function fixAvatarImage() {
                   }
                 );
                 rule.style.backgroundImage = newBgImage;
+                console.log('🎨 CSS头像背景图片路径已修复');
               }
             }
           }
@@ -165,7 +177,21 @@ function fixAvatarImage() {
       }
     }
     
-    console.log('✅ 头像图片路径已修复');
+    // 强制刷新所有头像图片
+    setTimeout(() => {
+      avatarImages.forEach((img, index) => {
+        const currentSrc = img.getAttribute('src');
+        if (currentSrc && currentSrc.includes('touxiang.jpg')) {
+          // 添加时间戳强制刷新
+          const timestamp = new Date().getTime();
+          const newSrc = currentSrc + (currentSrc.includes('?') ? '&' : '?') + '_t=' + timestamp;
+          img.setAttribute('src', newSrc);
+          console.log(`🔄 头像图片 ${index + 1} 已强制刷新:`, newSrc);
+        }
+      });
+    }, 100);
+    
+    console.log('✅ 头像图片路径修复完成');
   } catch (error) {
     console.error('❌ 修复头像图片路径失败:', error);
   }

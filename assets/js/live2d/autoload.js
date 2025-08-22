@@ -13,11 +13,13 @@ function getBasePath() {
   return '';
 }
 
-const basePath = getBasePath();
-const live2d_path = basePath + '/assets/js/live2d/';
+// 获取Live2D路径
+function getLive2DPath() {
+  return getBasePath() + '/assets/js/live2d/';
+}
 
-console.log('🎭 检测到基础路径:', basePath);
-console.log('🎭 Live2D路径:', live2d_path);
+console.log('🎭 检测到基础路径:', getBasePath());
+console.log('🎭 Live2D路径:', getLive2DPath());
 
 // 简化的资源加载函数
 function loadExternalResource(url, type) {
@@ -47,19 +49,19 @@ const localModels = [
     "id": 1,
     "name": "alya",
     "message": "Alya - 可爱的毛妹",
-    "paths": [basePath + '/assets/2d/alya/Alya.model3.json']
+    "paths": [getBasePath() + '/assets/2d/alya/Alya.model3.json']
   },
   {
     "id": 2,
     "name": "mihari", 
     "message": "MIHARI - 温柔的女孩",
-    "paths": [basePath + '/assets/2d/MIHARI/Mihari_V1.model3.json']
+    "paths": [getBasePath() + '/assets/2d/MIHARI/Mihari_V1.model3.json']
   },
   {
     "id": 3,
     "name": "rory",
     "message": "Rory - 活泼的少女", 
-    "paths": [basePath + '/assets/2d/Rory_VTS/Roxy_V1.model3.json']
+    "paths": [getBasePath() + '/assets/2d/Rory_VTS/Roxy_V1.model3.json']
   }
 ];
 
@@ -69,14 +71,14 @@ async function initLive2D() {
     console.log('🎭 开始初始化Live2D看板娘系统...');
     
     // 加载CSS样式
-    await loadExternalResource(live2d_path + 'waifu.css', 'css');
+    await loadExternalResource(getLive2DPath() + 'waifu.css', 'css');
     console.log('✅ CSS样式加载完成');
     
     // 创建看板娘容器
     createWaifuContainer();
     
     // 加载Live2D引擎
-    await loadExternalResource(live2d_path + 'live2d.min.js', 'js');
+    await loadExternalResource(getLive2DPath() + 'live2d.min.js', 'js');
     console.log('✅ Live2D引擎加载完成');
     
     // 初始化模型
