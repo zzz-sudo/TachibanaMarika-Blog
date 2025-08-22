@@ -68,7 +68,30 @@
 <!-- Live2D 脚本 - 使用你提供的配置 -->
 <script src="https://fastly.jsdelivr.net/gh/wwwzsh/live2d@master/live2d.min.js"></script>
 <script src="https://fastly.jsdelivr.net/gh/wwwzsh/live2d@master/waifu-tips.js"></script>
-<script type="text/javascript">initModel()</script>
+<script type="text/javascript">
+// 确保Live2D正确初始化
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof initModel === 'function') {
+        initModel();
+    } else {
+        console.log('等待Live2D脚本加载...');
+        setTimeout(function() {
+            if (typeof initModel === 'function') {
+                initModel();
+            } else {
+                console.log('Live2D脚本加载失败');
+            }
+        }, 2000);
+    }
+});
+</script>
+
+<!-- 测试用的#list元素 -->
+<div id="list" style="display: block; top: 100px; left: 100px;">
+    <li>测试项目1</li>
+    <li>测试项目2</li>
+    <li>测试项目3</li>
+</div>
 
 <!-- 地址栏图标功能 -->
 <div class="favicon-changer" id="faviconChanger">
