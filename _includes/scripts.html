@@ -138,33 +138,47 @@ setTimeout(function(){i()},100)
 
 <!-- 地址栏图标更换功能 -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // 设置默认图标
-    const defaultFavicon = document.querySelector('link[rel="icon"]') || document.querySelector('link[rel="shortcut icon"]');
-    
-    // 创建新的图标链接
-    const newFavicon = document.createElement('link');
-    newFavicon.rel = 'icon';
-    newFavicon.type = 'image/jpeg';
-    newFavicon.href = '/assets/images/touxiang.jpg';
-    
-    // 替换图标
-    if (defaultFavicon) {
-        defaultFavicon.remove();
-    }
-    document.head.appendChild(newFavicon);
-    
-    console.log('地址栏图标已更改为 touxiang.jpg');
-    
-    // 显示提示信息
-    const faviconChanger = document.getElementById('faviconChanger');
-    if (faviconChanger) {
-        faviconChanger.classList.add('show');
-        setTimeout(() => {
-            faviconChanger.classList.remove('show');
-        }, 3000);
-    }
-});
+// 动态路径检测 - 兼容本地开发和GitHub Pages
+function getBasePath() {
+  // 检查是否在GitHub Pages上
+  if (window.location.hostname === 'zzz-sudo.github.io') {
+    return '/TachibanaMarika-Blog';
+  }
+  // 本地开发
+  return '';
+}
+
+const basePath = getBasePath();
+console.log('🔧 检测到基础路径:', basePath);
+
+// 修复图片路径
+function fixImagePath(relativePath) {
+  return basePath + relativePath;
+}
+
+// 修复头像图标路径
+function fixFavicon() {
+  const newFavicon = document.createElement('link');
+  newFavicon.rel = 'icon';
+  newFavicon.type = 'image/jpeg';
+  newFavicon.href = fixImagePath('/assets/images/touxiang.jpg');
+  
+  // 替换图标
+  const existingFavicon = document.querySelector('link[rel="icon"]');
+  if (existingFavicon) {
+    existingFavicon.remove();
+  }
+  document.head.appendChild(newFavicon);
+  
+  console.log('地址栏图标已更改为 touxiang.jpg');
+}
+
+// 页面加载完成后修复图标
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', fixFavicon);
+} else {
+  fixFavicon();
+}
 </script>
 
 <!-- 社交媒体链接和日历功能 -->
