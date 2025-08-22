@@ -169,14 +169,12 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- 日历功能脚本 -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🔄 开始初始化日历功能...');
-    
     // 创建日历元素
     const calendarContainer = document.createElement('div');
     calendarContainer.className = 'calendar-container';
     calendarContainer.innerHTML = `
         <div class="calendar-header">
-            <div class="calendar-title" id="calendarTitle">2025年1月</div>
+            <div class="calendar-title" id="calendarTitle">2025年8月</div>
             <div class="calendar-nav">
                 <button onclick="previousMonth()">&lt;</button>
                 <button onclick="nextMonth()">&gt;</button>
@@ -187,62 +185,23 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     `;
     
-    // 使用更可靠的侧边栏检测方法
-    function findSidebar() {
-        // 尝试多种选择器
-        const selectors = [
-            '.author__content',
-            '.sidebar',
-            '.page__sidebar',
-            '[class*="sidebar"]',
-            '[class*="author"]'
-        ];
-        
-        for (const selector of selectors) {
-            const element = document.querySelector(selector);
-            if (element) {
-                console.log(`✅ 找到侧边栏: ${selector}`);
-                return element;
-            }
-        }
-        
-        // 如果都找不到，尝试查找包含作者信息的元素
-        const authorElements = document.querySelectorAll('[class*="author"], [class*="profile"], [class*="bio"]');
-        if (authorElements.length > 0) {
-            console.log('✅ 找到作者相关元素，使用第一个');
-            return authorElements[0];
-        }
-        
-        console.warn('⚠️ 找不到合适的侧边栏，尝试添加到body末尾');
-        return document.body;
-    }
-    
-    // 等待页面完全加载后添加日历
-    function addCalendar() {
-        const sidebar = findSidebar();
+    // 等待侧边栏加载完成
+    setTimeout(function() {
+        // 将日历插入到左侧边栏
+        const sidebar = document.querySelector('.author__content');
         if (sidebar) {
             sidebar.appendChild(calendarContainer);
-            console.log('✅ 日历已添加到侧边栏');
-            
-            // 立即初始化日历
-            setTimeout(() => {
-                renderCalendar();
-            }, 100);
+            console.log('日历已添加到侧边栏');
         } else {
-            console.error('❌ 无法找到侧边栏，日历添加失败');
+            console.log('未找到侧边栏，日历添加失败');
         }
-    }
-    
-    // 延迟添加日历，确保页面结构完全加载
-    setTimeout(addCalendar, 1500);
+    }, 1000); // 等待1秒后执行
     
     let currentDate = new Date();
     let currentMonth = currentDate.getMonth();
     let currentYear = currentDate.getFullYear();
     
     function renderCalendar() {
-        console.log('🔄 开始渲染日历...');
-        
         const calendarGrid = document.getElementById('calendarGrid');
         const calendarTitle = document.getElementById('calendarTitle');
         
@@ -251,8 +210,6 @@ document.addEventListener('DOMContentLoaded', function() {
             console.warn('⚠️ 找不到日历元素，跳过日历渲染');
             return;
         }
-        
-        console.log('✅ 日历元素检查通过，开始渲染...');
         
         // 清空日历
         calendarGrid.innerHTML = '';
@@ -308,8 +265,6 @@ document.addEventListener('DOMContentLoaded', function() {
             dayElement.textContent = day;
             calendarGrid.appendChild(dayElement);
         }
-        
-        console.log('✅ 日历渲染完成');
     }
     
     // 上个月
@@ -332,7 +287,8 @@ document.addEventListener('DOMContentLoaded', function() {
         renderCalendar();
     };
     
-    console.log('✅ 日历功能脚本加载完成');
+    // 初始化日历
+    renderCalendar();
 });
 </script>
 

@@ -71,10 +71,11 @@
     color: #333;
 }
 
-/* Live2D 样式 - 修复显示问题 */
-.waifu {
+/* Live2D 样式 - 简化版 */
+#live2d-container {
     position: fixed !important;
     left: 20px !important;
+    bottom: 20px !important;
     z-index: 9999 !important;
     pointer-events: auto !important;
     display: block !important;
@@ -86,595 +87,82 @@
     background: rgba(0,0,0,0.1) !important;
     border: 2px solid rgba(255,255,255,0.2) !important;
     backdrop-filter: blur(10px) !important;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3) !important;
+    transition: transform 0.3s ease !important;
 }
 
-/* 三个板娘的具体位置 - 确保不重叠 */
-#waifu1 {
-    top: 100px !important;
-    left: 20px !important;
+#live2d-container:hover {
+    transform: scale(1.05) !important;
 }
 
-#waifu2 {
-    top: 50% !important;
-    left: 20px !important;
-    transform: translateY(-50%) !important;
-}
-
-#waifu3 {
-    bottom: 100px !important;
-    left: 20px !important;
-}
-
-/* Live2D Canvas样式 - 确保完全显示 */
-.live2d {
+#live2d-canvas {
     width: 100% !important;
     height: 100% !important;
     display: block !important;
     visibility: visible !important;
     pointer-events: auto !important;
-    border-radius: 15px !important;
 }
 
-/* 板娘提示样式 - 悬停时显示 */
-.waifu-tips {
+#model-info {
     position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
+    top: 10px !important;
+    left: 10px !important;
     background: rgba(0,0,0,0.7) !important;
     color: white !important;
-    text-align: center !important;
-    padding: 20px !important;
-    box-sizing: border-box !important;
-    font-size: 14px !important;
-    line-height: 1.5 !important;
-    opacity: 0 !important;
+    padding: 5px 10px !important;
+    border-radius: 10px !important;
+    font-size: 12px !important;
+    opacity: 0.8 !important;
     transition: opacity 0.3s !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    border-radius: 15px !important;
 }
 
-.waifu-tips:hover {
-    opacity: 1 !important;
-}
-
-/* 板娘工具按钮样式 */
-.waifu-tool {
+#model-controls {
     position: absolute !important;
     top: 10px !important;
     right: 10px !important;
     display: flex !important;
-    flex-direction: column !important;
     gap: 5px !important;
-    z-index: 10000 !important;
 }
 
-.waifu-tool span {
+#model-controls button {
     width: 25px !important;
     height: 25px !important;
-    background: rgba(255,255,255,0.8) !important;
+    border: none !important;
     border-radius: 50% !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+    background: rgba(255,255,255,0.8) !important;
+    color: #333 !important;
     cursor: pointer !important;
     font-size: 12px !important;
-    color: #333 !important;
     transition: all 0.3s !important;
 }
 
-.waifu-tool span:hover {
+#model-controls button:hover {
     background: rgba(255,255,255,1) !important;
     transform: scale(1.1) !important;
 }
 
-/* 确保Live2D模型信息正确显示 */
-.model-info {
-    width: 100% !important;
-    height: 100% !important;
-    background: rgba(0,0,0,0.9) !important;
-    border-radius: 15px !important;
-    color: white !important;
+/* 音乐播放器样式 - 简化版 */
+#music-player {
+    z-index: 10000 !important;
+    display: block !important;
+    visibility: visible !important;
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    width: 320px !important;
+    height: auto !important;
+    background: rgba(0,0,0,0.8) !important;
     padding: 15px !important;
-    box-sizing: border-box !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    text-align: center !important;
-    line-height: 1.4 !important;
-}
-
-/* APlayer音乐播放器样式 */
-#player {
-    z-index: 10000 !important;
-    display: block !important;
-    visibility: visible !important;
-    position: fixed !important;
-    bottom: 20px !important;
-    right: 20px !important;
-    width: 300px !important;
-    height: auto !important;
-}
-
-/* 本地备用播放器样式 */
-#localPlayerContainer {
-    z-index: 10000 !important;
-    display: none !important;
-    visibility: visible !important;
-    position: fixed !important;
-    bottom: 20px !important;
-    right: 20px !important;
-    width: 330px !important;
-    height: auto !important;
-}
-
-/* 响应式设计 - 确保在不同屏幕尺寸下都可见 */
-@media (max-width: 1200px) {
-    .waifu {
-        width: 180px !important;
-        height: 160px !important;
-    }
-    
-    #waifu1 { top: 80px !important; }
-    #waifu2 { top: 50% !important; }
-    #waifu3 { bottom: 80px !important; }
-}
-
-@media (max-width: 768px) {
-    .waifu {
-        width: 150px !important;
-        height: 135px !important;
-        left: 10px !important;
-    }
-    
-    #waifu1 { top: 60px !important; }
-    #waifu2 { top: 50% !important; }
-    #waifu3 { bottom: 60px !important; }
-}
-
-/* APlayer主题定制 */
-.aplayer {
     border-radius: 10px !important;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3) !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5) !important;
 }
 
-.aplayer .aplayer-info {
-    border-radius: 10px !important;
+#music-player button {
+    transition: all 0.3s ease !important;
 }
 
-.aplayer .aplayer-list {
-    border-radius: 10px !important;
-}
-
-.model-preview:hover {
-    border-color: rgba(255, 255, 255, 0.5);
-}
-
-.model-info {
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.model-info:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-}
-
-#waifu-tips {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    text-align: center;
-    padding: 10px;
-    box-sizing: border-box;
-    font-size: 12px;
-    line-height: 1.5;
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
-#waifu-tips.show {
-    opacity: 1;
-}
-
-#live2d {
-    width: 100% !important;
-    height: 100% !important;
-    pointer-events: auto !important;
-    display: block !important;
-    visibility: visible !important;
-}
-
-.waifu-tool {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.waifu-tool span {
-    width: 30px;
-    height: 30px;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 16px;
-    color: #333;
-    transition: all 0.3s;
-}
-
-.waifu-tool span:hover {
-    background: rgba(255, 255, 255, 1);
-    transform: scale(1.1);
-}
-
-/* 自定义鼠标样式 - 特定元素悬停效果 */
-.author__avatar:hover {
-    cursor: url(https://cdn.jsdelivr.net/npm/live2d-widget@3.1.4/assets/AlternateSelect.gif), auto;
-}
-
-.social-link:hover {
-    cursor: url(https://cdn.jsdelivr.net/npm/live2d-widget@3.1.4/assets/AlternateSelect.gif), auto;
-}
-
-.calendar-day:hover {
-    cursor: url(https://cdn.jsdelivr.net/npm/live2d-widget@3.1.4/assets/AlternateSelect.gif), auto;
-}
-
-.music-btn:hover {
-    cursor: url(https://cdn.jsdelivr.net/npm/live2d-widget@3.1.4/assets/AlternateSelect.gif), auto;
-}
-
-/* 默认鼠标样式 */
-body {
-    cursor: url(https://cdn.jsdelivr.net/npm/live2d-widget@3.1.4/assets/1.ico), auto;
-}
-
-a, a:visited {
-    cursor: url(https://cdn.jsdelivr.net/npm/live2d-widget@3.1.4/assets/2.ico), auto;
-}
-
-/* 社交媒体链接样式 - 移到左侧边栏 */
-.social-links {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin: 20px 0;
-    justify-content: center;
-}
-
-.social-link {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: #666;
-    transition: all 0.3s ease;
-    padding: 10px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.social-link:hover {
-    transform: translateX(5px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    color: #007bff;
-}
-
-.social-link i {
-    font-size: 20px;
-    margin-right: 10px;
-    width: 20px;
-    text-align: center;
-}
-
-.social-link span {
-    font-size: 14px;
-}
-
-/* 日历样式 - 移到左侧边栏 */
-.calendar-container {
-    margin: 30px 0;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.calendar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.calendar-title {
-    font-size: 16px;
-    font-weight: bold;
-    color: #333;
-}
-
-.calendar-nav {
-    display: flex;
-    gap: 10px;
-}
-
-.calendar-nav button {
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 12px;
-}
-
-.calendar-nav button:hover {
-    background: #0056b3;
-}
-
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 3px;
-}
-
-.calendar-weekday {
-    text-align: center;
-    font-weight: bold;
-    color: #666;
-    padding: 8px 3px;
-    font-size: 12px;
-}
-
-.calendar-day {
-    text-align: center;
-    padding: 8px 3px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 12px;
-}
-
-.calendar-day:hover {
-    background: rgba(0, 123, 255, 0.1);
-}
-
-.calendar-day.today {
-    background: #007bff;
-    color: white;
-    font-weight: bold;
-}
-
-.calendar-day.other-month {
-    color: #ccc;
-}
-
-/* 雪花效果 */
-.wall {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 9997;
-}
-
-#midground {
-    z-index: 9996;
-}
-
-#foreground {
-    z-index: 9995;
-}
-
-#top {
-    z-index: 9994;
-}
-
-/* 加载动画样式 */
-#loading-box .loading-left-bg,
-#loading-box .loading-right-bg {
-    position: fixed;
-    z-index: 999998;
-    width: 50%;
-    height: 100%;
-    background-color: rgb(81 81 81 / 80%);
-    transition: all 0.7s cubic-bezier(0.42, 0, 0, 1.01);
-    backdrop-filter: blur(10px);
-}
-
-#loading-box .loading-right-bg {
-    right: 0;
-}
-
-#loading-box > .spinner-box {
-    position: fixed;
-    z-index: 999999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100vh;
-}
-
-#loading-box .spinner-box .loading-word {
-    position: absolute;
-    color: #ffffff;
-    font-size: 0.95rem;
-    transform: translateY(64px);
-    text-align: center;
-}
-
-p.loading-title {
-    font-size: 1.25rem;
-    margin: 20px 10px 4px 10px;
-}
-
-#loading-box .spinner-box .configure-core {
-    width: 100%;
-    height: 100%;
-    background-color: #37474f;
-}
-
-div.loaded div.loading-left-bg {
-    transform: translate(-100%, 0);
-}
-
-div.loaded div.loading-right-bg {
-    transform: translate(100%, 0);
-}
-
-div.loaded div.spinner-box {
-    display: none !important;
-}
-
-.loader {
-    position: absolute;
-    top: calc(50% - 32px);
-    left: calc(50% - 32px);
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    perspective: 800px;
-    transition: all 0.7s cubic-bezier(0.42, 0, 0, 1.01);
-}
-
-.inner {
-    position: absolute;
-    box-sizing: border-box;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-}
-
-.inner.one {
-    left: 0%;
-    top: 0%;
-    animation: rotate-one 1s linear infinite;
-    border-bottom: 3px solid #efeffa;
-}
-
-.inner.two {
-    right: 0%;
-    top: 0%;
-    animation: rotate-two 1s linear infinite;
-    border-right: 3px solid #efeffa;
-}
-
-.inner.three {
-    right: 0%;
-    bottom: 0%;
-    animation: rotate-three 1s linear infinite;
-    border-top: 3px solid #efeffa;
-}
-
-@keyframes rotate-one {
-    0% {
-        transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
-    }
-    100% {
-        transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
-    }
-}
-
-@keyframes rotate-two {
-    0% {
-        transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
-    }
-    100% {
-        transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
-    }
-}
-
-@keyframes rotate-three {
-    0% {
-        transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
-    }
-    100% {
-        transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
-    }
-}
-
-/* 音乐播放器样式 - 移到左侧边栏 */
-.music-player {
-    margin: 20px 0;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    transition: all 0.3s ease;
-}
-
-.music-player:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-}
-
-.music-player audio {
-    display: none;
-}
-
-.music-controls {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.music-btn {
-    width: 32px;
-    height: 32px;
-    border: none;
-    border-radius: 50%;
-    background: #007bff;
-    color: white;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-}
-
-.music-btn:hover {
-    background: #0056b3;
-    transform: scale(1.1);
-}
-
-.music-btn.pause {
-    background: #28a745;
-}
-
-.music-btn.pause:hover {
-    background: #1e7e34;
-}
-
-.music-info {
-    font-size: 12px;
-    color: #666;
-    white-space: nowrap;
-    max-width: 150px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+#music-player button:hover {
+    transform: scale(1.05) !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3) !important;
 }
 
 /* 优化页脚样式 - 减少黑色占比 */
