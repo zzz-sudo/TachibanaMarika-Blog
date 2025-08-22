@@ -1,0 +1,226 @@
+/*!
+ * 侧边栏控制器样式 - 实现平滑的动画效果和美观的界面
+ */
+
+/* 侧边栏动画效果 */
+.sidebar {
+    transition: transform 0.3s ease, margin-left 0.3s ease;
+    will-change: transform;
+}
+
+.sidebar.collapsed {
+    transform: translateX(-100%);
+}
+
+/* 主内容区域动画 */
+.main {
+    transition: margin-left 0.3s ease;
+}
+
+/* 侧边栏切换按钮样式 */
+.sidebar-toggle-btn {
+    position: absolute;
+    right: -15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-toggle-btn:hover {
+    background: linear-gradient(135deg, #0056b3, #004085);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.sidebar-toggle-btn:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+/* 左移提示样式 */
+.left-move-hint {
+    position: absolute;
+    left: -40px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: linear-gradient(135deg, #ff4444, #cc0000);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    white-space: nowrap;
+    z-index: 1001;
+    box-shadow: 0 2px 6px rgba(255, 68, 68, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 移除提示样式 */
+.remove-hint {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: linear-gradient(135deg, #ff4444, #cc0000);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    z-index: 1001;
+    box-shadow: 0 2px 6px rgba(255, 68, 68, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 脉冲动画 */
+@keyframes pulse {
+    0% { 
+        opacity: 1; 
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 0.7; 
+        transform: scale(1.05);
+    }
+    100% { 
+        opacity: 1; 
+        transform: scale(1);
+    }
+}
+
+.left-move-hint,
+.remove-hint {
+    animation: pulse 2s infinite;
+}
+
+/* 侧边栏内容样式优化 */
+.sidebar .social-links {
+    transition: opacity 0.3s ease;
+}
+
+.sidebar .calendar-container {
+    transition: opacity 0.3s ease;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .sidebar-toggle-btn {
+        width: 25px;
+        height: 25px;
+        right: -12px;
+        font-size: 12px;
+    }
+    
+    .left-move-hint {
+        left: -35px;
+        font-size: 10px;
+        padding: 2px 6px;
+    }
+    
+    .remove-hint {
+        font-size: 10px;
+        padding: 2px 6px;
+    }
+}
+
+/* 滚动条样式优化 */
+.sidebar::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: transparent;
+}
+
+/* 主内容区域滚动条样式 */
+.main::-webkit-scrollbar {
+    width: 8px;
+}
+
+.main::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.main::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.main::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* 页面整体滚动条样式 */
+body::-webkit-scrollbar {
+    width: 8px;
+}
+
+body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+body::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* 平滑滚动 */
+html {
+    scroll-behavior: smooth;
+}
+
+/* 侧边栏悬停效果 */
+.sidebar:hover .sidebar-toggle-btn {
+    opacity: 1;
+}
+
+.sidebar-toggle-btn {
+    opacity: 0.8;
+}
+
+/* 加载状态指示器 */
+.sidebar-loading {
+    position: relative;
+}
+
+.sidebar-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+} 

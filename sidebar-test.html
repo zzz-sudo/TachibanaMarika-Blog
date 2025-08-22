@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>侧边栏控制器测试 - TachibanaMarika</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 300px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow-y: auto;
+        }
+        
+        .main {
+            flex: 1;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            margin-left: 0;
+            transition: margin-left 0.3s ease;
+        }
+        
+        .profile {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .profile img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid #007bff;
+            margin-bottom: 10px;
+        }
+        
+        .profile h3 {
+            margin: 0;
+            color: #333;
+            font-size: 18px;
+        }
+        
+        .social-links {
+            margin-bottom: 30px;
+        }
+        
+        .social-link {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: rgba(0, 123, 255, 0.1);
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .social-link:hover {
+            background: rgba(0, 123, 255, 0.2);
+            transform: translateX(5px);
+        }
+        
+        .social-link i {
+            margin-right: 10px;
+            font-size: 18px;
+            color: #007bff;
+        }
+        
+        .calendar-container {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .calendar-title {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .calendar-nav button {
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin: 0 2px;
+        }
+        
+        .calendar-nav button:hover {
+            background: #0056b3;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+        }
+        
+        .calendar-weekday {
+            text-align: center;
+            font-weight: bold;
+            color: #666;
+            padding: 5px;
+            font-size: 12px;
+        }
+        
+        .calendar-day {
+            text-align: center;
+            padding: 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            font-size: 14px;
+        }
+        
+        .calendar-day:hover {
+            background: rgba(0, 123, 255, 0.1);
+        }
+        
+        .calendar-day.today {
+            background: #007bff;
+            color: white;
+        }
+        
+        .calendar-day.other-month {
+            color: #ccc;
+        }
+        
+        .main h1 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .content-section {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .archive__subtitle {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                order: 2;
+            }
+            
+            .main {
+                order: 1;
+                margin-left: 0;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 侧边栏 -->
+        <div class="sidebar">
+            <div class="profile">
+                <img src="assets/images/touxiang.jpg" alt="TachibanaMarika" onerror="this.src='https://via.placeholder.com/80x80/007bff/ffffff?text=T'">
+                <h3>TachibanaMarika</h3>
+            </div>
+            
+            <div class="social-links">
+                <a href="https://gitee.com/explore" class="social-link" target="_blank">
+                    <i class="fab fa-git-alt"></i>
+                    <span>Gitee</span>
+                </a>
+                <a href="https://github.com/zzz-sudo/" class="social-link" target="_blank">
+                    <i class="fab fa-github"></i>
+                    <span>GitHub</span>
+                </a>
+                <a href="https://wpa.qq.com/msgrd?v=3&uin=2364200290&site=qq&menu=yes" class="social-link" target="_blank">
+                    <i class="fab fa-qq"></i>
+                    <span>QQ</span>
+                </a>
+                <a href="https://t.me/xxx" class="social-link" target="_blank">
+                    <i class="fab fa-telegram"></i>
+                    <span>Telegram</span>
+                </a>
+                <a href="https://mp.weixin.qq.com/s/voNUF5iV1tghQvlRCEkpzg" class="social-link" target="_blank">
+                    <i class="fab fa-weixin"></i>
+                    <span>微信公众号</span>
+                </a>
+                <a href="https://www.bilibili.com/video/BV1dD4y1M748/?spm_id_from=333.1387.homepage.video_card.click" class="social-link" target="_blank">
+                    <i class="fab fa-bilibili"></i>
+                    <span>Bilibili</span>
+                </a>
+            </div>
+            
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <div class="calendar-title" id="calendarTitle">2025年8月</div>
+                    <div class="calendar-nav">
+                        <button onclick="previousMonth()">&lt;</button>
+                        <button onclick="nextMonth()">&gt;</button>
+                    </div>
+                </div>
+                <div class="calendar-grid" id="calendarGrid"></div>
+            </div>
+        </div>
+        
+        <!-- 主内容区域 -->
+        <div class="main">
+            <h1>欢迎来到 TachibanaMarika 的博客</h1>
+            
+            <div class="content-section">
+                <h3 class="archive__subtitle">最新文章</h3>
+                <p>这里是博客的主要内容区域。侧边栏控制器将自动处理以下功能：</p>
+                <ul>
+                    <li>✅ 左侧边栏的左移功能（点击Telegram链接旁的按钮）</li>
+                    <li>✅ 移除"最新文章"部分</li>
+                    <li>✅ 使用右侧滚动条进行整体页面滚动</li>
+                    <li>✅ 平滑的动画效果</li>
+                </ul>
+            </div>
+            
+            <div class="content-section">
+                <h3>功能说明</h3>
+                <p>这个测试页面展示了侧边栏控制器的所有功能：</p>
+                <ol>
+                    <li><strong>左移功能</strong>：点击Telegram链接旁边的蓝色按钮可以左移侧边栏</li>
+                    <li><strong>移除功能</strong>："最新文章"标题上会显示红色的"移除"提示</li>
+                    <li><strong>滚动条</strong>：左侧边栏不显示滚动条，使用右侧主滚动条</li>
+                    <li><strong>响应式</strong>：在移动设备上自动调整布局</li>
+                </ol>
+            </div>
+            
+            <div class="content-section">
+                <h3>技术特性</h3>
+                <ul>
+                    <li>使用ES6类语法构建</li>
+                    <li>支持动态侧边栏检测</li>
+                    <li>平滑的CSS3动画</li>
+                    <li>响应式设计</li>
+                    <li>模块化代码结构</li>
+                </ul>
+            </div>
+            
+            <!-- 添加一些内容来测试滚动 -->
+            <div class="content-section">
+                <h3>测试滚动内容</h3>
+                <p>这里添加一些内容来测试页面的滚动功能。侧边栏控制器会自动处理滚动条的显示和隐藏。</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </div>
+            
+            <div class="content-section">
+                <h3>更多测试内容</h3>
+                <p>继续添加内容来测试滚动功能...</p>
+                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+            </div>
+            
+            <div class="content-section">
+                <h3>底部内容</h3>
+                <p>这是页面的底部内容，用于测试滚动到底部的效果。</p>
+                <p>© 2025 TachibanaMarika. 技术来自于Jekyll & Minimal Mistakes.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 日历功能脚本 -->
+    <script>
+        let currentDate = new Date();
+        let currentMonth = currentDate.getMonth();
+        let currentYear = currentDate.getFullYear();
+        
+        function initCalendar() {
+            renderCalendar();
+        }
+        
+        function renderCalendar() {
+            const calendarGrid = document.getElementById('calendarGrid');
+            const calendarTitle = document.getElementById('calendarTitle');
+            
+            if (!calendarGrid || !calendarTitle) return;
+            
+            calendarGrid.innerHTML = '';
+            
+            const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+            calendarTitle.textContent = `${currentYear}年${monthNames[currentMonth]}`;
+            
+            // 星期标题
+            ['日', '一', '二', '三', '四', '五', '六'].forEach(day => {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-weekday';
+                dayElement.textContent = day;
+                calendarGrid.appendChild(dayElement);
+            });
+            
+            // 日期
+            const firstDay = new Date(currentYear, currentMonth, 1);
+            const lastDay = new Date(currentYear, currentMonth + 1, 0);
+            const firstDayOfWeek = firstDay.getDay();
+            const lastDate = lastDay.getDate();
+            
+            // 上个月日期
+            const prevMonth = new Date(currentYear, currentMonth, 0);
+            const prevMonthLastDate = prevMonth.getDate();
+            for (let i = firstDayOfWeek - 1; i >= 0; i--) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day other-month';
+                dayElement.textContent = prevMonthLastDate - i;
+                calendarGrid.appendChild(dayElement);
+            }
+            
+            // 当月日期
+            for (let day = 1; day <= lastDate; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day';
+                dayElement.textContent = day;
+                
+                if (day === currentDate.getDate() && currentMonth === currentDate.getMonth() && currentYear === currentDate.getFullYear()) {
+                    dayElement.classList.add('today');
+                }
+                
+                calendarGrid.appendChild(dayElement);
+            }
+            
+            // 下个月日期
+            const remainingDays = 42 - (firstDayOfWeek + lastDate);
+            for (let day = 1; day <= remainingDays; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'calendar-day other-month';
+                dayElement.textContent = day;
+                calendarGrid.appendChild(dayElement);
+            }
+        }
+        
+        function previousMonth() {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            renderCalendar();
+        }
+        
+        function nextMonth() {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            renderCalendar();
+        }
+        
+        // 页面加载完成后初始化日历
+        document.addEventListener('DOMContentLoaded', initCalendar);
+    </script>
+
+    <!-- 侧边栏控制器 -->
+    <link rel="stylesheet" href="assets/css/sidebar-controller.css">
+    <script src="assets/js/sidebar-controller.js"></script>
+</body>
+</html> 
