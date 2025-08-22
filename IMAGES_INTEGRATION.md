@@ -36,6 +36,13 @@ assets/images/
 - **支持格式**: ICO、GIF等
 - **应用场景**: Live2D模型交互、特殊按钮等
 
+### 4. 🎨 动态背景线条特效
+- **功能**: 网站动态背景线条，跟随鼠标移动
+- **技术**: HTML5 Canvas + JavaScript
+- **特性**: 160个粒子，自动连线，鼠标交互
+- **配置**: 可调整z-index、透明度、颜色、粒子数量
+- **性能**: 使用requestAnimationFrame优化动画
+
 ## 🔧 技术实现
 
 ### 背景图片
@@ -68,6 +75,21 @@ newFavicon.type = 'image/jpeg';
 newFavicon.href = '/assets/images/touxiang.jpg';
 ```
 
+### 动态背景线条
+```javascript
+// 在 _includes/scripts.html 中
+!function(){
+    // 配置参数
+    function t(){
+        var t=e("script"),o=t.length,i=t[o-1];
+        return{
+            l:o,z:n(i,"zIndex",-1),o:n(i,"opacity",3),c:n(i,"color","255,0,0"),n:n(i,"count",160)
+        }
+    }
+    // 主要动画逻辑...
+}();
+```
+
 ## 📱 响应式支持
 
 - **桌面端**: 完整显示，固定位置
@@ -89,6 +111,13 @@ opacity: 0.3; /* 调整透明度值 */
 - `0.5` = 50% 不透明度 (中等透明)
 - `0.7` = 70% 不透明度 (较不透明)
 - `1.0` = 100% 不透明度 (完全不透明)
+
+### 动态背景线条配置
+在 `_includes/scripts.html` 中可以通过script标签属性调整：
+- `zIndex`: 层级设置 (默认: -1)
+- `opacity`: 透明度 (默认: 3)
+- `color`: 线条颜色 (默认: "255,0,0" 红色)
+- `count`: 粒子数量 (默认: 160)
 
 ## 💡 使用建议
 
