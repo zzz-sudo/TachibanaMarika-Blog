@@ -86,16 +86,59 @@
 
 /* 三位置Live2D容器样式 */
 .live2d-model-container {
-    transition: all 0.3s ease;
+    position: fixed !important;
+    bottom: 20px !important;
+    z-index: 9999 !important;
+    pointer-events: auto !important; /* 允许鼠标交互 */
+    transition: all 0.3s ease !important;
+    width: 200px !important;
+    height: 200px !important;
+    display: block !important;
+    visibility: visible !important;
+}
+
+.live2d-model-container.left {
+    left: 20px !important;
+}
+
+.live2d-model-container.center {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+}
+
+.live2d-model-container.right {
+    right: 20px !important;
 }
 
 .live2d-model-container:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px) !important; /* 悬停效果 */
 }
 
 .model-preview {
     border: 3px solid transparent;
     background-clip: padding-box;
+}
+
+/* 确保Live2D模型信息正确显示 */
+.model-info {
+    width: 100% !important;
+    height: 100% !important;
+    background: rgba(0,0,0,0.9) !important;
+    border-radius: 15px !important;
+    color: white !important;
+    padding: 15px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    line-height: 1.4 !important;
+}
+
+/* 网易云音乐播放器样式 */
+#player {
+    z-index: 10000 !important;
 }
 
 .model-preview:hover {

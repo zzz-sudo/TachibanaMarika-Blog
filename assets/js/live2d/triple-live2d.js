@@ -76,6 +76,15 @@ class TripleLive2D {
             ${model.x === 'center' ? 'transform: translateX(-50%);' : ''}
         `;
         
+        // 添加位置类名
+        if (model.position === 'left') {
+            container.classList.add('left');
+        } else if (model.position === 'center') {
+            container.classList.add('center');
+        } else if (model.position === 'right') {
+            container.classList.add('right');
+        }
+        
         // 创建模型预览（使用图片）
         const preview = document.createElement('div');
         preview.className = 'model-preview';

@@ -52,6 +52,25 @@
 
 <!-- Live2D 将由JavaScript自动创建 -->
 
+<!-- 网易云音乐播放器 - 只在PC端宽度>1000px时显示 -->
+<link rel="stylesheet" href="https://blog-static.cnblogs.com/files/zhangshuhao1116/APlayer.min.css">
+<div id="player" class="aplayer aplayer-withlist aplayer-fixed" data-id="14177411150" data-server="netease" data-type="playlist" data-order="random" data-fixed="true" data-listfolded="true" data-theme="#2D8CF0"></div>
+<script src="https://blog-static.cnblogs.com/files/zhangshuhao1116/APlayer.min.js"></script>
+<script src="https://blog-static.cnblogs.com/files/zhangshuhao1116/Meting.min.js"></script>
+
+<!-- 自动播放 -->
+<script> 
+let ref = setInterval(function(){
+    isaplay();
+},2000);
+function isaplay(){
+    if($(".aplayer-play").length == 1){
+        $(".aplayer-play").click()
+        clearInterval(ref);
+    }
+}
+</script>
+
 <!-- Live2D 脚本 - 使用本地文件 -->
 <script src="/assets/js/live2d/live2d.min.js"></script>
 <script src="/assets/js/live2d/waifu-tips.js"></script>
@@ -60,8 +79,22 @@
 <script type="text/javascript">
 // Live2D初始化
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM加载完成，开始初始化Live2D');
+    
     // 确保Live2D正确初始化
     setTimeout(function() {
+        console.log('开始创建三位置Live2D模型');
+        
+        // 直接创建三位置Live2D模型
+        if (typeof TripleLive2D === 'function') {
+            new TripleLive2D();
+            console.log('三位置Live2D模型创建成功');
+        } else {
+            console.log('TripleLive2D类未找到，尝试备用方案');
+            createBackupLive2D();
+        }
+        
+        // 同时尝试初始化原有的Live2D
         if (typeof initWidget === 'function') {
             initWidget({
                 waifuPath: '/assets/js/live2d/waifu-tips.json',
@@ -69,12 +102,79 @@ document.addEventListener('DOMContentLoaded', function() {
                 apiPath: '/assets/js/live2d/',
                 modelList: '/assets/js/live2d/model_list.json'
             });
-            console.log('Live2D初始化成功');
+            console.log('原有Live2D初始化成功');
         } else {
-            console.log('Live2D脚本加载失败，请检查文件路径');
+            console.log('initWidget函数未找到');
         }
-    }, 3000); // 增加等待时间
+    }, 3000); // 增加等待时间，确保所有脚本加载完成
 });
+
+// 备用Live2D创建函数
+function createBackupLive2D() {
+    console.log('使用备用方案创建Live2D模型');
+    
+    const positions = [
+        { left: 20, name: 'MIHARI' },
+        { left: '50%', transform: 'translateX(-50%)', name: 'Rory' },
+        { right: 20, name: 'Alya' }
+    ];
+    
+    positions.forEach((pos, index) => {
+        const container = document.createElement('div');
+        container.id = `live2d-${index}`;
+        container.className = 'live2d-model-container';
+        
+        let style = `
+            position: fixed;
+            bottom: 20px;
+            width: 200px;
+            height: 200px;
+            z-index: ${9999 + index};
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            text-align: center;
+            line-height: 1.2;
+        `;
+        
+        if (pos.left) {
+            style += `left: ${pos.left};`;
+        }
+        if (pos.right) {
+            style += `right: ${pos.right};`;
+        }
+        if (pos.transform) {
+            style += `transform: ${pos.transform};`;
+        }
+        
+        container.style.cssText = style;
+        container.innerHTML = `${pos.name}<br>Live2D模型<br>点击互动`;
+        
+        // 添加交互效果
+        container.addEventListener('click', function() {
+            this.style.transform = this.style.transform ? '' : 'scale(1.1)';
+        });
+        
+        container.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+        });
+        
+        container.addEventListener('mouseleave', function() {
+            this.style.transform = '';
+        });
+        
+        document.body.appendChild(container);
+        console.log(`Live2D模型 ${pos.name} 创建成功`);
+    });
+}
 </script>
 
 <!-- 测试用的#list元素 -->
@@ -143,117 +243,7 @@ window.onload = function () {
 }
 </script>
 
-<!-- 音乐播放器脚本 - 修复自动播放 -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // 等待侧边栏加载完成
-    setTimeout(function() {
-        // 创建音乐播放器元素
-        const musicPlayer = document.createElement('div');
-        musicPlayer.className = 'music-player';
-        musicPlayer.innerHTML = `
-            <audio id="bgMusic" loop>
-                <source src="/assets/audio/Summer (Nature's Crescendo).mp3" type="audio/mpeg">
-            </audio>
-            <div class="music-controls">
-                <button class="music-btn" id="musicBtn" title="播放/暂停">
-                    <i class="fas fa-play"></i>
-                </button>
-                <div class="music-info">
-                    <div>Summer</div>
-                    <div style="font-size: 10px; color: #999;">Nature's Crescendo</div>
-                </div>
-            </div>
-        `;
-        
-                // 将音乐播放器插入到左侧边栏
-        const sidebar = document.querySelector('.author__content');
-        if (sidebar) {
-            sidebar.appendChild(musicPlayer);
-            console.log('音乐播放器已添加到侧边栏');
-        } else {
-            console.log('未找到侧边栏，音乐播放器添加失败');
-            // 尝试插入到body
-            document.body.appendChild(musicPlayer);
-            console.log('音乐播放器已添加到body');
-        }
-        
-        const musicBtn = document.getElementById('musicBtn');
-    const bgMusic = document.getElementById('bgMusic');
-    const musicIcon = musicBtn.querySelector('i');
-    
-    let isPlaying = false;
-    
-    // 强制自动播放
-    function forceAutoPlay() {
-        bgMusic.play().then(() => {
-            isPlaying = true;
-            musicBtn.classList.add('pause');
-            musicIcon.className = 'fas fa-pause';
-            console.log('音乐自动播放成功');
-        }).catch(err => {
-            console.log('强制自动播放失败:', err);
-            // 如果失败，尝试静音播放
-            bgMusic.muted = true;
-            bgMusic.play().then(() => {
-                isPlaying = true;
-                musicBtn.classList.add('pause');
-                musicIcon.className = 'fas fa-pause';
-                console.log('静音自动播放成功');
-            }).catch(err2 => {
-                console.log('静音自动播放也失败:', err2);
-            });
-        });
-    }
-    
-    // 页面加载完成后立即尝试播放
-    setTimeout(forceAutoPlay, 1000);
-    
-    // 监听用户交互事件
-    const userInteractionEvents = ['click', 'touchstart', 'keydown', 'scroll', 'mousemove'];
-    userInteractionEvents.forEach(event => {
-        document.addEventListener(event, function() {
-            if (!isPlaying) {
-                forceAutoPlay();
-            }
-        }, { once: true });
-    });
-    
-    // 播放/暂停按钮
-    musicBtn.addEventListener('click', function() {
-        if (isPlaying) {
-            bgMusic.pause();
-            isPlaying = false;
-            musicBtn.classList.remove('pause');
-            musicIcon.className = 'fas fa-play';
-        } else {
-            bgMusic.play();
-            isPlaying = true;
-            musicBtn.classList.add('pause');
-            musicIcon.className = 'fas fa-pause';
-        }
-    });
-    
-    // 音乐播放状态监听
-    bgMusic.addEventListener('play', function() {
-        isPlaying = true;
-        musicBtn.classList.add('pause');
-        musicIcon.className = 'fas fa-pause';
-    });
-    
-    bgMusic.addEventListener('pause', function() {
-        isPlaying = false;
-        musicBtn.classList.remove('pause');
-        musicIcon.className = 'fas fa-play';
-    });
-    
-    // 音乐结束自动重新开始（因为设置了loop）
-    bgMusic.addEventListener('ended', function() {
-        bgMusic.play();
-    });
-    }, 1000); // 等待1秒后执行
-});
-</script>
+<!-- 网易云音乐播放器已在上方添加，这里移除旧的音乐播放器代码 -->
 
 <!-- 社交媒体链接脚本 -->
 <script>
