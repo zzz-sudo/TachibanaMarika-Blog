@@ -7,6 +7,36 @@
   display: none !important;
 }
 
+/* 隐藏masthead内部的所有元素 */
+.masthead__menu {
+  display: none !important;
+}
+
+.masthead__inner-wrap {
+  display: none !important;
+}
+
+/* 隐藏导航相关元素 */
+.greedy-nav {
+  display: none !important;
+}
+
+#site-nav {
+  display: none !important;
+}
+
+.visible-links {
+  display: none !important;
+}
+
+.hidden-links {
+  display: none !important;
+}
+
+.greedy-nav__toggle {
+  display: none !important;
+}
+
 /* 隐藏站点标题 */
 .site-title {
   display: none !important;
