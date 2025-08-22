@@ -193,7 +193,7 @@ class SidebarController {
             
             // 恢复主内容区域
             if (this.mainContent) {
-                this.mainContent.style.marginLeft = '';
+                this.mainContent.style.marginLeft = '320px';
             }
             
             console.log('✅ 侧边栏已恢复');
