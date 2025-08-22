@@ -149,55 +149,170 @@
 })();
 </script>
 
-<!-- 音乐播放器 - 美化版 -->
-<div id="music-player" style="position: fixed; right: 20px; bottom: 20px; z-index: 99999; width: 320px; height: auto; background: linear-gradient(135deg, rgba(0,0,0,0.9), rgba(50,50,50,0.8)); padding: 20px; border-radius: 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.1); pointer-events: auto; backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2);">
-  <div style="color: white; font-size: 16px; margin-bottom: 15px; text-align: center; font-weight: bold; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">🎵 音乐播放器</div>
+<!-- 音乐播放器 - 现代美观版 -->
+<div id="music-player" style="position: fixed; right: 20px; bottom: 20px; z-index: 99999; width: 350px; height: auto; background: linear-gradient(135deg, rgba(0,0,0,0.95), rgba(30,30,30,0.9)); padding: 25px; border-radius: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.1); pointer-events: auto; backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.15);">
   
-  <div style="background: rgba(255,255,255,0.1); border-radius: 15px; padding: 15px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.1);">
-    <audio id="local-audio" controls style="width: 100%; height: 40px; border-radius: 10px; background: rgba(255,255,255,0.1);" src="{{ '/assets/audio/Summer.mp3' | relative_url }}">
+  <!-- 标题栏 -->
+  <div style="color: white; font-size: 18px; margin-bottom: 20px; text-align: center; font-weight: bold; text-shadow: 0 2px 8px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; gap: 10px;">
+    <div style="width: 8px; height: 8px; background: #00ff88; border-radius: 50%; animation: pulse 2s infinite;"></div>
+    🎵 音乐播放器
+    <div style="width: 8px; height: 8px; background: #00ff88; border-radius: 50%; animation: pulse 2s infinite;"></div>
+  </div>
+  
+  <!-- 音频播放器容器 -->
+  <div style="background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05)); border-radius: 20px; padding: 20px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);">
+    <audio id="local-audio" controls style="width: 100%; height: 45px; border-radius: 15px; background: rgba(255,255,255,0.1); border: none; outline: none;" src="{{ '/assets/audio/Summer.mp3' | relative_url }}">
       你的浏览器不支持音频播放
     </audio>
   </div>
   
-  <div style="display: flex; gap: 10px; justify-content: center;">
-    <button id="play-btn" style="background: linear-gradient(135deg, #007bff, #0056b3); color: white; border: none; padding: 12px 20px; border-radius: 25px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(0,123,255,0.4); transition: all 0.3s ease; min-width: 80px;">▶️ 播放</button>
-    <button id="pause-btn" style="background: linear-gradient(135deg, #28a745, #1e7e34); color: white; border: none; padding: 12px 20px; border-radius: 25px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(40,167,69,0.4); transition: all 0.3s ease; min-width: 80px;">⏸️ 暂停</button>
+  <!-- 控制按钮 -->
+  <div style="display: flex; gap: 15px; justify-content: center; margin-bottom: 20px;">
+    <button id="play-btn" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 15px 25px; border-radius: 25px; cursor: pointer; font-weight: bold; font-size: 14px; box-shadow: 0 6px 20px rgba(102,126,234,0.4); transition: all 0.3s ease; min-width: 100px; position: relative; overflow: hidden;">
+      <span style="position: relative; z-index: 2;">▶️ 播放</span>
+      <div style="position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(135deg, #764ba2, #667eea); transition: left 0.3s ease;"></div>
+    </button>
+    
+    <button id="pause-btn" style="background: linear-gradient(135deg, #f093fb, #f5576c); color: white; border: none; padding: 15px 25px; border-radius: 25px; cursor: pointer; font-weight: bold; font-size: 14px; box-shadow: 0 6px 20px rgba(240,147,251,0.4); transition: all 0.3s ease; min-width: 100px; position: relative; overflow: hidden;">
+      <span style="position: relative; z-index: 2;">⏸️ 暂停</span>
+      <div style="position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(135deg, #f5576c, #f093fb); transition: left 0.3s ease;"></div>
+    </button>
   </div>
   
   <!-- 音乐信息显示 -->
-  <div id="music-info" style="margin-top: 15px; text-align: center; color: rgba(255,255,255,0.8); font-size: 12px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);">
-    <div style="margin-bottom: 5px;">🎼 Summer (Nature's Crescendo)</div>
-    <div style="font-size: 10px; opacity: 0.7;">本地音频文件</div>
+  <div id="music-info" style="text-align: center; color: rgba(255,255,255,0.9); font-size: 13px; padding: 15px; background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03)); border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); box-shadow: inset 0 1px 5px rgba(0,0,0,0.2);">
+    <div style="margin-bottom: 8px; font-weight: 600; color: #00ff88;">🎼 Summer (Nature's Crescendo)</div>
+    <div style="font-size: 11px; opacity: 0.7; color: #a0a0a0;">本地音频文件 • 高品质音质</div>
   </div>
+  
+  <!-- 装饰性元素 -->
+  <div style="position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57, #ff9ff3, #54a0ff); border-radius: 25px; z-index: -1; opacity: 0.3; filter: blur(10px);"></div>
 </div>
 
+<!-- 网站动态背景线条跟随鼠标移动 -->
+<canvas id="dynamic-bg" style="position: fixed; top: 0; left: 0; z-index: 1; opacity: 0.3; pointer-events: none; width: 100%; height: 100%;"></canvas>
+
 <script>
+// 动态背景线条 - 安全版本
+(function(){
+    function n(n,e,t){
+        return n.getAttribute(e)||t
+    }
+    
+    function e(n){
+        return document.getElementsByTagName(n)
+    }
+    
+    function t(){
+        var t=e("script"),o=t.length,i=t[o-1];
+        return{
+            l:o,z:n(i,"zIndex",-1),o:n(i,"opacity",0.3),c:n(i,"color","255,0,0"),n:n(i,"count",80)
+        }
+    }
+    
+    function o(){
+        a=m.width=window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth,
+        c=m.height=window.innerHeight||document.documentElement.clientHeight||document.body.clientHeight
+    }
+    
+    function i(){
+        if (!r || !m) return;
+        r.clearRect(0,0,a,c);
+        var n,e,t,o,m,l;
+        
+        s.forEach(function(i,x){
+            for(i.x+=i.xa,i.y+=i.ya,i.xa*=i.x>a||i.x<0?-1:1,i.ya*=i.y>c||i.y<0?-1:1,r.fillRect(i.x-.5,i.y-.5,1,1),e=x+1;e<u.length;e++)n=u[e],
+            null!==n.x&&null!==n.y&&(o=i.x-n.x,m=i.y-n.y,
+            l=o*o+m*m,l<n.max&&(n===y&&l>=n.max/2&&(i.x-=.03*o,i.y-=.03*m),
+            t=(n.max-l)/n.max,r.beginPath(),r.lineWidth=t/2,r.strokeStyle="rgba("+d.c+","+(t+.2)+")",r.moveTo(i.x,i.y),r.lineTo(n.x,n.y),r.stroke()))
+        }),
+        x(i)
+    }
+    
+    var a,c,u,m=document.getElementById("dynamic-bg");
+    
+    // 安全检查
+    if (!m) {
+        console.log('动态背景Canvas元素未找到，跳过背景线条效果');
+        return;
+    }
+    
+    var d=t(),l="c_n"+d.l,r=m.getContext("2d"),
+    x=window.requestAnimationFrame||window.webkitRequestAnimationFrame||window.mozRequestAnimationFrame||window.oRequestAnimationFrame||window.msRequestAnimationFrame||
+    function(n){
+        window.setTimeout(n,1e3/45)
+    },
+    w=Math.random,y={x:null,y:null,max:2e4};
+    
+    m.style.cssText="position:fixed;top:0;left:0;z-index:"+d.z+";opacity:"+d.o+";pointer-events:none;";
+    o(),window.onresize=o,
+    window.onmousemove=function(n){
+        n=n||window.event,y.x=n.clientX,y.y=n.clientY
+    },
+    window.onmouseout=function(){
+        y.x=null,y.y=null
+    };
+    
+    for(var s=[],f=0;d.n>f;f++){
+        var h=w()*a,g=w()*c,v=2*w()-1,p=2*w()-1;s.push({x:h,y:g,xa:v,ya:p,max:6e3})
+    }
+    u=s.concat([y]),
+    setTimeout(function(){i()},100)
+})();
+
 // 音乐播放器控制
 document.addEventListener('DOMContentLoaded', function() {
-  const audio = document.getElementById('local-audio');
-  const playBtn = document.getElementById('play-btn');
-  const pauseBtn = document.getElementById('pause-btn');
-  
-  playBtn.addEventListener('click', function() {
-    audio.play().then(() => {
-      console.log('🎵 开始播放音乐');
-    }).catch(err => {
-      console.log('❌ 播放失败:', err.message);
+    const audio = document.getElementById('local-audio');
+    const playBtn = document.getElementById('play-btn');
+    const pauseBtn = document.getElementById('pause-btn');
+    
+    // 按钮悬停效果
+    [playBtn, pauseBtn].forEach(btn => {
+        btn.addEventListener('mouseenter', function() {
+            this.querySelector('div').style.left = '0%';
+        });
+        
+        btn.addEventListener('mouseleave', function() {
+            this.querySelector('div').style.left = '-100%';
+        });
     });
-  });
-  
-  pauseBtn.addEventListener('click', function() {
-    audio.pause();
-    console.log('⏸️ 音乐已暂停');
-  });
-  
-  // 音频加载完成后的处理
-  audio.addEventListener('loadeddata', function() {
-    console.log('✅ 音频文件加载完成');
-  });
-  
-  audio.addEventListener('error', function(e) {
-    console.error('❌ 音频加载失败:', e);
-  });
+    
+    playBtn.addEventListener('click', function() {
+        audio.play().then(() => {
+            console.log('🎵 开始播放音乐');
+        }).catch(err => {
+            console.log('❌ 播放失败:', err.message);
+        });
+    });
+    
+    pauseBtn.addEventListener('click', function() {
+        audio.pause();
+        console.log('⏸️ 音乐已暂停');
+    });
+    
+    // 音频加载完成后的处理
+    audio.addEventListener('loadeddata', function() {
+        console.log('✅ 音频文件加载完成');
+    });
+    
+    audio.addEventListener('error', function(e) {
+        console.error('❌ 音频加载失败:', e);
+    });
 });
 </script>
+
+<style>
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+#music-player button:hover {
+    transform: translateY(-3px) scale(1.05) !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4) !important;
+}
+
+#music-player button:active {
+    transform: translateY(-1px) scale(1.02) !important;
+}
+</style>
