@@ -86,32 +86,37 @@
     background: rgba(0,0,0,0.1) !important;
     border: 2px solid rgba(255,255,255,0.2) !important;
     backdrop-filter: blur(10px) !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3) !important;
 }
 
-/* 三个板娘的具体位置 */
+/* 三个板娘的具体位置 - 确保不重叠 */
 #waifu1 {
     top: 100px !important;
+    left: 20px !important;
 }
 
 #waifu2 {
     top: 50% !important;
+    left: 20px !important;
     transform: translateY(-50%) !important;
 }
 
 #waifu3 {
     bottom: 100px !important;
+    left: 20px !important;
 }
 
-/* Live2D Canvas样式 */
+/* Live2D Canvas样式 - 确保完全显示 */
 .live2d {
     width: 100% !important;
     height: 100% !important;
     display: block !important;
     visibility: visible !important;
     pointer-events: auto !important;
+    border-radius: 15px !important;
 }
 
-/* 板娘提示样式 */
+/* 板娘提示样式 - 悬停时显示 */
 .waifu-tips {
     position: absolute !important;
     top: 0 !important;
@@ -130,6 +135,7 @@
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+    border-radius: 15px !important;
 }
 
 .waifu-tips:hover {
@@ -144,6 +150,7 @@
     display: flex !important;
     flex-direction: column !important;
     gap: 5px !important;
+    z-index: 10000 !important;
 }
 
 .waifu-tool span {
@@ -163,11 +170,6 @@
 .waifu-tool span:hover {
     background: rgba(255,255,255,1) !important;
     transform: scale(1.1) !important;
-}
-
-.model-preview {
-    border: 3px solid transparent;
-    background-clip: padding-box;
 }
 
 /* 确保Live2D模型信息正确显示 */
@@ -211,25 +213,28 @@
     height: auto !important;
 }
 
-/* 响应式设计 - 只在PC端显示 */
-@media (min-width: 1000px) {
-    #player {
-        display: block !important;
+/* 响应式设计 - 确保在不同屏幕尺寸下都可见 */
+@media (max-width: 1200px) {
+    .waifu {
+        width: 180px !important;
+        height: 160px !important;
     }
     
-    #localPlayerContainer {
-        display: none !important;
-    }
+    #waifu1 { top: 80px !important; }
+    #waifu2 { top: 50% !important; }
+    #waifu3 { bottom: 80px !important; }
 }
 
-@media (max-width: 999px) {
-    #player {
-        display: none !important;
+@media (max-width: 768px) {
+    .waifu {
+        width: 150px !important;
+        height: 135px !important;
+        left: 10px !important;
     }
     
-    #localPlayerContainer {
-        display: none !important;
-    }
+    #waifu1 { top: 60px !important; }
+    #waifu2 { top: 50% !important; }
+    #waifu3 { bottom: 60px !important; }
 }
 
 /* APlayer主题定制 */
