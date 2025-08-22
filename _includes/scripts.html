@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <i class="fab fa-github"></i>
                 <span>GitHub</span>
             </a>
-            <a href="http://wpa.qq.com/msgrd?v=3&uin=2364200290&site=qq&menu=yes" class="social-link" target="_blank">
+            <a href="https://wpa.qq.com/msgrd?v=3&uin=2364200290&site=qq&menu=yes" class="social-link" target="_blank">
                 <i class="fab fa-qq"></i>
                 <span>QQ</span>
             </a>
@@ -204,6 +204,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function renderCalendar() {
         const calendarGrid = document.getElementById('calendarGrid');
         const calendarTitle = document.getElementById('calendarTitle');
+        
+        // 检查元素是否存在
+        if (!calendarGrid || !calendarTitle) {
+            console.warn('⚠️ 找不到日历元素，跳过日历渲染');
+            return;
+        }
         
         // 清空日历
         calendarGrid.innerHTML = '';
