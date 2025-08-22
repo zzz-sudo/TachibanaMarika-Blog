@@ -41,14 +41,16 @@ class TripleLive2D {
     }
     
     createModels() {
+        console.log('开始创建Live2D模型，总共', this.models.length, '个');
         this.models.forEach((model, index) => {
-            setTimeout(() => {
-                this.createSingleModel(model, index);
-            }, index * 1000); // 依次创建，避免同时加载
+            // 立即创建，不使用延迟
+            this.createSingleModel(model, index);
         });
     }
     
     createSingleModel(model, index) {
+        console.log('创建模型:', model.name, '位置:', model.position);
+        
         // 创建Live2D容器
         const container = document.createElement('div');
         container.id = model.id;
@@ -89,7 +91,7 @@ class TripleLive2D {
         this.createLive2DModel(model, container);
         
         document.body.appendChild(container);
-        console.log(`${model.name} Live2D容器已创建在${model.position}位置`);
+        console.log(`${model.name} Live2D容器已创建在${model.position}位置，样式:`, container.style.cssText);
     }
     
     createLive2DModel(model, container) {

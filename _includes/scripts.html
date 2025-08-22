@@ -54,7 +54,7 @@
 
 <!-- 网易云音乐播放器 - 只在PC端宽度>1000px时显示 -->
 <link rel="stylesheet" href="https://blog-static.cnblogs.com/files/zhangshuhao1116/APlayer.min.css">
-<div id="player" class="aplayer aplayer-withlist aplayer-fixed" data-id="14177411150" data-server="netease" data-type="playlist" data-order="random" data-fixed="true" data-listfolded="true" data-theme="#2D8CF0"></div>
+<div id="player" class="aplayer aplayer-withlist aplayer-fixed" data-id="14177411150" data-server="netease" data-type="playlist" data-order="random" data-fixed="true" data-listfolded="true" data-theme="#2D8CF0" style="display: block !important; visibility: visible !important;"></div>
 <script src="https://blog-static.cnblogs.com/files/zhangshuhao1116/APlayer.min.js"></script>
 <script src="https://blog-static.cnblogs.com/files/zhangshuhao1116/Meting.min.js"></script>
 
@@ -87,6 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 直接创建三位置Live2D模型
         if (typeof TripleLive2D === 'function') {
+            console.log('TripleLive2D类已找到，开始创建');
             new TripleLive2D();
             console.log('三位置Live2D模型创建成功');
         } else {
@@ -106,7 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             console.log('initWidget函数未找到');
         }
-    }, 3000); // 增加等待时间，确保所有脚本加载完成
+    }, 2000); // 减少等待时间
 });
 
 // 备用Live2D创建函数
@@ -177,12 +178,7 @@ function createBackupLive2D() {
 }
 </script>
 
-<!-- 测试用的#list元素 -->
-<div id="list" style="display: block; top: 100px; left: 100px;">
-    <li>测试项目1</li>
-    <li>测试项目2</li>
-    <li>测试项目3</li>
-</div>
+<!-- 测试用的#list元素已移除 -->
 
 <!-- 地址栏图标功能 -->
 <div class="favicon-changer" id="faviconChanger">
