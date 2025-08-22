@@ -49,14 +49,58 @@ function fixCSSBackgroundPaths() {
     const elementsWithBg = document.querySelectorAll('[style*="background"]');
     elementsWithBg.forEach(element => {
       const style = element.getAttribute('style');
-      if (style && style.includes('/assets/images/background.jpg')) {
+      if (style && style.includes('background.jpg')) {
         const newStyle = style.replace(
-          /\/assets\/images\/background\.jpg/g, 
-          fixImagePath('/assets/images/background.jpg')
+          /url\(['"]?([^'"]*background\.jpg)['"]?\)/g, 
+          (match, url) => {
+            // 如果是相对路径，转换为绝对路径
+            if (url.startsWith('../') || url.startsWith('./') || !url.startsWith('/')) {
+              return `url('${fixImagePath('/assets/images/background.jpg')}')`;
+            }
+            // 如果已经是绝对路径，确保使用正确的基础路径
+            if (url.startsWith('/assets/')) {
+              return `url('${fixImagePath(url)}')`;
+            }
+            return match;
+          }
         );
         element.setAttribute('style', newStyle);
       }
     });
+    
+    // 修复CSS样式表中的背景图片路径
+    const styleSheets = document.styleSheets;
+    for (let i = 0; i < styleSheets.length; i++) {
+      try {
+        const rules = styleSheets[i].cssRules || styleSheets[i].rules;
+        if (rules) {
+          for (let j = 0; j < rules.length; j++) {
+            const rule = rules[j];
+            if (rule.style && rule.style.backgroundImage) {
+              const bgImage = rule.style.backgroundImage;
+              if (bgImage.includes('background.jpg')) {
+                const newBgImage = bgImage.replace(
+                  /url\(['"]?([^'"]*background\.jpg)['"]?\)/g,
+                  (match, url) => {
+                    if (url.startsWith('../') || url.startsWith('./') || !url.startsWith('/')) {
+                      return `url('${fixImagePath('/assets/images/background.jpg')}')`;
+                    }
+                    if (url.startsWith('/assets/')) {
+                      return `url('${fixImagePath(url)}')`;
+                    }
+                    return match;
+                  }
+                );
+                rule.style.backgroundImage = newBgImage;
+              }
+            }
+          }
+        }
+      } catch (e) {
+        // 跨域样式表可能无法访问
+        console.log('⚠️ 无法访问样式表:', e);
+      }
+    }
     
     console.log('✅ CSS背景图片路径已修复');
   } catch (error) {

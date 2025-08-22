@@ -6,7 +6,7 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('/TachibanaMarika-Blog/assets/images/background.jpg');
+  background-image: url('../images/background.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

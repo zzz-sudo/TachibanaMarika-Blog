@@ -104,6 +104,13 @@
             <p>• 基础容器创建</p>
             <p>• 错误处理和日志输出</p>
         </div>
+        
+        <div class="path-info">
+            <h4>🖼️ 图片路径测试</h4>
+            <p><strong>头像图片:</strong> <span id="avatar-path"></span></p>
+            <p><strong>背景图片:</strong> <span id="background-path"></span></p>
+            <p><strong>图片状态:</strong> <span id="image-status"></span></p>
+        </div>
     </div>
     
     <!-- 路径修复器 -->
@@ -119,23 +126,60 @@
             return '';
         }
         
-        const basePath = getBasePath();
-        const live2dPath = basePath + '/assets/js/live2d/autoload.js';
-        
         // 显示路径信息
         document.getElementById('current-hostname').textContent = window.location.hostname;
-        document.getElementById('detected-path').textContent = basePath || '(本地开发)';
-        document.getElementById('live2d-path').textContent = live2dPath;
+        document.getElementById('detected-path').textContent = getBasePath() || '(本地开发)';
+        document.getElementById('live2d-path').textContent = getBasePath() + '/assets/js/live2d/autoload.js';
         
         // 动态加载Live2D脚本
         const script = document.createElement('script');
-        script.src = live2dPath;
+        script.src = getBasePath() + '/assets/js/live2d/autoload.js';
         script.onerror = function() {
-            console.error('❌ 无法加载Live2D脚本:', live2dPath);
+            console.error('❌ 无法加载Live2D脚本:', script.src);
             document.querySelector('.status h4').textContent = '❌ 加载失败';
             document.querySelector('.status p:nth-child(2)').textContent = '❌ Live2D脚本加载失败';
         };
         document.head.appendChild(script);
+        
+        // 测试图片路径
+        function testImagePaths() {
+            const basePath = getBasePath();
+            const avatarPath = basePath + '/assets/images/touxiang.jpg';
+            const backgroundPath = basePath + '/assets/images/background.jpg';
+            
+            document.getElementById('avatar-path').textContent = avatarPath;
+            document.getElementById('background-path').textContent = backgroundPath;
+            
+            // 测试头像图片
+            const avatarImg = new Image();
+            avatarImg.onload = function() {
+                console.log('✅ 头像图片加载成功:', avatarPath);
+                document.getElementById('image-status').innerHTML = '✅ 头像和背景图片路径正常';
+            };
+            avatarImg.onerror = function() {
+                console.error('❌ 头像图片加载失败:', avatarPath);
+                document.getElementById('image-status').innerHTML = '❌ 头像图片路径错误';
+            };
+            avatarImg.src = avatarPath;
+            
+            // 测试背景图片
+            const bgImg = new Image();
+            bgImg.onload = function() {
+                console.log('✅ 背景图片加载成功:', backgroundPath);
+            };
+            bgImg.onerror = function() {
+                console.error('❌ 背景图片加载失败:', backgroundPath);
+                document.getElementById('image-status').innerHTML = '❌ 背景图片路径错误';
+            };
+            bgImg.src = backgroundPath;
+        }
+        
+        // 页面加载完成后测试图片
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', testImagePaths);
+        } else {
+            testImagePaths();
+        }
     </script>
 </body>
 </html> 
