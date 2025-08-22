@@ -84,6 +84,34 @@
     visibility: visible !important;
 }
 
+/* 三位置Live2D容器样式 */
+.live2d-model-container {
+    transition: all 0.3s ease;
+}
+
+.live2d-model-container:hover {
+    transform: translateY(-5px);
+}
+
+.model-preview {
+    border: 3px solid transparent;
+    background-clip: padding-box;
+}
+
+.model-preview:hover {
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.model-info {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.model-info:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
 #waifu-tips {
     position: absolute;
     top: 0;
