@@ -107,7 +107,7 @@
       id="localPlayer" 
       controls 
       style="width: 300px; height: 40px;"
-      src="/assets/audio/Summer (Nature's Crescendo).mp3">
+      src="{{ '/assets/audio/Summer (Nature''s Crescendo).mp3' | relative_url }}">
       你的浏览器不支持音频播放
     </audio>
   </div>
@@ -126,10 +126,15 @@ function checkNeteasePlayer() {
     if (iframe) {
       // 尝试检测iframe内容是否加载成功
       try {
-        // 简单的尺寸检测：如果iframe加载失败，高度可能异常
-        const isLoaded = iframe.offsetHeight > 60; // 正常加载时高度应大于60px
+        // 更准确的检测方法：检查iframe的src是否正常加载
+        const iframeSrc = iframe.src;
+        console.log('网易云播放器地址:', iframeSrc);
         
-        if (!isLoaded) {
+        // 检查iframe是否可见且有内容
+        const isVisible = iframe.offsetWidth > 0 && iframe.offsetHeight > 0;
+        const hasContent = iframe.contentDocument || iframe.contentWindow;
+        
+        if (!isVisible || !hasContent) {
           console.log('网易云播放器加载失败，切换到本地播放器');
           // 网易云播放器加载失败，显示本地播放器
           neteaseContainer.style.display = 'none';
@@ -138,6 +143,7 @@ function checkNeteasePlayer() {
           // 自动播放本地音频
           const localPlayer = document.getElementById('localPlayer');
           if (localPlayer) {
+            console.log('尝试播放本地音频文件');
             // 尝试自动播放（受浏览器政策限制）
             localPlayer.play().catch(err => {
               console.log('自动播放失败，需要用户交互:', err);
@@ -145,6 +151,8 @@ function checkNeteasePlayer() {
           }
         } else {
           console.log('网易云播放器加载成功');
+          // 如果网易云播放器正常，隐藏本地播放器
+          localContainer.style.display = 'none';
         }
       } catch (error) {
         console.error('检测播放器状态时出错:', error);
@@ -153,7 +161,7 @@ function checkNeteasePlayer() {
         localContainer.style.display = 'block';
       }
     }
-  }, 3000); // 3秒后检查，给足加载时间
+  }, 5000); // 5秒后检查，给足加载时间
 }
 
 // 页面加载完成后执行检测
@@ -191,17 +199,28 @@ document.addEventListener('DOMContentLoaded', function() {
       localContainer.style.display = 'block';
       this.style.background = 'rgba(255,0,0,0.7)';
       this.innerHTML = '🎧';
+      console.log('切换到本地播放器');
+      
+      // 尝试播放本地音频
+      const localPlayer = document.getElementById('localPlayer');
+      if (localPlayer) {
+        localPlayer.play().catch(err => {
+          console.log('本地播放器播放失败:', err);
+        });
+      }
     } else {
       neteaseContainer.style.display = 'block';
       localContainer.style.display = 'none';
       this.style.background = 'rgba(0,0,0,0.7)';
       this.innerHTML = '🎵';
+      console.log('切换到网易云播放器');
     }
   });
   
   // 添加悬停效果
   toggleButton.addEventListener('mouseenter', function() {
     this.style.transform = 'scale(1.1)';
+    this.title = '点击切换播放器';
   });
   
   toggleButton.addEventListener('mouseleave', function() {
@@ -209,5 +228,59 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   
   document.body.appendChild(toggleButton);
+  
+  // 添加状态指示器
+  const statusIndicator = document.createElement('div');
+  statusIndicator.innerHTML = '🎵 网易云';
+  statusIndicator.style.cssText = `
+    position: fixed;
+    right: 20px;
+    bottom: 160px;
+    z-index: 10001;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+  `;
+  
+  // 悬停时显示详细信息
+  statusIndicator.addEventListener('mouseenter', function() {
+    this.style.opacity = '1';
+  });
+  
+  statusIndicator.addEventListener('mouseleave', function() {
+    this.style.opacity = '0.8';
+  });
+  
+  document.body.appendChild(statusIndicator);
+  
+  // 更新状态指示器
+  function updateStatusIndicator() {
+    const neteaseContainer = document.getElementById('neteasePlayerContainer');
+    const localContainer = document.getElementById('localPlayerContainer');
+    
+    if (neteaseContainer.style.display !== 'none') {
+      statusIndicator.innerHTML = '🎵 网易云播放器';
+      statusIndicator.style.background = 'rgba(0,150,255,0.8)';
+    } else {
+      statusIndicator.innerHTML = '🎧 本地播放器';
+      statusIndicator.style.background = 'rgba(255,100,100,0.8)';
+    }
+  }
+  
+  // 监听播放器切换，更新状态指示器
+  const observer = new MutationObserver(updateStatusIndicator);
+  const neteaseContainer = document.getElementById('neteasePlayerContainer');
+  const localContainer = document.getElementById('localPlayerContainer');
+  
+  if (neteaseContainer) {
+    observer.observe(neteaseContainer, { attributes: true, attributeFilter: ['style'] });
+  }
+  if (localContainer) {
+    observer.observe(localContainer, { attributes: true, attributeFilter: ['style'] });
+  }
 });
 </script>
