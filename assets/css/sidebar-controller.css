@@ -11,7 +11,7 @@
     min-width: 300px !important;
     max-width: 300px !important;
     height: 100vh !important;
-    z-index: 1; /* 大幅降低层级，确保在所有装饰元素下方 */
+    z-index: 1000; /* 提高层级，确保在装饰元素上方显示 */
     margin: 0 !important;
     padding: 20px;
     box-sizing: border-box;
@@ -48,7 +48,7 @@
     width: 30px;
     height: 30px;
     cursor: pointer;
-    z-index: 2; /* 在侧边栏上方但在装饰元素下方 */
+    z-index: 1001; /* 在侧边栏上方 */
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
     font-size: 14px;
@@ -81,7 +81,7 @@
     font-size: 12px;
     font-weight: bold;
     white-space: nowrap;
-    z-index: 2; /* 在侧边栏上方但在装饰元素下方 */
+    z-index: 1001; /* 在侧边栏上方 */
     box-shadow: 0 2px 6px rgba(255, 68, 68, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
@@ -97,7 +97,7 @@
     border-radius: 4px;
     font-size: 12px;
     font-weight: bold;
-    z-index: 2; /* 在侧边栏上方但在装饰元素下方 */
+    z-index: 1001; /* 在侧边栏上方 */
     box-shadow: 0 2px 6px rgba(255, 68, 68, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
@@ -268,7 +268,7 @@ html {
         left: 10px;
         top: 10px;
         right: auto;
-        z-index: 2; /* 在侧边栏上方但在装饰元素下方 */
+        z-index: 1001; /* 在侧边栏上方 */
     }
 }
 
