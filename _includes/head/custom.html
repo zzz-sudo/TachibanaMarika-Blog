@@ -138,7 +138,7 @@
     line-height: 1.4 !important;
 }
 
-/* 网易云音乐播放器样式 */
+/* APlayer音乐播放器样式 */
 #player {
     z-index: 10000 !important;
     display: block !important;
@@ -150,10 +150,26 @@
     height: auto !important;
 }
 
-/* 确保播放器在PC端显示 */
+/* 本地备用播放器样式 */
+#localPlayerContainer {
+    z-index: 10000 !important;
+    display: none !important;
+    visibility: visible !important;
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    width: 330px !important;
+    height: auto !important;
+}
+
+/* 响应式设计 - 只在PC端显示 */
 @media (min-width: 1000px) {
     #player {
         display: block !important;
+    }
+    
+    #localPlayerContainer {
+        display: none !important;
     }
 }
 
@@ -161,6 +177,24 @@
     #player {
         display: none !important;
     }
+    
+    #localPlayerContainer {
+        display: none !important;
+    }
+}
+
+/* APlayer主题定制 */
+.aplayer {
+    border-radius: 10px !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3) !important;
+}
+
+.aplayer .aplayer-info {
+    border-radius: 10px !important;
+}
+
+.aplayer .aplayer-list {
+    border-radius: 10px !important;
 }
 
 .model-preview:hover {

@@ -84,60 +84,56 @@
   });
 </script>
 
-<!-- 网易云音乐插件及本地备用方案 -->
-<div style="position: fixed; right: 20px; bottom: 20px; z-index: 10000;">
-  <!-- 网易云播放器 -->
-  <div id="neteasePlayerContainer">
-    <iframe 
-      id="neteasePlayer"
-      frameborder="no" 
-      border="0" 
-      marginwidth="0" 
-      marginheight="0" 
-      width="330" 
-      height="86" 
-      src="https://music.163.com/outchain/player?type=2&id=14177411150&auto=1&height=66">
-    </iframe>
-  </div>
-  
-  <!-- 本地MP3备用播放器 (默认隐藏) -->
-  <div id="localPlayerContainer" style="display: none; background: rgba(0,0,0,0.8); padding: 15px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
-    <p style="margin: 0 0 10px 0; font-size: 12px; color: #fff; text-align: center;">网易云播放失败，使用本地备份</p>
-    <audio 
-      id="localPlayer" 
-      controls 
-      style="width: 300px; height: 40px;"
-      src="{{ '/assets/audio/Summer (Nature''s Crescendo).mp3' | relative_url }}">
-      你的浏览器不支持音频播放
-    </audio>
-  </div>
+<!-- 音乐，只在PC端宽度>1000px时显示 -->
+<link rel="stylesheet" href="https://blog-static.cnblogs.com/files/zhangshuhao1116/APlayer.min.css">
+<div id="player" class="aplayer aplayer-withlist aplayer-fixed" data-id="14177411150" data-server="netease" data-type="playlist" data-order="random" data-fixed="true" data-listfolded="true" data-theme="#2D8CF0"></div>
+<script src="https://blog-static.cnblogs.com/files/zhangshuhao1116/APlayer.min.js"></script>
+<script src="https://blog-static.cnblogs.com/files/zhangshuhao1116/Meting.min.js"></script>
+
+<!--自动播放-->
+<script> 
+let ref = setInterval(function(){
+    isaplay();
+},2000);
+function isaplay(){
+    if($(".aplayer-play").length == 1){
+        $(".aplayer-play").click()
+        clearInterval(ref);
+    }
+}
+</script>
+
+<!-- 本地MP3备用播放器 (默认隐藏) -->
+<div id="localPlayerContainer" style="display: none; position: fixed; right: 20px; bottom: 20px; z-index: 10000; background: rgba(0,0,0,0.8); padding: 15px; border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+  <p style="margin: 0 0 10px 0; font-size: 12px; color: #fff; text-align: center;">APlayer播放失败，使用本地备份</p>
+  <audio 
+    id="localPlayer" 
+    controls 
+    style="width: 300px; height: 40px;"
+    src="{{ '/assets/audio/Summer (Nature''s Crescendo).mp3' | relative_url }}">
+    你的浏览器不支持音频播放
+  </audio>
 </div>
 
 <script>
-// 检测网易云播放器是否加载成功
-function checkNeteasePlayer() {
+// 检测APlayer是否加载成功
+function checkAPlayer() {
   // 等待页面加载完成后检查
   setTimeout(() => {
-    const neteaseContainer = document.getElementById('neteasePlayerContainer');
+    const aplayerContainer = document.getElementById('player');
     const localContainer = document.getElementById('localPlayerContainer');
     
-    // 检查iframe是否正常加载
-    const iframe = document.getElementById('neteasePlayer');
-    if (iframe) {
-      // 尝试检测iframe内容是否加载成功
+    // 检查APlayer是否正常加载
+    if (aplayerContainer) {
       try {
-        // 更准确的检测方法：检查iframe的src是否正常加载
-        const iframeSrc = iframe.src;
-        console.log('网易云播放器地址:', iframeSrc);
+        // 检查APlayer元素是否存在且有内容
+        const aplayerElement = aplayerContainer.querySelector('.aplayer');
+        const isLoaded = aplayerElement && aplayerElement.offsetHeight > 0;
         
-        // 检查iframe是否可见且有内容
-        const isVisible = iframe.offsetWidth > 0 && iframe.offsetHeight > 0;
-        const hasContent = iframe.contentDocument || iframe.contentWindow;
-        
-        if (!isVisible || !hasContent) {
-          console.log('网易云播放器加载失败，切换到本地播放器');
-          // 网易云播放器加载失败，显示本地播放器
-          neteaseContainer.style.display = 'none';
+        if (!isLoaded) {
+          console.log('APlayer加载失败，切换到本地播放器');
+          // APlayer加载失败，显示本地播放器
+          aplayerContainer.style.display = 'none';
           localContainer.style.display = 'block';
           
           // 自动播放本地音频
@@ -150,14 +146,14 @@ function checkNeteasePlayer() {
             });
           }
         } else {
-          console.log('网易云播放器加载成功');
-          // 如果网易云播放器正常，隐藏本地播放器
+          console.log('APlayer加载成功');
+          // 如果APlayer正常，隐藏本地播放器
           localContainer.style.display = 'none';
         }
       } catch (error) {
-        console.error('检测播放器状态时出错:', error);
+        console.error('检测APlayer状态时出错:', error);
         // 出错时也切换到本地播放器
-        neteaseContainer.style.display = 'none';
+        aplayerContainer.style.display = 'none';
         localContainer.style.display = 'block';
       }
     }
@@ -165,9 +161,9 @@ function checkNeteasePlayer() {
 }
 
 // 页面加载完成后执行检测
-window.addEventListener('load', checkNeteasePlayer);
+window.addEventListener('load', checkAPlayer);
 
-// 如果网易云播放器加载失败，提供手动切换按钮
+// 提供手动切换按钮
 document.addEventListener('DOMContentLoaded', function() {
   // 添加一个小的切换按钮
   const toggleButton = document.createElement('div');
@@ -191,11 +187,11 @@ document.addEventListener('DOMContentLoaded', function() {
   `;
   
   toggleButton.addEventListener('click', function() {
-    const neteaseContainer = document.getElementById('neteasePlayerContainer');
+    const aplayerContainer = document.getElementById('player');
     const localContainer = document.getElementById('localPlayerContainer');
     
-    if (neteaseContainer.style.display !== 'none') {
-      neteaseContainer.style.display = 'none';
+    if (aplayerContainer.style.display !== 'none') {
+      aplayerContainer.style.display = 'none';
       localContainer.style.display = 'block';
       this.style.background = 'rgba(255,0,0,0.7)';
       this.innerHTML = '🎧';
@@ -209,11 +205,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
       }
     } else {
-      neteaseContainer.style.display = 'block';
+      aplayerContainer.style.display = 'block';
       localContainer.style.display = 'none';
       this.style.background = 'rgba(0,0,0,0.7)';
       this.innerHTML = '🎵';
-      console.log('切换到网易云播放器');
+      console.log('切换到APlayer');
     }
   });
   
@@ -231,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // 添加状态指示器
   const statusIndicator = document.createElement('div');
-  statusIndicator.innerHTML = '🎵 网易云';
+  statusIndicator.innerHTML = '🎵 APlayer';
   statusIndicator.style.cssText = `
     position: fixed;
     right: 20px;
@@ -259,11 +255,11 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // 更新状态指示器
   function updateStatusIndicator() {
-    const neteaseContainer = document.getElementById('neteasePlayerContainer');
+    const aplayerContainer = document.getElementById('player');
     const localContainer = document.getElementById('localPlayerContainer');
     
-    if (neteaseContainer.style.display !== 'none') {
-      statusIndicator.innerHTML = '🎵 网易云播放器';
+    if (aplayerContainer.style.display !== 'none') {
+      statusIndicator.innerHTML = '🎵 APlayer';
       statusIndicator.style.background = 'rgba(0,150,255,0.8)';
     } else {
       statusIndicator.innerHTML = '🎧 本地播放器';
@@ -273,14 +269,14 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // 监听播放器切换，更新状态指示器
   const observer = new MutationObserver(updateStatusIndicator);
-  const neteaseContainer = document.getElementById('neteasePlayerContainer');
+  const aplayerContainer = document.getElementById('player');
   const localContainer = document.getElementById('localPlayerContainer');
   
-  if (neteaseContainer) {
-    observer.observe(neteaseContainer, { attributes: true, attributeFilter: ['style'] });
+  if (aplayerContainer) {
+    observer.observe(aplayerContainer, { attributes: true, attributeFilter: ['style'] });
   }
   if (localContainer) {
-    observer.observe(localContainer, { attributes: true, attributeFilter: ['style'] });
+    localContainer.addEventListener('DOMSubtreeModified', updateStatusIndicator);
   }
 });
 </script>
