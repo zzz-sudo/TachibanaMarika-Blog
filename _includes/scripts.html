@@ -44,62 +44,158 @@ window.onload = function () {
 
 <!-- 动态背景线条JavaScript -->
 <script>
-!function(){
-function n(n,e,t){
-return n.getAttribute(e)||t
-}
- 
-function e(n){
-return document.getElementsByTagName(n)
-}
- 
-function t(){
-var t=e("script"),o=t.length,i=t[o-1];
- 
-return{
-l:o,z:n(i,"zIndex",-1),o:n(i,"opacity",3),c:n(i,"color","255,0,0"),n:n(i,"count",160)
-}
-}
- 
-function o(){
-a=m.width=window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth,
-c=m.height=window.innerHeight||document.documentElement.clientHeight||document.body.clientHeight
-}
- 
-function i(){
-r.clearRect(0,0,a,c);
-var n,e,t,o,m,l;
- 
-s.forEach(function(i,x){
-for(i.x+=i.xa,i.y+=i.ya,i.xa*=i.x>a||i.x<0?-1:1,i.ya*=i.y>c||i.y<0?-1:1,r.fillRect(i.x-.5,i.y-.5,1,1),e=x+1;e<u.length;e++)n=u[e],
-null!==n.x&&null!==n.y&&(o=i.x-n.x,m=i.y-n.y,
-l=o*o+m*m,l<n.max&&(n===y&&l>=n.max/2&&(i.x-=.03*o,i.y-=.03*m),
-t=(n.max-l)/n.max,r.beginPath(),r.lineWidth=t/2,r.strokeStyle="rgba("+d.c+","+(t+.2)+")",r.moveTo(i.x,i.y),r.lineTo(n.x,n.y),r.stroke()))
-}),
-x(i)
-}
-var a,c,u,m=document.createElement("canvas"),
-d=t(),l="c_n"+d.l,r=m.getContext("2d"),
-x=window.requestAnimationFrame||window.webkitRequestAnimationFrame||window.mozRequestAnimationFrame||window.oRequestAnimationFrame||window.msRequestAnimationFrame||
- 
-function(n){
-window.setTimeout(n,1e3/45)
-},
- 
-w=Math.random,y={x:null,y:null,max:2e4};m.id=l,m.style.cssText="position:fixed;top:0;left:0;z-index:"+d.z+";opacity:"+d.o,e("body")[0].appendChild(m),o(),window.onresize=o,
-window.onmousemove=function(n){
-n=n||window.event,y.x=n.clientX,y.y=n.clientY
-},
- 
-window.onmouseout=function(){
-y.x=null,y.y=null
-};
-for(var s=[],f=0;d.n>f;f++){
-var h=w()*a,g=w()*c,v=2*w()-1,p=2*w()-1;s.push({x:h,y:g,xa:v,ya:p,max:6e3})
-}
-u=s.concat([y]),
-setTimeout(function(){i()},100)
-}();
+(function() {
+    // 创建Canvas元素
+    var canvas = document.createElement('canvas');
+    var ctx = canvas.getContext('2d');
+    
+    // 设置Canvas样式
+    canvas.style.position = 'fixed';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.zIndex = '-1';
+    canvas.style.opacity = '0.3';
+    canvas.style.pointerEvents = 'none';
+    
+    // 添加到页面
+    document.body.appendChild(canvas);
+    
+    // 设置Canvas尺寸
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    
+    // 初始化尺寸
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    
+    // 粒子数组
+    var particles = [];
+    var particleCount = 80; // 减少粒子数量以提高性能
+    
+    // 鼠标位置
+    var mouse = {
+        x: null,
+        y: null
+    };
+    
+    // 粒子类
+    function Particle(x, y) {
+        this.x = x;
+        this.y = y;
+        this.vx = (Math.random() - 0.5) * 2;
+        this.vy = (Math.random() - 0.5) * 2;
+        this.size = Math.random() * 2 + 1;
+    }
+    
+    // 更新粒子位置
+    Particle.prototype.update = function() {
+        this.x += this.vx;
+        this.y += this.vy;
+        
+        // 边界检测
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+    };
+    
+    // 绘制粒子
+    Particle.prototype.draw = function() {
+        ctx.fillStyle = 'rgba(255, 0, 0, 0.8)';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+    };
+    
+    // 初始化粒子
+    function initParticles() {
+        particles = [];
+        for (var i = 0; i < particleCount; i++) {
+            particles.push(new Particle(
+                Math.random() * canvas.width,
+                Math.random() * canvas.height
+            ));
+        }
+    }
+    
+    // 绘制连线
+    function drawLines() {
+        ctx.strokeStyle = 'rgba(255, 0, 0, 0.2)';
+        ctx.lineWidth = 1;
+        
+        for (var i = 0; i < particles.length; i++) {
+            for (var j = i + 1; j < particles.length; j++) {
+                var dx = particles[i].x - particles[j].x;
+                var dy = particles[i].y - particles[j].y;
+                var distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < 150) {
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.stroke();
+                }
+            }
+            
+            // 与鼠标连线
+            if (mouse.x && mouse.y) {
+                var dx = particles[i].x - mouse.x;
+                var dy = particles[i].y - mouse.y;
+                var distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < 200) {
+                    ctx.strokeStyle = 'rgba(255, 0, 0, 0.4)';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(mouse.x, mouse.y);
+                    ctx.stroke();
+                }
+            }
+        }
+    }
+    
+    // 动画循环
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // 更新和绘制粒子
+        for (var i = 0; i < particles.length; i++) {
+            particles[i].update();
+            particles[i].draw();
+        }
+        
+        // 绘制连线
+        drawLines();
+        
+        requestAnimationFrame(animate);
+    }
+    
+    // 鼠标事件
+    canvas.addEventListener('mousemove', function(e) {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    });
+    
+    canvas.addEventListener('mouseout', function() {
+        mouse.x = null;
+        mouse.y = null;
+    });
+    
+    // 触摸事件支持
+    canvas.addEventListener('touchmove', function(e) {
+        e.preventDefault();
+        var touch = e.touches[0];
+        mouse.x = touch.clientX;
+        mouse.y = touch.clientY;
+    });
+    
+    // 启动动画
+    initParticles();
+    animate();
+})();
 </script>
 
 {% if site.footer_scripts %}
