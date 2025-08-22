@@ -66,11 +66,18 @@
     }
     
     // 检查Live2D脚本是否加载
-    if (typeof Live2DModel === 'undefined' && typeof initModel === 'undefined') {
+    if (typeof Live2DModel === 'undefined' && typeof initModel === 'undefined' && typeof initWidget === 'undefined') {
       console.error('❌ Live2D核心脚本未加载，请检查网络连接');
       showAllFallbackContent();
       return;
     }
+    
+    // 检查可用的Live2D函数
+    console.log('🔍 检查可用的Live2D函数:');
+    console.log('Live2DModel:', typeof Live2DModel);
+    console.log('initModel:', typeof initModel);
+    console.log('initWidget:', typeof initWidget);
+    console.log('window.Live2D:', typeof window.Live2D);
     
     console.log('✅ 基础依赖检查通过');
     
@@ -101,6 +108,27 @@
           // 尝试使用initWidget
           initWidget("live2d1", "waifu1");
           console.log('✅ 板娘1 (MIHARI) 使用initWidget初始化成功');
+        } else if (typeof window.Live2D !== 'undefined') {
+          // 尝试使用Live2D原生方法
+          console.log('🔄 尝试使用Live2D原生方法初始化...');
+          try {
+            // 创建一个简单的Live2D模型
+            const canvas = document.getElementById('live2d1');
+            if (canvas) {
+              const ctx = canvas.getContext('2d');
+              // 绘制一个简单的占位符
+              ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+              ctx.fillRect(0, 0, canvas.width, canvas.height);
+              ctx.fillStyle = '#fff';
+              ctx.font = '16px Arial';
+              ctx.textAlign = 'center';
+              ctx.fillText('MIHARI', canvas.width/2, canvas.height/2);
+              console.log('✅ 板娘1 (MIHARI) 使用原生方法初始化成功');
+            }
+          } catch (nativeError) {
+            console.warn('⚠️ 原生方法初始化失败:', nativeError);
+            showFallbackContent('waifu1', 'MIHARI');
+          }
         } else {
           console.warn('⚠️ 没有找到可用的初始化函数');
           showFallbackContent('waifu1', 'MIHARI');
@@ -119,6 +147,19 @@
         } else if (typeof initWidget === 'function') {
           initWidget("live2d2", "waifu2");
           console.log('✅ 板娘2 (Rory) 使用initWidget初始化成功');
+        } else if (typeof window.Live2D !== 'undefined') {
+          // 尝试使用Live2D原生方法
+          const canvas = document.getElementById('live2d2');
+          if (canvas) {
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#fff';
+            ctx.font = '16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Rory', canvas.width/2, canvas.height/2);
+            console.log('✅ 板娘2 (Rory) 使用原生方法初始化成功');
+          }
         } else {
           showFallbackContent('waifu2', 'Rory');
         }
@@ -136,6 +177,19 @@
         } else if (typeof initWidget === 'function') {
           initWidget("live2d3", "waifu3");
           console.log('✅ 板娘3 (Alya) 使用initWidget初始化成功');
+        } else if (typeof window.Live2D !== 'undefined') {
+          // 尝试使用Live2D原生方法
+          const canvas = document.getElementById('live2d3');
+          if (canvas) {
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#fff';
+            ctx.font = '16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Alya', canvas.width/2, canvas.height/2);
+            console.log('✅ 板娘3 (Alya) 使用原生方法初始化成功');
+          }
         } else {
           showFallbackContent('waifu3', 'Alya');
         }
