@@ -286,19 +286,53 @@ html {
 }
 
 /* 头像位置调整 - 避免被蓝色三角形装饰元素遮挡 */
-.sidebar .profile {
-    margin-left: 60px !important;
-    padding-left: 60px !important;
+.sidebar .profile,
+body .sidebar .profile,
+html body .sidebar .profile,
+.container .sidebar .profile {
+    margin-left: 80px !important;
+    padding-left: 80px !important;
     text-align: center !important; /* 确保头像居中 */
+    position: relative !important;
+    z-index: 1001 !important; /* 确保在装饰元素上方 */
 }
 
 /* 修复日历被截断的问题 */
-.sidebar .calendar-container {
-    margin-bottom: 40px !important; /* 给底部留出更多空间 */
+.sidebar .calendar-container,
+body .sidebar .calendar-container,
+html body .sidebar .calendar-container,
+.container .sidebar .calendar-container {
+    margin-bottom: 60px !important; /* 给底部留出更多空间 */
+    position: relative !important;
+    z-index: 1001 !important;
 }
 
 /* 确保侧边栏内容完整显示 */
-.sidebar {
+.sidebar,
+body .sidebar,
+html body .sidebar,
+.container .sidebar {
     overflow-y: auto !important; /* 如果内容过多，允许滚动 */
-    padding-bottom: 40px !important; /* 底部增加内边距 */
+    padding-bottom: 60px !important; /* 底部增加内边距 */
+    max-height: 100vh !important;
+}
+
+/* 强制显示滚动条 */
+.sidebar::-webkit-scrollbar {
+    width: 8px !important;
+    background: rgba(0, 0, 0, 0.1) !important;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05) !important;
+    border-radius: 4px !important;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(0, 123, 255, 0.5) !important;
+    border-radius: 4px !important;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 123, 255, 0.7) !important;
 } 
