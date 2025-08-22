@@ -215,4 +215,96 @@ p + p {
 /* 调整标题之间的间距 */
 h1 + h2, h2 + h3, h3 + h4, h4 + h5, h5 + h6 {
   margin-top: 0.5em !important;
+}
+
+/* 左侧边栏位置和滚动调整 */
+.sidebar__left {
+  position: fixed !important;
+  left: 10px !important; /* 更靠左 */
+  top: 0 !important;
+  width: 280px !important; /* 固定宽度 */
+  height: 100vh !important; /* 全屏高度 */
+  overflow: visible !important; /* 不显示滚动条 */
+  z-index: 100 !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px) !important;
+  border-radius: 15px !important;
+  padding: 20px !important;
+  margin: 0 !important;
+}
+
+/* 确保左侧边栏内容完全展开 */
+.sidebar__left .author__content,
+.sidebar__left .author__avatar,
+.sidebar__left .social-links,
+.sidebar__left .calendar {
+  overflow: visible !important;
+  max-height: none !important;
+}
+
+/* 调整主内容区域，为左侧边栏留出空间 */
+.page__content,
+.entry__content,
+.main-content {
+  margin-left: 300px !important; /* 为左侧边栏留出空间 */
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* 调整页面主体容器 */
+.page__inner-wrap {
+  margin-left: 300px !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* 调整初始内容区域 */
+.initial-content {
+  margin-left: 300px !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* 确保右侧内容区域跟随页面滚动 */
+.page__content,
+.entry__content,
+.main-content,
+.page__inner-wrap,
+.initial-content {
+  position: relative !important;
+  overflow: visible !important;
+}
+
+/* 调整响应式设计 */
+@media (max-width: 1024px) {
+  .sidebar__left {
+    left: 5px !important;
+    width: 250px !important;
+  }
+  
+  .page__content,
+  .entry__content,
+  .main-content,
+  .page__inner-wrap,
+  .initial-content {
+    margin-left: 270px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar__left {
+    position: relative !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    margin-bottom: 20px !important;
+  }
+  
+  .page__content,
+  .entry__content,
+  .main-content,
+  .page__inner-wrap,
+  .initial-content {
+    margin-left: 0 !important;
+  }
 } 
