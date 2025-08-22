@@ -1,151 +1,332 @@
-<!-- 简化的Live2D板娘 - 浮在所有元素之上 -->
-<div id="live2d-container" style="position: fixed; left: 20px; bottom: 20px; z-index: 99999; width: 200px; height: 180px; border-radius: 15px; overflow: hidden; background: rgba(0,0,0,0.1); border: 2px solid rgba(255,255,255,0.2); backdrop-filter: blur(10px); pointer-events: auto;">
-  <canvas id="live2d-canvas" width="200" height="180" style="width: 100%; height: 100%; display: block;"></canvas>
-  <div id="model-info" style="position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.7); color: white; padding: 5px 10px; border-radius: 10px; font-size: 12px; opacity: 0.8; z-index: 100000;">
+<!-- Live2D看板娘系统 - 稳定可靠版本 -->
+<div id="live2d-container" style="position: fixed; left: 20px; bottom: 20px; z-index: 99999; width: 280px; height: 250px; border-radius: 20px; overflow: hidden; background: rgba(0,0,0,0.1); border: 2px solid rgba(255,255,255,0.2); backdrop-filter: blur(15px); pointer-events: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+  
+  <!-- Live2D画布容器 -->
+  <div id="live2d-canvas-container" style="width: 100%; height: 100%; position: relative;">
+    <canvas id="live2d-canvas" width="280" height="250" style="width: 100%; height: 100%; display: block; border-radius: 20px;"></canvas>
+  </div>
+  
+  <!-- 模型信息显示 -->
+  <div id="model-info" style="position: absolute; top: 15px; left: 15px; background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(0,0,0,0.6)); color: white; padding: 8px 15px; border-radius: 15px; font-size: 13px; font-weight: 600; opacity: 0.9; z-index: 100000; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(10px);">
     <span id="current-model">MIHARI</span>
   </div>
-  <div id="model-controls" style="position: absolute; top: 10px; right: 10px; display: flex; gap: 5px; z-index: 100000;">
-    <button id="prev-model" style="width: 25px; height: 25px; border: none; border-radius: 50%; background: rgba(255,255,255,0.8); color: #333; cursor: pointer; font-size: 12px;">←</button>
-    <button id="next-model" style="width: 25px; height: 25px; border: none; border-radius: 50%; background: rgba(255,255,255,0.8); color: #333; cursor: pointer; font-size: 12px;">→</button>
+  
+  <!-- 控制按钮 -->
+  <div id="model-controls" style="position: absolute; top: 15px; right: 15px; display: flex; gap: 8px; z-index: 100000;">
+    <button id="prev-model" class="live2d-btn" style="width: 32px; height: 32px; border: none; border-radius: 50%; background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7)); color: #333; cursor: pointer; font-size: 14px; font-weight: bold; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: all 0.3s ease;">←</button>
+    <button id="next-model" class="live2d-btn" style="width: 32px; height: 32px; border: none; border-radius: 50%; background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7)); color: #333; cursor: pointer; font-size: 14px; font-weight: bold; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: all 0.3s ease;">→</button>
   </div>
+  
+  <!-- 状态指示器 -->
+  <div id="status-indicator" style="position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.7); color: #00ff88; padding: 6px 12px; border-radius: 12px; font-size: 11px; opacity: 0.8; z-index: 100000; border: 1px solid rgba(0,255,136,0.3);">
+    <span id="status-text">Live2D加载中...</span>
+  </div>
+  
+  <!-- 装饰性边框 -->
+  <div style="position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; background: linear-gradient(45deg, #00ff88, #00d4aa, #00ff88); border-radius: 20px; z-index: -1; opacity: 0.6; filter: blur(8px);"></div>
 </div>
 
+<!-- Live2D核心脚本 -->
+<script src="https://cdn.jsdelivr.net/npm/live2d-widget@3.1.4/lib/L2Dwidget.min.js"></script>
+
 <script>
-// 简化的Live2D实现 - 自动切换模型
+// Live2D看板娘系统 - 稳定可靠版本
 (function() {
-  'use strict';
-  
-  // 模型列表
-  const models = [
-    { name: 'MIHARI', color: '#ff6b6b' },
-    { name: 'Rory', color: '#74b9ff' },
-    { name: 'Alya', color: '#a29bfe' }
-  ];
-  
-  let currentModelIndex = 0;
-  let autoSwitchInterval;
-  
-  const canvas = document.getElementById('live2d-canvas');
-  const ctx = canvas.getContext('2d');
-  const modelInfo = document.getElementById('current-model');
-  const prevBtn = document.getElementById('prev-model');
-  const nextBtn = document.getElementById('next-model');
-  
-  // 绘制模型占位符
-  function drawModelPlaceholder(model) {
-    // 清空画布
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    'use strict';
     
-    // 绘制背景渐变
-    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-    gradient.addColorStop(0, 'rgba(0,0,0,0.1)');
-    gradient.addColorStop(1, 'rgba(0,0,0,0.3)');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    console.log('🎭 开始初始化Live2D系统...');
     
-    // 绘制圆形头像
-    ctx.beginPath();
-    ctx.arc(canvas.width/2, canvas.height/2 - 20, 40, 0, 2 * Math.PI);
-    ctx.fillStyle = model.color;
-    ctx.fill();
+    // 模型配置
+    const modelConfigs = [
+        {
+            name: 'MIHARI',
+            path: 'https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/assets/miharu/miharu.model.json',
+            color: '#ff6b6b',
+            description: '可爱的MIHARI'
+        },
+        {
+            name: 'Rory',
+            path: 'https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/assets/rory/rory.model.json',
+            color: '#74b9ff',
+            description: '优雅的Rory'
+        },
+        {
+            name: 'Alya',
+            path: 'https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/assets/alyana/alyana.model.json',
+            color: '#a29bfe',
+            description: '神秘的Alya'
+        }
+    ];
     
-    // 绘制模型名称
-    ctx.fillStyle = '#fff';
-    ctx.font = 'bold 16px Arial';
-    ctx.textAlign = 'center';
-    ctx.fillText(model.name, canvas.width/2, canvas.height/2 + 30);
+    let currentModelIndex = 0;
+    let autoSwitchInterval;
+    let isInitialized = false;
     
-    // 绘制状态信息
-    ctx.font = '12px Arial';
-    ctx.fillStyle = 'rgba(255,255,255,0.7)';
-    ctx.fillText('Live2D模型', canvas.width/2, canvas.height/2 + 50);
+    // DOM元素
+    const container = document.getElementById('live2d-container');
+    const canvas = document.getElementById('live2d-canvas');
+    const modelInfo = document.getElementById('current-model');
+    const prevBtn = document.getElementById('prev-model');
+    const nextBtn = document.getElementById('model-controls');
+    const statusIndicator = document.getElementById('status-indicator');
+    const statusText = document.getElementById('status-text');
     
-    // 绘制切换提示
-    ctx.font = '10px Arial';
-    ctx.fillStyle = 'rgba(255,255,255,0.5)';
-    ctx.fillText('每1分钟自动切换', canvas.width/2, canvas.height/2 + 65);
-  }
-  
-  // 切换到指定模型
-  function switchToModel(index) {
-    currentModelIndex = index;
-    const model = models[currentModelIndex];
+    // 检查Live2D库是否加载
+    function checkLive2DLibrary() {
+        if (typeof L2Dwidget !== 'undefined') {
+            console.log('✅ Live2D库加载成功');
+            return true;
+        } else {
+            console.log('❌ Live2D库未加载，等待中...');
+            return false;
+        }
+    }
     
-    // 更新显示
-    modelInfo.textContent = model.name;
-    modelInfo.style.color = model.color;
+    // 绘制占位符
+    function drawPlaceholder(model) {
+        if (!canvas) return;
+        
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+        
+        // 清空画布
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // 绘制背景渐变
+        const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        gradient.addColorStop(0, 'rgba(0,0,0,0.1)');
+        gradient.addColorStop(1, 'rgba(0,0,0,0.3)');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // 绘制圆形头像
+        ctx.beginPath();
+        ctx.arc(canvas.width/2, canvas.height/2 - 30, 50, 0, 2 * Math.PI);
+        ctx.fillStyle = model.color;
+        ctx.fill();
+        
+        // 绘制模型名称
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 18px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText(model.name, canvas.width/2, canvas.height/2 + 20);
+        
+        // 绘制描述
+        ctx.font = '12px Arial';
+        ctx.fillStyle = 'rgba(255,255,255,0.8)';
+        ctx.fillText(model.description, canvas.width/2, canvas.height/2 + 40);
+        
+        // 绘制状态
+        ctx.font = '10px Arial';
+        ctx.fillStyle = 'rgba(255,255,255,0.6)';
+        ctx.fillText('Live2D模型加载中...', canvas.width/2, canvas.height/2 + 60);
+    }
     
-    // 绘制模型
-    drawModelPlaceholder(model);
+    // 初始化Live2D模型
+    function initLive2DModel(modelConfig) {
+        if (!checkLive2DLibrary()) {
+            console.log('⏳ Live2D库未就绪，绘制占位符');
+            drawPlaceholder(modelConfig);
+            return false;
+        }
+        
+        try {
+            console.log(`🎭 正在加载模型: ${modelConfig.name}`);
+            statusText.textContent = `加载中: ${modelConfig.name}`;
+            
+            // 使用L2Dwidget加载模型
+            L2Dwidget.init({
+                model: {
+                    jsonPath: modelConfig.path,
+                    scale: 1.0
+                },
+                display: {
+                    position: 'left',
+                    width: 280,
+                    height: 250
+                },
+                mobile: {
+                    show: true,
+                    scale: 1.0
+                },
+                react: {
+                    opacityDefault: 1.0,
+                    opacityOnHover: 1.0
+                }
+            }).then(() => {
+                console.log(`✅ 模型 ${modelConfig.name} 加载成功`);
+                statusText.textContent = `${modelConfig.name} 已就绪`;
+                statusText.style.color = '#00ff88';
+                isInitialized = true;
+                
+                // 隐藏占位符
+                if (canvas) {
+                    canvas.style.display = 'none';
+                }
+            }).catch(error => {
+                console.error(`❌ 模型 ${modelConfig.name} 加载失败:`, error);
+                statusText.textContent = `加载失败: ${modelConfig.name}`;
+                statusText.style.color = '#ff6b6b';
+                drawPlaceholder(modelConfig);
+            });
+            
+            return true;
+        } catch (error) {
+            console.error(`❌ 初始化Live2D模型失败:`, error);
+            statusText.textContent = '初始化失败';
+            statusText.style.color = '#ff6b6b';
+            drawPlaceholder(modelConfig);
+            return false;
+        }
+    }
     
-    console.log(`🎭 切换到模型: ${model.name}`);
-  }
-  
-  // 下一个模型
-  function nextModel() {
-    const nextIndex = (currentModelIndex + 1) % models.length;
-    switchToModel(nextIndex);
-  }
-  
-  // 上一个模型
-  function prevModel() {
-    const prevIndex = (currentModelIndex - 1 + models.length) % models.length;
-    switchToModel(prevIndex);
-  }
-  
-  // 自动切换
-  function startAutoSwitch() {
-    autoSwitchInterval = setInterval(() => {
-      nextModel();
-    }, 60000); // 1分钟 = 60000毫秒
+    // 切换到指定模型
+    function switchToModel(index) {
+        if (index < 0 || index >= modelConfigs.length) return;
+        
+        currentModelIndex = index;
+        const modelConfig = modelConfigs[currentModelIndex];
+        
+        console.log(`🔄 切换到模型: ${modelConfig.name}`);
+        
+        // 更新显示
+        modelInfo.textContent = modelConfig.name;
+        modelInfo.style.color = modelConfig.color;
+        
+        // 显示画布
+        if (canvas) {
+            canvas.style.display = 'block';
+        }
+        
+        // 初始化模型
+        initLive2DModel(modelConfig);
+    }
     
-    console.log('🔄 启动自动切换，每1分钟切换一次模型');
-  }
-  
-  // 事件监听
-  prevBtn.addEventListener('click', prevModel);
-  nextBtn.addEventListener('click', nextModel);
-  
-  // 鼠标悬停效果
-  const container = document.getElementById('live2d-container');
-  container.addEventListener('mouseenter', function() {
-    this.style.transform = 'scale(1.05)';
-    this.style.transition = 'transform 0.3s ease';
-  });
-  
-  container.addEventListener('mouseleave', function() {
-    this.style.transform = 'scale(1)';
-  });
-  
-  // 初始化
-  function init() {
-    console.log('🎭 初始化简化版Live2D...');
+    // 下一个模型
+    function nextModel() {
+        const nextIndex = (currentModelIndex + 1) % modelConfigs.length;
+        switchToModel(nextIndex);
+    }
     
-    // 绘制第一个模型
-    switchToModel(0);
+    // 上一个模型
+    function prevModel() {
+        const prevIndex = (currentModelIndex - 1 + modelConfigs.length) % modelConfigs.length;
+        switchToModel(prevIndex);
+    }
     
-    // 启动自动切换
-    startAutoSwitch();
+    // 自动切换
+    function startAutoSwitch() {
+        if (autoSwitchInterval) {
+            clearInterval(autoSwitchInterval);
+        }
+        
+        autoSwitchInterval = setInterval(() => {
+            nextModel();
+        }, 120000); // 2分钟切换一次
+        
+        console.log('🔄 启动自动切换，每2分钟切换一次模型');
+    }
     
-    console.log('✅ 简化版Live2D初始化完成');
-  }
-  
-  // 页面加载完成后初始化
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-  
-  // 暴露控制函数到全局
-  window.Live2DControls = {
-    nextModel,
-    prevModel,
-    switchToModel,
-    startAutoSwitch,
-    stopAutoSwitch: () => clearInterval(autoSwitchInterval)
-  };
-  
+    // 停止自动切换
+    function stopAutoSwitch() {
+        if (autoSwitchInterval) {
+            clearInterval(autoSwitchInterval);
+            autoSwitchInterval = null;
+            console.log('⏹️ 停止自动切换');
+        }
+    }
+    
+    // 事件监听
+    function setupEventListeners() {
+        // 按钮事件
+        if (prevBtn) {
+            prevBtn.addEventListener('click', prevModel);
+        }
+        
+        if (nextBtn) {
+            nextBtn.addEventListener('click', nextModel);
+        }
+        
+        // 鼠标悬停效果
+        if (container) {
+            container.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05)';
+                this.style.transition = 'transform 0.3s ease';
+            });
+            
+            container.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        }
+        
+        // 按钮悬停效果
+        const live2dBtns = document.querySelectorAll('.live2d-btn');
+        live2dBtns.forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.1)';
+                this.style.boxShadow = '0 6px 16px rgba(0,0,0,0.4)';
+            });
+            
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+                this.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
+            });
+        });
+    }
+    
+    // 初始化函数
+    function init() {
+        console.log('🎭 开始初始化Live2D系统...');
+        
+        // 设置事件监听
+        setupEventListeners();
+        
+        // 绘制第一个模型的占位符
+        drawPlaceholder(modelConfigs[0]);
+        
+        // 等待Live2D库加载
+        let checkCount = 0;
+        const maxChecks = 50; // 最多等待5秒
+        
+        const checkInterval = setInterval(() => {
+            checkCount++;
+            
+            if (checkLive2DLibrary()) {
+                clearInterval(checkInterval);
+                console.log('✅ Live2D库已就绪，开始加载模型');
+                switchToModel(0);
+                startAutoSwitch();
+            } else if (checkCount >= maxChecks) {
+                clearInterval(checkInterval);
+                console.log('⏰ 等待超时，使用占位符模式');
+                statusText.textContent = '占位符模式';
+                statusText.style.color = '#ffa500';
+            }
+        }, 100);
+        
+        console.log('✅ Live2D系统初始化完成');
+    }
+    
+    // 页面加载完成后初始化
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+    
+    // 暴露控制函数到全局
+    window.Live2DControls = {
+        nextModel,
+        prevModel,
+        switchToModel,
+        startAutoSwitch,
+        stopAutoSwitch,
+        getCurrentModel: () => modelConfigs[currentModelIndex],
+        getModelCount: () => modelConfigs.length
+    };
+    
+    console.log('🎭 Live2D系统脚本加载完成');
+    
 })();
 </script>
 
