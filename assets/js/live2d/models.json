@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "alya",
+    "message": "Alya - 可爱的毛妹",
+    "paths": ["/assets/2d/alya/Alya.model3.json"]
+  },
+  {
+    "id": 2,
+    "name": "mihari", 
+    "message": "MIHARI - 温柔的女孩",
+    "paths": ["/assets/2d/MIHARI/Mihari_V1.model3.json"]
+  },
+  {
+    "id": 3,
+    "name": "rory",
+    "message": "Rory - 活泼的少女", 
+    "paths": ["/assets/2d/Rory_VTS/Roxy_V1.model3.json"]
+  }
+] 
