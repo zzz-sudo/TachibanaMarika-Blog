@@ -71,12 +71,12 @@
     color: #333;
 }
 
-/* Live2D 样式 - 简化版 */
+/* Live2D 样式 - 浮在最上层 */
 #live2d-container {
     position: fixed !important;
     left: 20px !important;
     bottom: 20px !important;
-    z-index: 9999 !important;
+    z-index: 99999 !important;
     pointer-events: auto !important;
     display: block !important;
     visibility: visible !important;
@@ -88,10 +88,12 @@
     border: 2px solid rgba(255,255,255,0.2) !important;
     backdrop-filter: blur(10px) !important;
     transition: transform 0.3s ease !important;
+    /* 确保浮在最上层 */
+    transform: translateZ(0) !important;
 }
 
 #live2d-container:hover {
-    transform: scale(1.05) !important;
+    transform: scale(1.05) translateZ(0) !important;
 }
 
 #live2d-canvas {
@@ -113,6 +115,7 @@
     font-size: 12px !important;
     opacity: 0.8 !important;
     transition: opacity 0.3s !important;
+    z-index: 100000 !important;
 }
 
 #model-controls {
@@ -121,6 +124,7 @@
     right: 10px !important;
     display: flex !important;
     gap: 5px !important;
+    z-index: 100000 !important;
 }
 
 #model-controls button {
@@ -140,9 +144,9 @@
     transform: scale(1.1) !important;
 }
 
-/* 音乐播放器样式 - 简化版 */
+/* 音乐播放器样式 - 浮在最上层 */
 #music-player {
-    z-index: 10000 !important;
+    z-index: 99999 !important;
     display: block !important;
     visibility: visible !important;
     position: fixed !important;
@@ -154,6 +158,8 @@
     padding: 15px !important;
     border-radius: 10px !important;
     box-shadow: 0 4px 20px rgba(0,0,0,0.5) !important;
+    /* 确保浮在最上层 */
+    transform: translateZ(0) !important;
 }
 
 #music-player button {
@@ -263,6 +269,24 @@
 
 /* 移除任何可能的"删除"按钮样式 */
 .delete-btn, .btn-delete, [class*="delete"] {
+    display: none !important;
+}
+
+/* 确保其他元素不会覆盖Live2D和音乐播放器 */
+.author__content,
+.page__content,
+.page__footer,
+.masthead,
+.navigation,
+.sidebar {
+    z-index: 1 !important;
+}
+
+/* 移除任何可能的Loading元素 */
+#loading-box,
+.loading-left-bg,
+.loading-right-bg,
+.spinner-box {
     display: none !important;
 }
 </style>
