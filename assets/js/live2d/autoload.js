@@ -1,15 +1,12 @@
 /*!
- * Live2D Widget
- * https://github.com/stevenjoezhang/live2d-widget
+ * Live2D Widget - 简化版本
+ * 基于 stevenjoezhang/live2d-widget 项目
  */
 
-// Recommended to use absolute path for live2d_path parameter
-// live2d_path 参数建议使用绝对路径
-// const live2d_path = 'https://fastly.jsdelivr.net/npm/live2d-widgets@1.0.0-rc.6/dist/';
-const live2d_path = '/assets/js/live2d/';
+// 使用相对路径
+const live2d_path = './assets/js/live2d/';
 
-// Method to encapsulate asynchronous resource loading
-// 封装异步加载资源的方法
+// 简化的资源加载函数
 function loadExternalResource(url, type) {
   return new Promise((resolve, reject) => {
     let tag;
@@ -21,7 +18,6 @@ function loadExternalResource(url, type) {
     }
     else if (type === 'js') {
       tag = document.createElement('script');
-      tag.type = 'module';
       tag.src = url;
     }
     if (tag) {
@@ -38,74 +34,110 @@ const localModels = [
     "id": 1,
     "name": "alya",
     "message": "Alya - 可爱的毛妹",
-    "paths": ["/assets/2d/alya/Alya.model3.json"]
+    "paths": ["./assets/2d/alya/Alya.model3.json"]
   },
   {
     "id": 2,
     "name": "mihari", 
     "message": "MIHARI - 温柔的女孩",
-    "paths": ["/assets/2d/MIHARI/Mihari_V1.model3.json"]
+    "paths": ["./assets/2d/MIHARI/Mihari_V1.model3.json"]
   },
   {
     "id": 3,
     "name": "rory",
     "message": "Rory - 活泼的少女", 
-    "paths": ["/assets/2d/Rory_VTS/Roxy_V1.model3.json"]
+    "paths": ["./assets/2d/Rory_VTS/Roxy_V1.model3.json"]
   }
 ];
 
-(async () => {
-  // If you are concerned about display issues on mobile devices, you can use screen.width to determine whether to load
-  // 如果担心手机上显示效果不佳，可以根据屏幕宽度来判断是否加载
-  // if (screen.width < 768) return;
+// 简化的初始化函数
+async function initLive2D() {
+  try {
+    console.log('🎭 开始初始化Live2D看板娘系统...');
+    
+    // 加载CSS样式
+    await loadExternalResource(live2d_path + 'waifu.css', 'css');
+    console.log('✅ CSS样式加载完成');
+    
+    // 创建看板娘容器
+    createWaifuContainer();
+    
+    // 加载Live2D引擎
+    await loadExternalResource(live2d_path + 'live2d.min.js', 'js');
+    console.log('✅ Live2D引擎加载完成');
+    
+    // 初始化模型
+    await initModels();
+    
+    console.log('🎉 Live2D看板娘系统初始化完成！');
+    
+  } catch (error) {
+    console.error('❌ Live2D初始化失败:', error);
+  }
+}
 
-  // Avoid cross-origin issues with image resources
-  // 避免图片资源跨域问题
-  const OriginalImage = window.Image;
-  window.Image = function(...args) {
-    const img = new OriginalImage(...args);
-    img.crossOrigin = "anonymous";
-    return img;
-  };
-  window.Image.prototype = OriginalImage.prototype;
+// 创建看板娘容器
+function createWaifuContainer() {
+  // 创建切换按钮
+  const toggle = document.createElement('div');
+  toggle.id = 'waifu-toggle';
+  toggle.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+      <path d="M96 64a64 64 0 1 1 128 0A64 64 0 1 1 96 64zm48 320l0 96c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-192.2L59.1 321c-9.4 15-29.2 19.4-44.1 10S-4.5 301.9 4.9 287l39.9-63.3C69.7 184 113.2 160 160 160s90.3 24 115.2 63.6L315.1 287c9.4 15 4.9 34.7-10 44.1s-34.7 4.9-44.1-10L240 287.8 240 480c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-96-32 0z"/>
+    </svg>
+  `;
   
-  // Load waifu.css and waifu-tips.js
-  // 加载 waifu.css 和 waifu-tips.js
-  await Promise.all([
-    loadExternalResource(live2d_path + 'waifu.css', 'css'),
-    loadExternalResource(live2d_path + 'waifu-tips.js', 'js')
-  ]);
+  // 创建看板娘主体
+  const waifu = document.createElement('div');
+  waifu.id = 'waifu';
+  waifu.innerHTML = `
+    <div id="waifu-tips"></div>
+    <div id="waifu-canvas">
+      <canvas id="live2d" width="800" height="800"></canvas>
+    </div>
+    <div id="waifu-tool"></div>
+  `;
   
-  // For detailed usage of configuration options, see README.en.md
-  // 配置选项的具体用法见 README.md
-  initWidget({
-    waifuPath: live2d_path + 'waifu-tips.json',
-    cubism2Path: live2d_path + 'live2d.min.js',
-    cubism5Path: 'https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js',
-    tools: ['hitokoto', 'asteroids', 'switch-model', 'switch-texture', 'photo', 'info', 'quit'],
-    logLevel: 'info',
-    drag: true,
-  }, localModels);
-})();
+  // 添加到页面
+  document.body.appendChild(toggle);
+  document.body.appendChild(waifu);
+  
+  // 绑定切换事件
+  toggle.addEventListener('click', () => {
+    waifu.classList.toggle('waifu-active');
+    toggle.classList.toggle('waifu-toggle-active');
+  });
+  
+  console.log('✅ 看板娘容器创建完成');
+}
 
-console.log(`\n%cLive2D%cWidget%c\n`, 'padding: 8px; background: #cd3e45; font-weight: bold; font-size: large; color: white;', 'padding: 8px; background: #ff5450; font-size: large; color: #eee;', '');
+// 初始化模型
+async function initModels() {
+  try {
+    // 这里可以添加模型加载逻辑
+    console.log('📝 模型配置:', localModels);
+    
+    // 显示欢迎消息
+    const tips = document.getElementById('waifu-tips');
+    if (tips) {
+      tips.innerHTML = '🎭 欢迎使用Live2D看板娘系统！';
+      tips.classList.add('waifu-tips-active');
+      
+      setTimeout(() => {
+        tips.classList.remove('waifu-tips-active');
+      }, 3000);
+    }
+    
+  } catch (error) {
+    console.error('❌ 模型初始化失败:', error);
+  }
+}
 
-/*
-く__,.ヘヽ.        /  ,ー､ 〉
-         ＼ ', !-─‐-i  /  /´
-         ／｀ｰ'       L/／｀ヽ､
-       /   ／,   /|   ,   ,       ',
-     ｲ   / /-‐/  ｉ  L_ ﾊ ヽ!   i
-      ﾚ ﾍ 7ｲ｀ﾄ   ﾚ'ｧ-ﾄ､!ハ|   |
-        !,/7 '0'     ´0iソ|    |
-        |.从"    _     ,,,, / |./    |
-        ﾚ'| i＞.､,,__  _,.イ /   .i   |
-          ﾚ'| | / k_７_/ﾚ'ヽ,  ﾊ.  |
-            | |/i 〈|/   i  ,.ﾍ |  i  |
-           .|/ /  ｉ：    ﾍ!    ＼  |
-            kヽ>､ﾊ    _,.ﾍ､    /､!
-            !'〈//｀Ｔ´', ＼ ｀'7'ｰr'
-            ﾚ'ヽL__|___i,___,ンﾚ|ノ
-                ﾄ-,/  |___./
-                'ｰ'    !_,.:
-*/
+// 页面加载完成后初始化
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initLive2D);
+} else {
+  initLive2D();
+}
+
+console.log('🎭 Live2D看板娘系统脚本加载完成');

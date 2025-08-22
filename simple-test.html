@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live2D 简化测试页面</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .description {
+            font-size: 1.2em;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        .status {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .status h4 {
+            margin-top: 0;
+            color: #4CAF50;
+        }
+        .instructions {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        .instructions h4 {
+            color: #ffd700;
+            margin-top: 0;
+        }
+        .instructions ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .instructions li {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎭 Live2D 简化测试页面</h1>
+        <div class="description">
+            这是一个简化版本的Live2D看板娘系统测试页面，用于验证基本功能是否正常。
+        </div>
+        
+        <div class="status">
+            <h4>📊 测试状态</h4>
+            <p>✅ 页面已加载</p>
+            <p>⏳ 等待Live2D系统初始化...</p>
+        </div>
+        
+        <div class="instructions">
+            <h4>🎯 测试说明</h4>
+            <ul>
+                <li><strong>检查控制台：</strong>打开浏览器开发者工具，查看控制台输出</li>
+                <li><strong>查看看板娘：</strong>页面右下角应该出现切换按钮</li>
+                <li><strong>点击切换：</strong>点击按钮应该显示/隐藏看板娘</li>
+                <li><strong>检查样式：</strong>看板娘应该有基本的样式显示</li>
+            </ul>
+        </div>
+        
+        <div class="status">
+            <h4>🔧 当前配置</h4>
+            <p>• 使用相对路径加载资源</p>
+            <p>• 简化版初始化逻辑</p>
+            <p>• 基础容器创建</p>
+            <p>• 错误处理和日志输出</p>
+        </div>
+    </div>
+    
+    <!-- Live2D 看板娘系统 -->
+    <script src="./assets/js/live2d/autoload.js"></script>
+</body>
+</html> 
