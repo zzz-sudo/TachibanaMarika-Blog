@@ -11,9 +11,10 @@
     min-width: 300px !important;
     max-width: 300px !important;
     height: 100vh !important;
-    z-index: 1; /* 降低层级，确保在装饰元素下方显示 */
+    z-index: 1000; /* 恢复正常层级 */
     margin: 0 !important;
     padding: 20px;
+    padding-top: 120px; /* 给蓝色三角形装饰元素留出空间 */
     box-sizing: border-box;
     transition: transform 0.3s ease;
     will-change: transform;

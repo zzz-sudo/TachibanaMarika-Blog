@@ -25,13 +25,14 @@
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             padding: 20px;
+            padding-top: 120px; /* 给蓝色三角形装饰元素留出空间 */
             box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
             position: fixed !important;
             left: 0 !important;
             top: 0 !important;
             height: 100vh !important;
             overflow-y: auto;
-            z-index: 1; /* 降低层级，确保在装饰元素下方显示 */
+            z-index: 1000; /* 恢复正常层级 */
             margin: 0 !important;
             box-sizing: border-box;
         }
