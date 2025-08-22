@@ -55,6 +55,8 @@
 <!-- Live2D 脚本 - 使用本地文件 -->
 <script src="/assets/js/live2d/live2d.min.js"></script>
 <script src="/assets/js/live2d/waifu-tips.js"></script>
+<!-- 简化Live2D实现 -->
+<script src="/assets/js/live2d/simple-live2d.js"></script>
 <script type="text/javascript">
 // Live2D初始化
 document.addEventListener('DOMContentLoaded', function() {
@@ -63,13 +65,15 @@ document.addEventListener('DOMContentLoaded', function() {
         if (typeof initWidget === 'function') {
             initWidget({
                 waifuPath: '/assets/js/live2d/waifu-tips.json',
-                cdnPath: '/assets/js/live2d/'
+                cdnPath: '/assets/js/live2d/',
+                apiPath: '/assets/js/live2d/',
+                modelList: '/assets/js/live2d/model_list.json'
             });
             console.log('Live2D初始化成功');
         } else {
             console.log('Live2D脚本加载失败，请检查文件路径');
         }
-    }, 1000);
+    }, 3000); // 增加等待时间
 });
 </script>
 
@@ -149,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
         musicPlayer.className = 'music-player';
         musicPlayer.innerHTML = `
             <audio id="bgMusic" loop>
-                <source src="/assets/audio/Summer%20(Nature's%20Crescendo).mp3" type="audio/mpeg">
+                <source src="/assets/audio/Summer (Nature's Crescendo).mp3" type="audio/mpeg">
             </audio>
             <div class="music-controls">
                 <button class="music-btn" id="musicBtn" title="播放/暂停">
@@ -169,6 +173,9 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('音乐播放器已添加到侧边栏');
         } else {
             console.log('未找到侧边栏，音乐播放器添加失败');
+            // 尝试插入到body
+            document.body.appendChild(musicPlayer);
+            console.log('音乐播放器已添加到body');
         }
         
         const musicBtn = document.getElementById('musicBtn');
@@ -222,7 +229,6 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             bgMusic.play();
             isPlaying = true;
-            musicBtn.classList.add('pause');
             musicBtn.classList.add('pause');
             musicIcon.className = 'fas fa-pause';
         }

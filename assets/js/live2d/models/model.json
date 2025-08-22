@@ -1,0 +1,22 @@
+{
+  "version": "Sample 1.0.0",
+  "model": "miku",
+  "textures": [
+    "texture_00.png"
+  ],
+  "motions": {
+    "idle": [
+      {
+        "file": "motion.moc"
+      }
+    ]
+  },
+  "physics": "physics.json",
+  "pose": "pose.json",
+  "expressions": [
+    {
+      "name": "f01",
+      "file": "expressions/f01.exp.json"
+    }
+  ]
+} 

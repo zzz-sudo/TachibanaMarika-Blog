@@ -1,21 +1,8 @@
-{
-  "models": [
-    [
-      "hijiki",
-      "miku",
-      "nico",
-      "nito",
-      "shizuku",
-      "tsumiki",
-      "z16"
-    ]
-  ],
-  "messages": [
-    "我的新衣服好看吗？",
-    "今天也要加油哦！",
-    "有什么想和我说的吗？",
-    "今天天气真不错呢~",
-    "工作辛苦了！",
-    "要记得休息哦~"
-  ]
-} 
+[
+  {
+    "id": 1,
+    "name": "miku",
+    "message": "初音未来",
+    "model": "/assets/js/live2d/models/model.json"
+  }
+] 
