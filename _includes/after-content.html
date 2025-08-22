@@ -1,12 +1,12 @@
-<!-- Live2D 三位置板娘 -->
+<!-- Live2D 三位置板娘 - 左侧布局 -->
 <link rel="stylesheet" type="text/css" href="https://blog-static.cnblogs.com/files/zhangshuhao1116/waifu1.css"/>
 <link rel="stylesheet" type="text/css" href="https://blog-static.cnblogs.com/files/zhangshuhao1116/flat-ui.min.css"/>
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 
-<!-- 板娘1 - MIHARI (左侧) -->
-<div class="waifu" id="waifu1" style="left: 20px; bottom: 0; z-index: 9999;">
+<!-- 板娘1 - MIHARI (左侧偏上) -->
+<div class="waifu" id="waifu1" style="left: 20px; top: 100px; z-index: 9999; position: fixed;">
   <div class="waifu-tips" style="opacity: 1;"></div>
-  <canvas id="live2d1" width="280" height="250" class="live2d"></canvas>
+  <canvas id="live2d1" width="200" height="180" class="live2d"></canvas>
   <div class="waifu-tool">
     <span class="fui-home"></span>
     <span class="fui-chat"></span>
@@ -18,10 +18,10 @@
   </div>
 </div>
 
-<!-- 板娘2 - Rory (中间) -->
-<div class="waifu" id="waifu2" style="left: 320px; bottom: 0; z-index: 9999;">
+<!-- 板娘2 - Rory (左侧中间) -->
+<div class="waifu" id="waifu2" style="left: 20px; top: 50%; transform: translateY(-50%); z-index: 9999; position: fixed;">
   <div class="waifu-tips" style="opacity: 1;"></div>
-  <canvas id="live2d2" width="280" height="250" class="live2d"></canvas>
+  <canvas id="live2d2" width="200" height="180" class="live2d"></canvas>
   <div class="waifu-tool">
     <span class="fui-home"></span>
     <span class="fui-chat"></span>
@@ -33,10 +33,10 @@
   </div>
 </div>
 
-<!-- 板娘3 - Alya (右侧) -->
-<div class="waifu" id="waifu3" style="left: 620px; bottom: 0; z-index: 9999;">
+<!-- 板娘3 - Alya (左侧偏下) -->
+<div class="waifu" id="waifu3" style="left: 20px; bottom: 100px; z-index: 9999; position: fixed;">
   <div class="waifu-tips" style="opacity: 1;"></div>
-  <canvas id="live2d3" width="280" height="250" class="live2d"></canvas>
+  <canvas id="live2d3" width="200" height="180" class="live2d"></canvas>
   <div class="waifu-tool">
     <span class="fui-home"></span>
     <span class="fui-chat"></span>
@@ -56,65 +56,86 @@
 <script type="text/javascript">
   // 等待页面加载完成后初始化
   document.addEventListener('DOMContentLoaded', function() {
-    console.log('开始初始化三个Live2D板娘');
+    console.log('=== Live2D 初始化开始 ===');
     
-    // 检查必要的函数和元素
-    if (typeof initModel === 'undefined') {
-      console.error('initModel函数未定义，请检查waifu-tips.js是否正确加载');
-      // 显示备用内容
+    // 检查jQuery是否加载
+    if (typeof $ === 'undefined') {
+      console.error('❌ jQuery未加载，Live2D无法正常工作');
       showFallbackContent();
       return;
     }
     
+    // 检查Live2D脚本是否加载
+    if (typeof Live2DModel === 'undefined' && typeof initModel === 'undefined') {
+      console.error('❌ Live2D核心脚本未加载，请检查网络连接');
+      showFallbackContent();
+      return;
+    }
+    
+    console.log('✅ 基础依赖检查通过');
+    
     // 延迟初始化，确保页面完全加载
     setTimeout(function() {
-      console.log('开始初始化Live2D模型...');
+      console.log('🔄 开始初始化Live2D模型...');
       
-      // 初始化板娘1（MIHARI - 偏上）
+      // 检查DOM元素
+      const waifu1 = document.getElementById('waifu1');
+      const waifu2 = document.getElementById('waifu2');
+      const waifu3 = document.getElementById('waifu3');
+      
+      if (!waifu1 || !waifu2 || !waifu3) {
+        console.error('❌ 找不到Live2D容器元素');
+        return;
+      }
+      
+      console.log('✅ DOM元素检查通过');
+      
+      // 尝试初始化板娘1（MIHARI - 偏上）
       try {
-        console.log('正在初始化板娘1 (MIHARI)...');
-        const waifu1 = document.getElementById('waifu1');
-        if (waifu1) {
+        console.log('🎭 正在初始化板娘1 (MIHARI)...');
+        if (typeof initModel === 'function') {
           initModel("live2d1", "waifu1");
-          console.log('板娘1 (MIHARI) 初始化成功');
+          console.log('✅ 板娘1 (MIHARI) 初始化成功');
         } else {
-          console.error('找不到waifu1元素');
+          console.warn('⚠️ initModel函数不存在，尝试其他方法');
+          // 这里可以添加备用的初始化方法
+          showFallbackContent('waifu1', 'MIHARI');
         }
       } catch (error) {
-        console.error('板娘1初始化失败:', error);
+        console.error('❌ 板娘1初始化失败:', error);
         showFallbackContent('waifu1', 'MIHARI');
       }
       
-      // 初始化板娘2（Rory - 中间）
+      // 尝试初始化板娘2（Rory - 中间）
       try {
-        console.log('正在初始化板娘2 (Rory)...');
-        const waifu2 = document.getElementById('waifu2');
-        if (waifu2) {
+        console.log('🎭 正在初始化板娘2 (Rory)...');
+        if (typeof initModel === 'function') {
           initModel("live2d2", "waifu2");
-          console.log('板娘2 (Rory) 初始化成功');
+          console.log('✅ 板娘2 (Rory) 初始化成功');
         } else {
-          console.error('找不到waifu2元素');
+          showFallbackContent('waifu2', 'Rory');
         }
       } catch (error) {
-        console.error('板娘2初始化失败:', error);
+        console.error('❌ 板娘2初始化失败:', error);
         showFallbackContent('waifu2', 'Rory');
       }
       
-      // 初始化板娘3（Alya - 偏下）
+      // 尝试初始化板娘3（Alya - 偏下）
       try {
-        console.log('正在初始化板娘3 (Alya)...');
-        const waifu3 = document.getElementById('waifu3');
-        if (waifu3) {
+        console.log('🎭 正在初始化板娘3 (Alya)...');
+        if (typeof initModel === 'function') {
           initModel("live2d3", "waifu3");
-          console.log('板娘3 (Alya) 初始化成功');
+          console.log('✅ 板娘3 (Alya) 初始化成功');
         } else {
-          console.error('找不到waifu3元素');
+          showFallbackContent('waifu3', 'Alya');
         }
       } catch (error) {
-        console.error('板娘3初始化失败:', error);
+        console.error('❌ 板娘3初始化失败:', error);
         showFallbackContent('waifu3', 'Alya');
       }
-    }, 3000); // 延迟3秒初始化
+      
+      console.log('=== Live2D 初始化完成 ===');
+    }, 2000); // 延迟2秒初始化
     
     // 备用内容显示函数
     function showFallbackContent(elementId, name) {
@@ -124,7 +145,7 @@
           <div style="
             background: linear-gradient(135deg, rgba(0,0,0,0.9), rgba(100,100,100,0.8));
             color: white;
-            padding: 30px 20px;
+            padding: 20px;
             border-radius: 15px;
             text-align: center;
             height: 100%;
@@ -133,11 +154,13 @@
             align-items: center;
             justify-content: center;
             border: 2px solid rgba(255,255,255,0.3);
+            font-family: Arial, sans-serif;
           ">
             <div style="font-size: 24px; margin-bottom: 10px;">🎭</div>
-            <div style="font-size: 18px; font-weight: bold; margin-bottom: 5px;">${name}</div>
-            <div style="font-size: 12px; opacity: 0.8;">Live2D模型</div>
-            <div style="font-size: 10px; opacity: 0.6; margin-top: 10px;">加载中...</div>
+            <div style="font-size: 16px; font-weight: bold; margin-bottom: 5px;">${name}</div>
+            <div style="font-size: 12px; opacity: 0.8; margin-bottom: 10px;">Live2D模型</div>
+            <div style="font-size: 10px; opacity: 0.6; color: #ff6b6b;">加载失败</div>
+            <div style="font-size: 8px; opacity: 0.5; margin-top: 10px; color: #74b9ff;">请检查控制台错误</div>
           </div>
         `;
       }
@@ -148,6 +171,46 @@
       showFallbackContent('waifu1', 'MIHARI');
       showFallbackContent('waifu2', 'Rory');
       showFallbackContent('waifu3', 'Alya');
+    }
+    
+    // 添加调试按钮
+    setTimeout(function() {
+      addDebugButton();
+    }, 1000);
+    
+    function addDebugButton() {
+      const debugBtn = document.createElement('div');
+      debugBtn.innerHTML = '🐛';
+      debugBtn.style.cssText = `
+        position: fixed;
+        left: 20px;
+        top: 20px;
+        z-index: 10000;
+        width: 40px;
+        height: 40px;
+        background: rgba(255,0,0,0.8);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 20px;
+        transition: all 0.3s ease;
+      `;
+      
+      debugBtn.addEventListener('click', function() {
+        console.log('=== Live2D 调试信息 ===');
+        console.log('jQuery版本:', $.fn.jquery);
+        console.log('Live2DModel:', typeof Live2DModel);
+        console.log('initModel:', typeof initModel);
+        console.log('waifu1元素:', document.getElementById('waifu1'));
+        console.log('waifu2元素:', document.getElementById('waifu2'));
+        console.log('waifu3元素:', document.getElementById('waifu3'));
+        alert('调试信息已输出到控制台，请按F12查看');
+      });
+      
+      document.body.appendChild(debugBtn);
     }
   });
 </script>
