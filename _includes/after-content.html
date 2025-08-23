@@ -17,13 +17,74 @@
 <canvas id="dynamic-bg" style="position: fixed; top: 0; left: 0; z-index: 1; opacity: 0.4; pointer-events: none; width: 100%; height: 100%;"></canvas>
 
 <script>
-// 简化的音乐播放器控制
+// 改进的音乐播放器控制 - 支持页面切换保持状态和自动播放
 document.addEventListener('DOMContentLoaded', function() {
     const audio = document.getElementById('local-audio');
     const musicToggle = document.getElementById('music-toggle');
     const musicPlayer = document.getElementById('music-player');
     
     let isPlaying = false;
+    
+    // 从localStorage恢复播放状态
+    function restorePlayState() {
+        const savedState = localStorage.getItem('musicPlayerState');
+        if (savedState) {
+            const state = JSON.parse(savedState);
+            isPlaying = state.isPlaying;
+            
+            // 恢复播放状态
+            if (isPlaying) {
+                musicToggle.innerHTML = '⏸️';
+                musicToggle.style.background = 'linear-gradient(145deg, #f44336, #d32f2f)';
+                
+                // 尝试自动播放
+                audio.play().then(() => {
+                    console.log('🎵 自动恢复音乐播放');
+                }).catch(err => {
+                    console.log('❌ 自动播放失败，需要用户交互:', err.message);
+                    // 自动播放失败时，重置状态
+                    isPlaying = false;
+                    musicToggle.innerHTML = '▶️';
+                    musicToggle.style.background = 'linear-gradient(145deg, #4CAF50, #45a049)';
+                    localStorage.setItem('musicPlayerState', JSON.stringify({ isPlaying: false }));
+                });
+            }
+        } else {
+            // 首次访问，尝试自动播放
+            tryAutoPlay();
+        }
+    }
+    
+    // 尝试自动播放
+    function tryAutoPlay() {
+        // 检查是否支持自动播放
+        const canAutoplay = localStorage.getItem('canAutoplay');
+        
+        if (canAutoplay !== 'false') {
+            // 延迟一下再尝试自动播放，给页面加载时间
+            setTimeout(() => {
+                audio.play().then(() => {
+                    isPlaying = true;
+                    musicToggle.innerHTML = '⏸️';
+                    musicToggle.style.background = 'linear-gradient(145deg, #f44336, #d32f2f)';
+                    console.log('🎵 首次访问自动播放成功');
+                    savePlayState();
+                    localStorage.setItem('canAutoplay', 'true');
+                }).catch(err => {
+                    console.log('❌ 自动播放失败，用户需要手动点击:', err.message);
+                    localStorage.setItem('canAutoplay', 'false');
+                });
+            }, 1000);
+        }
+    }
+    
+    // 保存播放状态到localStorage
+    function savePlayState() {
+        localStorage.setItem('musicPlayerState', JSON.stringify({ 
+            isPlaying: isPlaying,
+            timestamp: Date.now()
+        }));
+    }
     
     // 音乐播放/暂停切换
     musicToggle.addEventListener('click', function() {
@@ -43,22 +104,52 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('❌ 播放失败:', err.message);
             });
         }
+        
+        // 保存状态
+        savePlayState();
     });
     
     // 音频事件监听
     audio.addEventListener('loadeddata', function() {
         console.log('✅ 音频文件加载完成');
+        // 设置循环播放
+        audio.loop = true;
+        // 恢复播放状态
+        restorePlayState();
     });
     
     audio.addEventListener('ended', function() {
-        isPlaying = false;
-        musicToggle.innerHTML = '▶️';
-        musicToggle.style.background = 'linear-gradient(145deg, #4CAF50, #45a049)';
-        console.log('🔚 音乐播放结束');
+        // 由于设置了循环播放，这里通常不会触发
+        console.log('🔄 音乐循环播放中...');
     });
     
     audio.addEventListener('error', function(e) {
         console.error('❌ 音频加载失败:', e);
+    });
+    
+    // 页面可见性变化处理
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            // 页面隐藏时，暂停音乐
+            if (isPlaying) {
+                audio.pause();
+                console.log('⏸️ 页面隐藏，音乐已暂停');
+            }
+        } else {
+            // 页面显示时，恢复音乐（如果之前是播放状态）
+            if (isPlaying) {
+                audio.play().then(() => {
+                    console.log('🎵 页面显示，音乐已恢复');
+                }).catch(err => {
+                    console.log('❌ 恢复播放失败:', err.message);
+                });
+            }
+        }
+    });
+    
+    // 页面卸载前保存状态
+    window.addEventListener('beforeunload', function() {
+        savePlayState();
     });
     
     // 音乐播放器悬停效果
@@ -72,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function() {
         this.style.boxShadow = '0 4px 15px rgba(0,0,0,0.5)';
     });
     
-    console.log('🎵 音乐播放器初始化完成');
+    console.log('🎵 改进的音乐播放器初始化完成');
 });
 
 // 动态背景线条 - 安全版本
