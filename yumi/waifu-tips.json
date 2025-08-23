@@ -1,0 +1,79 @@
+{
+  "models": ["yumi"],
+  "messages": {
+    "yumi": "欢迎来到我的博客！我是yumi看板娘~",
+    "default": [
+      "欢迎来到我的博客！",
+      "今天也要加油哦！",
+      "有什么可以帮助你的吗？",
+      "我是yumi，很高兴认识你！",
+      "今天天气真不错呢~"
+    ]
+  },
+  "time": [
+    {
+      "hour": "0-6",
+      "text": "夜深了，要注意休息哦~"
+    },
+    {
+      "hour": "6-12", 
+      "text": "早上好！新的一天开始了！"
+    },
+    {
+      "hour": "12-18",
+      "text": "下午好！工作辛苦了！"
+    },
+    {
+      "hour": "18-24",
+      "text": "晚上好！今天过得怎么样？"
+    }
+  ],
+  "mouseover": [
+    {
+      "selector": "a",
+      "text": "要点击这个链接吗？"
+    },
+    {
+      "selector": "h1",
+      "text": "这个标题看起来很有趣呢~"
+    },
+    {
+      "selector": "p",
+      "text": "你在看这篇文章吗？"
+    }
+  ],
+  "click": [
+    {
+      "selector": "a",
+      "text": "你点击了链接：{text}"
+    },
+    {
+      "selector": "button",
+      "text": "你点击了按钮：{text}"
+    }
+  ],
+  "seasons": [
+    {
+      "date": "1/1",
+      "text": "新年快乐！{year}年开始了！"
+    },
+    {
+      "date": "12/25",
+      "text": "圣诞节快乐！"
+    }
+  ],
+  "message": {
+    "welcome": "欢迎来到我的博客！",
+    "referrer": "来自 {text} 的访问",
+    "console": "欢迎来到控制台！",
+    "copy": "复制成功！",
+    "visibilitychange": "欢迎回来！",
+    "hoverBody": "你在摸我吗？",
+    "tapBody": "你戳了我一下！",
+    "hitokoto": "一言：{text}",
+    "changeSuccess": "换装成功！",
+    "changeFail": "换装失败...",
+    "photo": "拍照成功！",
+    "goodbye": "再见！"
+  }
+} 

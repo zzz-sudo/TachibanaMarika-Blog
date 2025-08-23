@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live2D 测试页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .test-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .status.success { background: #d4edda; color: #155724; }
+        .status.error { background: #f8d7da; color: #721c24; }
+        .status.info { background: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎭 Live2D 看板娘测试页面</h1>
+        
+        <div class="test-info">
+            <h3>测试说明</h3>
+            <p>这个页面用于测试Live2D看板娘功能是否正常工作。</p>
+            <p>如果一切正常，你应该在右下角看到可爱的yumi看板娘！</p>
+        </div>
+
+        <div class="status info">
+            <strong>测试步骤：</strong>
+            <ol>
+                <li>页面加载完成后，检查右下角是否显示看板娘</li>
+                <li>尝试点击看板娘，看是否有交互效果</li>
+                <li>使用右上角的控制按钮测试功能</li>
+                <li>打开浏览器控制台查看是否有错误信息</li>
+            </ol>
+        </div>
+
+        <div class="status info">
+            <strong>预期结果：</strong>
+            <ul>
+                <li>✅ 看板娘正常显示</li>
+                <li>✅ 可以点击交互</li>
+                <li>✅ 控制按钮工作正常</li>
+                <li>✅ 控制台无错误信息</li>
+            </ul>
+        </div>
+
+        <div id="test-results">
+            <h3>测试结果</h3>
+            <div id="live2d-status" class="status info">等待Live2D加载...</div>
+        </div>
+    </div>
+
+    <!-- Live2D Widget -->
+    <div id="live2d-widget">
+        <div class="live2d-dialog" id="live2d-dialog"></div>
+        <div class="live2d-controls">
+            <button class="live2d-control-btn" id="live2d-toggle" title="显示/隐藏">👁</button>
+            <button class="live2d-control-btn" id="live2d-settings" title="设置">⚙</button>
+            <button class="live2d-control-btn" id="live2d-close" title="关闭">✕</button>
+        </div>
+    </div>
+
+               <!-- 正确的Live2D配置 -->
+           <script type="module" src="assets/js/live2d-correct.js"></script>
+
+    <!-- Live2D Widget Styles -->
+    <link rel="stylesheet" href="assets/css/live2d.css">
+
+    <script>
+        // 测试逻辑
+        document.addEventListener('DOMContentLoaded', function() {
+            const statusDiv = document.getElementById('live2d-status');
+            
+            // 检查正确的Live2D配置
+            setTimeout(() => {
+                if (typeof Live2DConfig !== 'undefined') {
+                    statusDiv.className = 'status success';
+                    statusDiv.innerHTML = '✅ 正确的Live2D配置启动成功！';
+                } else {
+                    statusDiv.className = 'status error';
+                    statusDiv.innerHTML = '❌ Live2D配置启动失败';
+                }
+            }, 2000);
+
+            // 检查看板娘显示
+            setTimeout(() => {
+                const widget = document.getElementById('live2d-widget');
+                if (widget && widget.querySelector('canvas')) {
+                    statusDiv.className = 'status success';
+                    statusDiv.innerHTML = '✅ 看板娘显示成功！你可以：<br>• 点击看板娘<br>• 拖拽移动位置<br>• 悬停查看效果';
+                } else {
+                    statusDiv.className = 'status error';
+                    statusDiv.innerHTML = '❌ 看板娘显示失败，请检查页面元素';
+                }
+            }, 4000);
+        });
+    </script>
+</body>
+</html> 
