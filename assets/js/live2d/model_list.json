@@ -5,23 +5,9 @@
       "name": "alya",
       "message": "Alya - 可爱的毛妹",
       "model": "/assets/2d/alya/Alya.model3.json"
-    },
-    {
-      "id": 2,
-      "name": "mihari",
-      "message": "MIHARI - 温柔的女孩",
-      "model": "/assets/2d/MIHARI/Mihari_V1.model3.json"
-    },
-    {
-      "id": 3,
-      "name": "rory",
-      "message": "Rory - 活泼的少女",
-      "model": "/assets/2d/Rory_VTS/Roxy_V1.model3.json"
     }
   ],
   "messages": [
-    "Alya - 可爱的毛妹",
-    "MIHARI - 温柔的女孩", 
-    "Rory - 活泼的少女"
+    "Alya - 可爱的毛妹"
   ]
 } 

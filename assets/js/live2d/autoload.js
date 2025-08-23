@@ -1,5 +1,5 @@
 /*!
- * Live2D Widget - 简化版本
+ * Live2D Widget - 修复版本
  * 基于 stevenjoezhang/live2d-widget 项目
  */
 
@@ -43,29 +43,16 @@ function loadExternalResource(url, type) {
   });
 }
 
-// 本地模型配置
-const localModels = [
-  {
-    "id": 1,
-    "name": "alya",
-    "message": "Alya - 可爱的毛妹",
-    "paths": [getBasePath() + '/assets/2d/alya/Alya.model3.json']
-  },
-  {
-    "id": 2,
-    "name": "mihari", 
-    "message": "MIHARI - 温柔的女孩",
-    "paths": [getBasePath() + '/assets/2d/MIHARI/Mihari_V1.model3.json']
-  },
-  {
-    "id": 3,
-    "name": "rory",
-    "message": "Rory - 活泼的少女", 
-    "paths": [getBasePath() + '/assets/2d/Rory_VTS/Roxy_V1.model3.json']
-  }
-];
+// 只保留Alya模型配置
+const alyaModel = {
+  "id": 1,
+  "name": "alya",
+  "message": "Alya - 可爱的毛妹",
+  "modelPath": getBasePath() + '/assets/2d/alya/Alya.model3.json',
+  "basePath": getBasePath() + '/assets/2d/alya/'
+};
 
-// 简化的初始化函数
+// 修复后的初始化函数
 async function initLive2D() {
   try {
     console.log('🎭 开始初始化Live2D看板娘系统...');
@@ -81,14 +68,32 @@ async function initLive2D() {
     await loadExternalResource(getLive2DPath() + 'live2d.min.js', 'js');
     console.log('✅ Live2D引擎加载完成');
     
+    // 等待Live2D引擎完全加载
+    await waitForLive2D();
+    
     // 初始化模型
-    await initModels();
+    await initAlyaModel();
     
     console.log('🎉 Live2D看板娘系统初始化完成！');
     
   } catch (error) {
     console.error('❌ Live2D初始化失败:', error);
   }
+}
+
+// 等待Live2D引擎加载完成
+function waitForLive2D() {
+  return new Promise((resolve) => {
+    const checkLive2D = () => {
+      if (window.Live2DCubismCore && window.Live2DCubismFramework) {
+        console.log('✅ Live2D引擎加载完成');
+        resolve();
+      } else {
+        setTimeout(checkLive2D, 100);
+      }
+    };
+    checkLive2D();
+  });
 }
 
 // 创建看板娘容器
@@ -108,7 +113,7 @@ function createWaifuContainer() {
   waifu.innerHTML = `
     <div id="waifu-tips"></div>
     <div id="waifu-canvas">
-      <canvas id="live2d" width="800" height="800"></canvas>
+      <canvas id="live2d" width="300" height="300"></canvas>
     </div>
     <div id="waifu-tool"></div>
   `;
@@ -126,25 +131,121 @@ function createWaifuContainer() {
   console.log('✅ 看板娘容器创建完成');
 }
 
-// 初始化模型
-async function initModels() {
+// 初始化Alya模型
+async function initAlyaModel() {
   try {
-    // 这里可以添加模型加载逻辑
-    console.log('📝 模型配置:', localModels);
+    console.log('🎭 开始加载Alya模型...');
     
-    // 显示欢迎消息
-    const tips = document.getElementById('waifu-tips');
-    if (tips) {
-      tips.innerHTML = '🎭 欢迎使用Live2D看板娘系统！';
-      tips.classList.add('waifu-tips-active');
-      
-      setTimeout(() => {
-        tips.classList.remove('waifu-tips-active');
-      }, 3000);
+    const canvas = document.getElementById('live2d');
+    if (!canvas) {
+      throw new Error('找不到canvas元素');
     }
     
+    // 获取WebGL上下文
+    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if (!gl) {
+      throw new Error('WebGL不可用');
+    }
+    
+    // 设置画布尺寸
+    const pixelRatio = window.devicePixelRatio || 1;
+    canvas.width = 300 * pixelRatio;
+    canvas.height = 300 * pixelRatio;
+    canvas.style.width = '300px';
+    canvas.style.height = '300px';
+    
+    // 加载模型文件
+    const modelResponse = await fetch(alyaModel.modelPath);
+    const modelData = await modelResponse.json();
+    
+    console.log('✅ 模型配置加载完成:', modelData);
+    
+    // 显示欢迎消息
+    showWelcomeMessage();
+    
+    // 这里可以添加更多的模型渲染逻辑
+    // 由于Live2D Cubism SDK的复杂性，这里先显示一个占位符
+    drawPlaceholder(gl);
+    
   } catch (error) {
-    console.error('❌ 模型初始化失败:', error);
+    console.error('❌ Alya模型加载失败:', error);
+    showErrorMessage();
+  }
+}
+
+// 绘制占位符（临时解决方案）
+function drawPlaceholder(gl) {
+  gl.clearColor(0.9, 0.9, 0.9, 1.0);
+  gl.clear(gl.COLOR_BUFFER_BIT);
+  
+  // 绘制一个简单的矩形作为占位符
+  const vertices = new Float32Array([
+    -0.5, -0.5,
+     0.5, -0.5,
+     0.5,  0.5,
+    -0.5,  0.5
+  ]);
+  
+  const vertexBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+  
+  const vertexShader = gl.createShader(gl.VERTEX_SHADER);
+  gl.shaderSource(vertexShader, `
+    attribute vec2 a_position;
+    void main() {
+      gl_Position = vec4(a_position, 0.0, 1.0);
+    }
+  `);
+  gl.compileShader(vertexShader);
+  
+  const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+  gl.shaderSource(fragmentShader, `
+    precision mediump float;
+    void main() {
+      gl_FragColor = vec4(0.2, 0.6, 1.0, 1.0);
+    }
+  `);
+  gl.compileShader(fragmentShader);
+  
+  const program = gl.createProgram();
+  gl.attachShader(program, vertexShader);
+  gl.attachShader(program, fragmentShader);
+  gl.linkProgram(program);
+  gl.useProgram(program);
+  
+  const positionLocation = gl.getAttribLocation(program, 'a_position');
+  gl.enableVertexAttribArray(positionLocation);
+  gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+  
+  gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
+  
+  console.log('✅ 占位符绘制完成');
+}
+
+// 显示欢迎消息
+function showWelcomeMessage() {
+  const tips = document.getElementById('waifu-tips');
+  if (tips) {
+    tips.innerHTML = '🎭 Alya: 欢迎来到我的博客！';
+    tips.classList.add('waifu-tips-active');
+    
+    setTimeout(() => {
+      tips.classList.remove('waifu-tips-active');
+    }, 3000);
+  }
+}
+
+// 显示错误消息
+function showErrorMessage() {
+  const tips = document.getElementById('waifu-tips');
+  if (tips) {
+    tips.innerHTML = '❌ 模型加载失败，请检查控制台';
+    tips.classList.add('waifu-tips-active');
+    
+    setTimeout(() => {
+      tips.classList.remove('waifu-tips-active');
+    }, 5000);
   }
 }
 

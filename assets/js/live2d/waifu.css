@@ -81,6 +81,7 @@
 	height: 300px;
 	position: relative;
 	width: 300px;
+	display: block;
 }
 
 #live2d:active {
