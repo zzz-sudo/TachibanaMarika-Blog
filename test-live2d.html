@@ -7,119 +7,272 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            margin: 20px;
+            background: #f0f0f0;
         }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
+        .test-section {
             background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .test-info {
-            background: #f8f9fa;
             padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .log {
+            background: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-family: monospace;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        button {
+            background: #007cba;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #005a87;
         }
         .status {
             padding: 10px;
-            border-radius: 5px;
             margin: 10px 0;
+            border-radius: 4px;
         }
         .status.success { background: #d4edda; color: #155724; }
         .status.error { background: #f8d7da; color: #721c24; }
-        .status.info { background: #d1ecf1; color: #0c5460; }
+        .status.warning { background: #fff3cd; color: #856404; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🎭 Live2D 看板娘测试页面</h1>
-        
-        <div class="test-info">
-            <h3>测试说明</h3>
-            <p>这个页面用于测试Live2D看板娘功能是否正常工作。</p>
-            <p>如果一切正常，你应该在右下角看到可爱的yumi看板娘！</p>
-        </div>
-
-        <div class="status info">
-            <strong>测试步骤：</strong>
-            <ol>
-                <li>页面加载完成后，检查右下角是否显示看板娘</li>
-                <li>尝试点击看板娘，看是否有交互效果</li>
-                <li>使用右上角的控制按钮测试功能</li>
-                <li>打开浏览器控制台查看是否有错误信息</li>
-            </ol>
-        </div>
-
-        <div class="status info">
-            <strong>预期结果：</strong>
-            <ul>
-                <li>✅ 看板娘正常显示</li>
-                <li>✅ 可以点击交互</li>
-                <li>✅ 控制按钮工作正常</li>
-                <li>✅ 控制台无错误信息</li>
-            </ul>
-        </div>
-
-        <div id="test-results">
-            <h3>测试结果</h3>
-            <div id="live2d-status" class="status info">等待Live2D加载...</div>
+    <h1>🎭 Live2D 测试页面</h1>
+    
+    <div class="test-section">
+        <h2>🔧 测试控制</h2>
+        <button onclick="testLive2D()">测试 Live2D 加载</button>
+        <button onclick="checkFiles()">检查文件状态</button>
+        <button onclick="clearLog()">清空日志</button>
+        <button onclick="forceInit()">强制初始化</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>📊 状态信息</h2>
+        <div id="status" class="status warning">等待测试...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>📝 控制台日志</h2>
+        <div id="log" class="log"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>🎯 Live2D 容器</h2>
+        <div id="live2d-container" style="min-height: 200px; border: 2px dashed #ccc; padding: 20px; text-align: center;">
+            <p>Live2D 模型将在这里显示</p>
         </div>
     </div>
-
-    <!-- Live2D Widget -->
-    <div id="live2d-widget">
-        <div class="live2d-dialog" id="live2d-dialog"></div>
-        <div class="live2d-controls">
-            <button class="live2d-control-btn" id="live2d-toggle" title="显示/隐藏">👁</button>
-            <button class="live2d-control-btn" id="live2d-settings" title="设置">⚙</button>
-            <button class="live2d-control-btn" id="live2d-close" title="关闭">✕</button>
-        </div>
-    </div>
-
-               <!-- 正确的Live2D配置 -->
-           <script type="module" src="assets/js/live2d-correct.js"></script>
-
-    <!-- Live2D Widget Styles -->
-    <link rel="stylesheet" href="assets/css/live2d.css">
 
     <script>
-        // 测试逻辑
-        document.addEventListener('DOMContentLoaded', function() {
-            const statusDiv = document.getElementById('live2d-status');
+        // 重写 console.log 来捕获日志
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        
+        function addLog(message, type = 'log') {
+            const logDiv = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.style.color = type === 'error' ? 'red' : type === 'warn' ? 'orange' : 'black';
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            logDiv.appendChild(logEntry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addLog(args.join(' '));
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            addLog(args.join(' '), 'error');
+        };
+        
+        console.warn = function(...args) {
+            originalWarn.apply(console, args);
+            addLog(args.join(' '), 'warn');
+        };
+        
+        function updateStatus(message, type = 'warning') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+        }
+        
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+        }
+        
+        function checkFiles() {
+            updateStatus('检查文件中...', 'warning');
             
-            // 检查正确的Live2D配置
-            setTimeout(() => {
-                if (typeof Live2DConfig !== 'undefined') {
-                    statusDiv.className = 'status success';
-                    statusDiv.innerHTML = '✅ 正确的Live2D配置启动成功！';
-                } else {
-                    statusDiv.className = 'status error';
-                    statusDiv.innerHTML = '❌ Live2D配置启动失败';
+            const files = [
+                '/assets/js/live2d-correct.js',
+                '/assets/live2d-framework/waifu.css',
+                '/assets/live2d-framework/waifu-tips.js',
+                '/yumi/yumi.model3.json',
+                '/yumi/yumi.moc3',
+                '/yumi/yumi.8192/texture_00.png'
+            ];
+            
+            let checkedCount = 0;
+            let successCount = 0;
+            
+            files.forEach(file => {
+                fetch(file)
+                    .then(response => {
+                        checkedCount++;
+                        if (response.ok) {
+                            successCount++;
+                            addLog(`✅ ${file} - 可访问`);
+                        } else {
+                            addLog(`❌ ${file} - 状态: ${response.status}`);
+                        }
+                        
+                        if (checkedCount === files.length) {
+                            const message = `文件检查完成: ${successCount}/${files.length} 个文件可访问`;
+                            updateStatus(message, successCount === files.length ? 'success' : 'error');
+                        }
+                    })
+                    .catch(error => {
+                        checkedCount++;
+                        addLog(`❌ ${file} - 错误: ${error.message}`);
+                        
+                        if (checkedCount === files.length) {
+                            const message = `文件检查完成: ${successCount}/${files.length} 个文件可访问`;
+                            updateStatus(message, successCount === files.length ? 'success' : 'error');
+                        }
+                    });
+            });
+        }
+        
+        function testLive2D() {
+            updateStatus('测试 Live2D 加载中...', 'warning');
+            addLog('🎯 开始测试 Live2D 加载...');
+            
+            // 检查全局变量
+            addLog(`🔍 检查全局变量:`);
+            addLog(`  - window.Live2DConfig: ${typeof window.Live2DConfig !== 'undefined' ? '存在' : '不存在'}`);
+            addLog(`  - window.initWidget: ${typeof window.initWidget !== 'undefined' ? '存在' : '不存在'}`);
+            
+            if (typeof window.initWidget === 'undefined') {
+                addLog('❌ initWidget 函数未找到，尝试手动加载...');
+                loadLive2DManually();
+            } else {
+                addLog('✅ initWidget 函数已存在，尝试调用...');
+                try {
+                    const config = window.Live2DConfig || {
+                        waifuPath: '/yumi/waifu-tips.json',
+                        cdnPath: '/yumi/',
+                        tools: ['hitokoto', 'asteroids', 'switch-model', 'switch-texture', 'photo', 'info', 'quit'],
+                        logLevel: 'info',
+                        drag: true,
+                        models: [{
+                            name: "yumi",
+                            paths: ['/yumi/yumi.model3.json'],
+                            message: "欢迎来到我的博客！我是yumi看板娘~"
+                        }]
+                    };
+                    
+                    addLog('🎯 调用 initWidget，配置:', config);
+                    window.initWidget(config);
+                    updateStatus('Live2D 初始化成功！', 'success');
+                } catch (error) {
+                    addLog(`❌ initWidget 调用失败: ${error.message}`);
+                    updateStatus('Live2D 初始化失败', 'error');
                 }
-            }, 2000);
-
-            // 检查看板娘显示
-            setTimeout(() => {
-                const widget = document.getElementById('live2d-widget');
-                if (widget && widget.querySelector('canvas')) {
-                    statusDiv.className = 'status success';
-                    statusDiv.innerHTML = '✅ 看板娘显示成功！你可以：<br>• 点击看板娘<br>• 拖拽移动位置<br>• 悬停查看效果';
-                } else {
-                    statusDiv.className = 'status error';
-                    statusDiv.innerHTML = '❌ 看板娘显示失败，请检查页面元素';
-                }
-            }, 4000);
+            }
+        }
+        
+        function loadLive2DManually() {
+            addLog('🔄 手动加载 Live2D 框架...');
+            
+            // 加载 CSS
+            const cssLink = document.createElement('link');
+            cssLink.rel = 'stylesheet';
+            cssLink.href = '/assets/live2d-framework/waifu.css';
+            document.head.appendChild(cssLink);
+            
+            // 加载 JavaScript
+            const script = document.createElement('script');
+            script.src = '/assets/live2d-framework/waifu-tips.js';
+            script.onload = function() {
+                addLog('✅ Live2D 框架加载完成');
+                setTimeout(() => {
+                    if (typeof window.initWidget !== 'undefined') {
+                        addLog('🎯 initWidget 函数已可用，尝试调用...');
+                        testLive2D();
+                    } else {
+                        addLog('❌ initWidget 函数仍然不可用');
+                        updateStatus('Live2D 框架加载失败', 'error');
+                    }
+                }, 500);
+            };
+            script.onerror = function() {
+                addLog('❌ Live2D 框架加载失败');
+                updateStatus('Live2D 框架加载失败', 'error');
+            };
+            document.head.appendChild(script);
+        }
+        
+        function forceInit() {
+            addLog('🚀 强制初始化 Live2D...');
+            
+            // 清空容器
+            const container = document.getElementById('live2d-container');
+            container.innerHTML = '<p>正在强制初始化...</p>';
+            
+            // 尝试直接创建 Live2D 元素
+            try {
+                container.innerHTML = `
+                    <div id="waifu">
+                        <div id="waifu-tips"></div>
+                        <div id="waifu-canvas">
+                            <canvas id="live2d" width="800" height="800"></canvas>
+                        </div>
+                        <div id="waifu-tool"></div>
+                    </div>
+                `;
+                
+                addLog('✅ Live2D 容器创建成功');
+                updateStatus('Live2D 容器已创建', 'success');
+                
+                // 尝试加载模型
+                setTimeout(() => {
+                    if (typeof window.initWidget !== 'undefined') {
+                        addLog('🎯 尝试调用 initWidget...');
+                        testLive2D();
+                    } else {
+                        addLog('❌ initWidget 函数不可用，需要重新加载页面');
+                        updateStatus('需要重新加载页面', 'warning');
+                    }
+                }, 1000);
+                
+            } catch (error) {
+                addLog(`❌ 强制初始化失败: ${error.message}`);
+                updateStatus('强制初始化失败', 'error');
+            }
+        }
+        
+        // 页面加载完成后自动检查
+        document.addEventListener('DOMContentLoaded', function() {
+            addLog('📄 页面加载完成');
+            setTimeout(checkFiles, 1000);
         });
     </script>
 </body>
