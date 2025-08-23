@@ -158,11 +158,10 @@ class SidebarController {
             recentPostsTitle.parentNode.style.position = 'relative';
             recentPostsTitle.parentNode.appendChild(removeHint);
             
-            // 隐藏整个最新文章部分
-            const recentPostsSection = recentPostsTitle.closest('.archive');
-            if (recentPostsSection) {
-                recentPostsSection.style.display = 'none';
-                console.log('✅ 最新文章部分已移除');
+            // 只隐藏最新文章标题，保留文章内容
+            if (recentPostsTitle) {
+                recentPostsTitle.style.display = 'none';
+                console.log('✅ 最新文章标题已隐藏，保留文章内容');
             }
         }
     }
