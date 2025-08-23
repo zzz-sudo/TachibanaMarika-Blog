@@ -51,6 +51,20 @@ textarea,
     cursor: url('/assets/images/cursors/1.ico'), auto;
 }
 
+/* Live2D模型触摸光标 - 使用GIF动画 */
+#live2d-widget canvas,
+.live2d-model,
+.live2d-canvas,
+#live2d-widget .live2d-model,
+#live2d-widget .live2d-canvas {
+    cursor: url('/assets/images/cursors/handwriting-ezgif.com-resize.gif') !important;
+}
+
+/* 确保Live2D模型内的所有元素都使用触摸光标 */
+#live2d-widget * {
+    cursor: url('/assets/images/cursors/handwriting-ezgif.com-resize.gif') !important;
+}
+
 /* 音乐播放器按钮特殊处理 */
 #music-toggle:hover {
     cursor: url('/assets/images/cursors/2.ico'), pointer;

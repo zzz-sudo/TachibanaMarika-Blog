@@ -190,8 +190,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const basePath = getBasePath();
     const cursor1Path = basePath + '/assets/images/cursors/1.ico';
     const cursor2Path = basePath + '/assets/images/cursors/2.ico';
+    const live2dCursorPath = basePath + '/assets/images/cursors/handwriting-ezgif.com-resize.gif';
     
-    console.log('🔧 光标路径:', { cursor1: cursor1Path, cursor2: cursor2Path });
+    console.log('🔧 光标路径:', { 
+        cursor1: cursor1Path, 
+        cursor2: cursor2Path, 
+        live2d: live2dCursorPath 
+    });
     
     // 为所有链接添加光标增强
     const links = document.querySelectorAll('a');
@@ -240,6 +245,58 @@ document.addEventListener('DOMContentLoaded', function() {
             this.style.cursor = `url('${cursor1Path}'), auto`;
         });
     }
+    
+    // 为Live2D模型添加触摸光标
+    function setupLive2DCursor() {
+        // 查找Live2D相关的元素
+        const live2dElements = document.querySelectorAll('#live2d-widget, .live2d-model, .live2d-canvas, canvas[id*="live2d"], canvas[id*="yumi"]');
+        
+        live2dElements.forEach(element => {
+            // 设置触摸光标
+            element.style.cursor = `url('${live2dCursorPath}'), auto`;
+            
+            // 添加触摸事件监听
+            element.addEventListener('mouseenter', function() {
+                this.style.cursor = `url('${live2dCursorPath}'), auto`;
+            });
+            
+            element.addEventListener('mouseleave', function() {
+                this.style.cursor = `url('${cursor1Path}'), auto`;
+            });
+            
+            // 触摸事件
+            element.addEventListener('touchstart', function() {
+                this.style.cursor = `url('${live2dCursorPath}'), auto`;
+            });
+            
+            element.addEventListener('touchend', function() {
+                this.style.cursor = `url('${live2dCursorPath}'), auto`;
+            });
+        });
+        
+        console.log('🎭 Live2D触摸光标设置完成');
+    }
+    
+    // 延迟设置Live2D光标，确保Live2D模型已加载
+    setTimeout(setupLive2DCursor, 2000);
+    
+    // 监听Live2D模型加载完成
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'childList') {
+                const live2dWidget = document.getElementById('live2d-widget');
+                if (live2dWidget && live2dWidget.children.length > 0) {
+                    setupLive2DCursor();
+                }
+            }
+        });
+    });
+    
+    // 开始观察DOM变化
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
     
     console.log('✅ 自定义光标系统初始化完成');
 });
