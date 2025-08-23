@@ -1,0 +1,54 @@
+[
+  {
+    "name": "yumi",
+    "model": "yumi.model3.json",
+    "textures": [
+      "yumi.8192/texture_00.png"
+    ],
+    "motions": {
+      "idle": [
+        {
+          "file": "wave.motion3.json"
+        }
+      ],
+      "tap": [
+        {
+          "file": "wave.motion3.json"
+        }
+      ]
+    },
+    "expressions": [
+      {
+        "name": "default",
+        "file": "yumi.cdi3.json"
+      },
+      {
+        "name": "smile",
+        "file": "星星眼.exp3.json"
+      },
+      {
+        "name": "sad",
+        "file": "泪汪汪.exp3.json"
+      },
+      {
+        "name": "angry",
+        "file": "黑脸.exp3.json"
+      },
+      {
+        "name": "surprised",
+        "file": "爱心眼.exp3.json"
+      }
+    ],
+    "physics": "yumi.physics3.json",
+    "hit_areas": [
+      {
+        "name": "head",
+        "id": "D_REF.HEAD"
+      },
+      {
+        "name": "body",
+        "id": "D_REF.BODY"
+      }
+    ]
+  }
+] 
