@@ -25,17 +25,28 @@ console.log('🔧 检测到Live2D基础路径:', live2dBasePath);
 // 配置
 const config = {
     waifuPath: live2dBasePath + '/assets/live2d-framework/waifu-tips.json',
-    cdnPath: live2dBasePath + '/yumi/',
     cubism2Path: live2dBasePath + '/assets/live2d-framework/live2d.min.js',
     cubism5Path: 'https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js',
     tools: ['hitokoto', 'asteroids', 'switch-model', 'switch-texture', 'photo', 'info', 'quit'],
-    logLevel: 'info',
+    logLevel: 'trace',
     drag: true,
-    models: [{
-        name: "yumi",
-        paths: [live2dBasePath + '/yumi/yumi.model3.json'],
-        message: "欢迎来到我的博客！我是yumi看板娘~"
-    }]
+    models: [
+        {
+            name: "yumi",
+            paths: [live2dBasePath + '/yumi/yumi.model3.json'],
+            message: "欢迎来到我的博客！我是yumi看板娘~"
+        },
+        {
+            name: "小小狐狸",
+            paths: [live2dBasePath + '/fox/小小狐狸.model3.json'],
+            message: "你好！我是小小狐狸，很高兴认识你~"
+        },
+        {
+            name: "fense",
+            paths: [live2dBasePath + '/afdl/fense/fense.model3.json'],
+            message: "嗨！我是fense，让我们一起度过美好时光吧！"
+        }
+    ]
 };
 
 // 方法封装异步资源加载
