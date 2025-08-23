@@ -14,6 +14,8 @@ tags: [CNN, 图像分类, 深度学习, PyTorch]
 
 ## 📊 数据集介绍
 
+![CIFAR-10数据集示例](/assets/images/posts/cifar10-dataset.jpg)
+
 CIFAR-10数据集包含60,000张32x32像素的彩色图像，分为10个类别：
 - 飞机 (airplane)
 - 汽车 (automobile) 
@@ -27,6 +29,8 @@ CIFAR-10数据集包含60,000张32x32像素的彩色图像，分为10个类别�
 - 卡车 (truck)
 
 ## 🏗️ 网络架构
+
+![CNN网络架构图](/assets/images/posts/cnn-architecture.jpg)
 
 我们将构建一个包含以下层的CNN：
 - 卷积层 (Convolutional Layers)
@@ -254,6 +258,12 @@ def plot_training_results(train_losses, train_accs):
 # 绘制训练结果
 plot_training_results(train_losses, train_accs)
 ```
+
+#### 训练过程可视化示例
+
+![训练损失曲线](/assets/images/posts/training-loss-curve.jpg)
+
+![模型性能图表](/assets/images/posts/model-performance-chart.jpg)
 
 ### 保存模型
 
