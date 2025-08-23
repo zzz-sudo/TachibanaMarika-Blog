@@ -30,7 +30,15 @@ const config = {
     cubism5Path: 'https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js',
     tools: ['hitokoto', 'asteroids', 'switch-model', 'switch-texture', 'photo', 'info', 'quit'],
     logLevel: 'warn',
-    drag: true
+    drag: true,
+    // 添加模型配置以避免hitTest错误
+    models: [{
+        name: "yumi",
+        model: "yumi.model3.json",
+        textures: ["yumi.8192/texture_00.png"],
+        motions: ["wave.motion3.json", "tear.motion3.json"],
+        expressions: ["星星眼.exp3.json", "爱心眼.exp3.json", "泪汪汪.exp3.json"]
+    }]
 };
     
     // 创建waifu-tips.json配置
