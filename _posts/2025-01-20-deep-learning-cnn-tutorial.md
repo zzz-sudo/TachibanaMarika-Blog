@@ -2,8 +2,8 @@
 layout: single
 title: "深度学习实战：使用PyTorch构建卷积神经网络"
 date: 2025-01-20
-categories: [深度学习, Python, PyTorch]
-tags: [CNN, 图像分类, 深度学习, PyTorch]
+categories: [deep-learning, python, pytorch]
+tags: [CNN, image-classification, deep-learning, pytorch]
 excerpt: "本教程将带您使用PyTorch构建一个完整的卷积神经网络(CNN)来解决图像分类问题。我们将使用CIFAR-10数据集来训练模型识别10种不同的物体类别。"
 ---
 
