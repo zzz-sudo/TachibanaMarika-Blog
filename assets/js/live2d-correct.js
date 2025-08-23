@@ -1,4 +1,4 @@
-// 正确的Live2D配置 - 使用官方live2d-widget
+// 正确的Live2D配置 - 使用官方live2d-widget的autoload方式
 console.log('🎭 启动Live2D配置');
 
 // 动态获取基础路径
@@ -38,53 +38,48 @@ const config = {
     }]
 };
 
+// 方法封装异步资源加载
+function loadExternalResource(url, type) {
+    return new Promise((resolve, reject) => {
+        let tag;
+
+        if (type === 'css') {
+            tag = document.createElement('link');
+            tag.rel = 'stylesheet';
+            tag.href = url;
+        }
+        else if (type === 'js') {
+            tag = document.createElement('script');
+            tag.type = 'module';
+            tag.src = url;
+        }
+        if (tag) {
+            tag.onload = () => resolve(url);
+            tag.onerror = () => reject(url);
+            document.head.appendChild(tag);
+        }
+    });
+}
+
 // 初始化Live2D
 async function initLive2D() {
     console.log('🎯 开始初始化Live2D...');
     
     try {
-        // 加载Live2D框架
-        await loadLive2DFramework();
+        // 避免图片资源跨域问题
+        const OriginalImage = window.Image;
+        window.Image = function(...args) {
+            const img = new OriginalImage(...args);
+            img.crossOrigin = "anonymous";
+            return img;
+        };
+        window.Image.prototype = OriginalImage.prototype;
         
-    } catch (error) {
-        console.error('❌ Live2D初始化失败:', error);
-        showFallbackMessage('Live2D初始化失败: ' + error.message);
-    }
-}
-
-// 加载Live2D框架
-async function loadLive2DFramework() {
-    console.log('🔄 开始加载Live2D框架...');
-    
-    try {
-        // 加载CSS
-        const cssPath = live2dBasePath + '/assets/live2d-framework/waifu.css';
-        console.log('🔧 尝试加载CSS文件:', cssPath);
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = cssPath;
-        document.head.appendChild(link);
-        
-        // 等待CSS加载完成
-        await new Promise((resolve) => {
-            link.onload = resolve;
-            link.onerror = resolve; // 即使CSS加载失败也继续
-        });
-        
-        // 加载主要的JavaScript文件 - 使用ES6模块方式
-        const jsPath = live2dBasePath + '/assets/live2d-framework/waifu-tips.js';
-        console.log('🔧 尝试加载JS文件:', jsPath);
-        
-        // 创建script标签加载JS文件，使用ES6模块
-        const script = document.createElement('script');
-        script.src = jsPath;
-        script.type = 'module';
-        
-        await new Promise((resolve, reject) => {
-            script.onload = resolve;
-            script.onerror = reject;
-            document.head.appendChild(script);
-        });
+        // 加载 waifu.css 和 waifu-tips.js
+        await Promise.all([
+            loadExternalResource(live2dBasePath + '/assets/live2d-framework/waifu.css', 'css'),
+            loadExternalResource(live2dBasePath + '/assets/live2d-framework/waifu-tips.js', 'js')
+        ]);
         
         console.log('✅ Live2D框架加载完成');
         
