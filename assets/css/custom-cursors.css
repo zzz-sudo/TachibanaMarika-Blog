@@ -1,0 +1,83 @@
+/* 自定义鼠标光标样式 */
+
+/* 默认光标 - 使用1.ico */
+body {
+    cursor: url('/assets/images/cursors/1.ico'), auto;
+}
+
+/* 链接上的光标 - 使用2.ico */
+a, 
+a:hover, 
+a:visited, 
+a:active,
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.clickable {
+    cursor: url('/assets/images/cursors/2.ico'), pointer;
+}
+
+/* 文本选择光标 */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="search"],
+input[type="url"],
+input[type="tel"],
+textarea,
+[contenteditable="true"] {
+    cursor: url('/assets/images/cursors/1.ico'), text;
+}
+
+/* 拖拽光标 */
+[draggable="true"] {
+    cursor: url('/assets/images/cursors/2.ico'), grab;
+}
+
+[draggable="true"]:active {
+    cursor: url('/assets/images/cursors/2.ico'), grabbing;
+}
+
+/* 调整大小光标 */
+.resize-handle {
+    cursor: url('/assets/images/cursors/2.ico'), se-resize;
+}
+
+/* 确保光标在Live2D和音乐播放器上正常显示 */
+#live2d-widget,
+#music-player,
+#music-toggle {
+    cursor: url('/assets/images/cursors/1.ico'), auto;
+}
+
+/* 音乐播放器按钮特殊处理 */
+#music-toggle:hover {
+    cursor: url('/assets/images/cursors/2.ico'), pointer;
+}
+
+/* 动态背景画布保持默认光标 */
+#dynamic-bg {
+    cursor: default;
+}
+
+/* 链接悬停效果增强 */
+a:hover {
+    cursor: url('/assets/images/cursors/2.ico'), pointer;
+    transition: all 0.3s ease;
+}
+
+/* 按钮悬停效果 */
+button:hover,
+input[type="button"]:hover,
+input[type="submit"]:hover,
+input[type="reset"]:hover {
+    cursor: url('/assets/images/cursors/2.ico'), pointer;
+}
+
+/* 确保光标在可点击元素上正确显示 */
+.clickable:hover,
+[onclick]:hover,
+[role="button"]:hover {
+    cursor: url('/assets/images/cursors/2.ico'), pointer;
+} 

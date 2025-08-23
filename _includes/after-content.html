@@ -1,3 +1,6 @@
+<!-- 自定义鼠标光标样式 -->
+<link rel="stylesheet" href="{{ '/assets/css/custom-cursors.css' | relative_url }}">
+
 <!-- Live2D 看板娘系统 -->
 <script src="{{ '/assets/js/live2d/autoload.js' | relative_url }}"></script>
 
@@ -164,6 +167,81 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     console.log('🎵 改进的音乐播放器初始化完成');
+});
+
+// 自定义光标增强功能
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🖱️ 自定义光标系统初始化');
+    
+    // 动态获取基础路径
+    function getBasePath() {
+        const hostname = window.location.hostname;
+        const pathname = window.location.pathname;
+        
+        if (hostname.includes('github.io')) {
+            const pathParts = pathname.split('/').filter(part => part);
+            if (pathParts.length > 0) {
+                return '/' + pathParts[0];
+            }
+        }
+        return '';
+    }
+    
+    const basePath = getBasePath();
+    const cursor1Path = basePath + '/assets/images/cursors/1.ico';
+    const cursor2Path = basePath + '/assets/images/cursors/2.ico';
+    
+    console.log('🔧 光标路径:', { cursor1: cursor1Path, cursor2: cursor2Path });
+    
+    // 为所有链接添加光标增强
+    const links = document.querySelectorAll('a');
+    links.forEach(link => {
+        link.addEventListener('mouseenter', function() {
+            this.style.cursor = `url('${cursor2Path}'), pointer`;
+        });
+        
+        link.addEventListener('mouseleave', function() {
+            this.style.cursor = `url('${cursor1Path}'), auto`;
+        });
+    });
+    
+    // 为按钮添加光标增强
+    const buttons = document.querySelectorAll('button, input[type="button"], input[type="submit"], input[type="reset"]');
+    buttons.forEach(button => {
+        button.addEventListener('mouseenter', function() {
+            this.style.cursor = `url('${cursor2Path}'), pointer`;
+        });
+        
+        button.addEventListener('mouseleave', function() {
+            this.style.cursor = `url('${cursor1Path}'), auto`;
+        });
+    });
+    
+    // 为可点击元素添加光标增强
+    const clickables = document.querySelectorAll('.clickable, [onclick], [role="button"]');
+    clickables.forEach(element => {
+        element.addEventListener('mouseenter', function() {
+            this.style.cursor = `url('${cursor2Path}'), pointer`;
+        });
+        
+        element.addEventListener('mouseleave', function() {
+            this.style.cursor = `url('${cursor1Path}'), auto`;
+        });
+    });
+    
+    // 为音乐播放器按钮添加特殊光标
+    const musicToggle = document.getElementById('music-toggle');
+    if (musicToggle) {
+        musicToggle.addEventListener('mouseenter', function() {
+            this.style.cursor = `url('${cursor2Path}'), pointer`;
+        });
+        
+        musicToggle.addEventListener('mouseleave', function() {
+            this.style.cursor = `url('${cursor1Path}'), auto`;
+        });
+    }
+    
+    console.log('✅ 自定义光标系统初始化完成');
 });
 
 // 动态背景线条 - 安全版本
