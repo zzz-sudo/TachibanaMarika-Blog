@@ -1,11 +1,32 @@
 // 正确的Live2D配置 - 使用stevenjoezhang/live2d-widget框架
 console.log('🎭 启动正确的Live2D配置');
 
+// 动态获取基础路径
+function getBasePath() {
+    // 检测是否在GitHub Pages上
+    const hostname = window.location.hostname;
+    const pathname = window.location.pathname;
+    
+    if (hostname.includes('github.io')) {
+        // GitHub Pages环境，提取仓库名作为基础路径
+        const pathParts = pathname.split('/').filter(part => part);
+        if (pathParts.length > 0) {
+            return '/' + pathParts[0];
+        }
+    }
+    
+    // 本地开发环境或其他环境
+    return '';
+}
+
+const basePath = getBasePath();
+console.log('🔧 检测到基础路径:', basePath);
+
 // 配置
 const config = {
-    waifuPath: '/yumi/waifu-tips.json',
-    cdnPath: '/yumi/',
-    cubism2Path: '/assets/live2d-framework/live2d.min.js',
+    waifuPath: basePath + '/yumi/waifu-tips.json',
+    cdnPath: basePath + '/yumi/',
+    cubism2Path: basePath + '/assets/live2d-framework/live2d.min.js',
     cubism5Path: 'https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js',
     tools: ['hitokoto', 'asteroids', 'switch-model', 'switch-texture', 'photo', 'info', 'quit'],
     logLevel: 'warn',
@@ -266,12 +287,12 @@ const config = {
         // 加载CSS
         const link = document.createElement('link');
         link.rel = 'stylesheet';
-        link.href = '/assets/live2d-framework/waifu.css';
+        link.href = basePath + '/assets/live2d-framework/waifu.css';
         document.head.appendChild(link);
         
         try {
             // 使用ES6模块导入
-            const { default: live2dModule } = await import('/assets/live2d-framework/waifu-tips.js');
+            const { default: live2dModule } = await import(basePath + '/assets/live2d-framework/waifu-tips.js');
             console.log('✅ Live2D框架加载完成');
             
             // 检查是否有initWidget函数
