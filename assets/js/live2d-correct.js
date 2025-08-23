@@ -285,14 +285,18 @@ const config = {
         console.log('🔄 开始加载本地Live2D框架...');
         
         // 加载CSS
+        const cssPath = basePath + '/assets/live2d-framework/waifu.css';
+        console.log('🔧 尝试加载CSS文件:', cssPath);
         const link = document.createElement('link');
         link.rel = 'stylesheet';
-        link.href = basePath + '/assets/live2d-framework/waifu.css';
+        link.href = cssPath;
         document.head.appendChild(link);
         
         try {
             // 使用ES6模块导入
-            const { default: live2dModule } = await import(basePath + '/assets/live2d-framework/waifu-tips.js');
+            const jsPath = basePath + '/assets/live2d-framework/waifu-tips.js';
+            console.log('🔧 尝试加载JS文件:', jsPath);
+            const { default: live2dModule } = await import(jsPath);
             console.log('✅ Live2D框架加载完成');
             
             // 检查是否有initWidget函数
