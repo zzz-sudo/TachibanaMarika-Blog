@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('🖱️ 自定义光标系统初始化');
     
     // 动态获取基础路径
-    function getBasePath() {
+    function getCursorBasePath() {
         const hostname = window.location.hostname;
         const pathname = window.location.pathname;
         
@@ -213,11 +213,11 @@ document.addEventListener('DOMContentLoaded', function() {
         return '';
     }
     
-    const basePath = getBasePath();
-    const cursor1Path = basePath + '/assets/images/cursors/1.ico';
-    const cursor2Path = basePath + '/assets/images/cursors/2.ico';
-    const live2dCursorPath = basePath + '/assets/images/cursors/handwriting-ezgif.com-resize.gif';
-    const socialCursorPath = basePath + '/assets/images/cursors/AlternateSelect-ezgif.com-resize.gif';
+    const cursorBasePath = getCursorBasePath();
+    const cursor1Path = cursorBasePath + '/assets/images/cursors/1.ico';
+    const cursor2Path = cursorBasePath + '/assets/images/cursors/2.ico';
+    const live2dCursorPath = cursorBasePath + '/assets/images/cursors/handwriting-ezgif.com-resize.gif';
+    const socialCursorPath = cursorBasePath + '/assets/images/cursors/AlternateSelect-ezgif.com-resize.gif';
     
     console.log('🔧 光标路径:', { 
         cursor1: cursor1Path, 
