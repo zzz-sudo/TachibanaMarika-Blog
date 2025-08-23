@@ -2,7 +2,7 @@
 console.log('🎭 启动正确的Live2D配置');
 
 // 动态获取基础路径
-function getBasePath() {
+function getLive2DBasePath() {
     // 检测是否在GitHub Pages上
     const hostname = window.location.hostname;
     const pathname = window.location.pathname;
@@ -19,14 +19,14 @@ function getBasePath() {
     return '';
 }
 
-const basePath = getBasePath();
-console.log('🔧 检测到基础路径:', basePath);
+const live2dBasePath = getLive2DBasePath();
+console.log('🔧 检测到Live2D基础路径:', live2dBasePath);
 
 // 配置
 const config = {
-    waifuPath: basePath + '/yumi/waifu-tips.json',
-    cdnPath: basePath + '/yumi/',
-    cubism2Path: basePath + '/assets/live2d-framework/live2d.min.js',
+    waifuPath: live2dBasePath + '/yumi/waifu-tips.json',
+    cdnPath: live2dBasePath + '/yumi/',
+    cubism2Path: live2dBasePath + '/assets/live2d-framework/live2d.min.js',
     cubism5Path: 'https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js',
     tools: ['hitokoto', 'asteroids', 'switch-model', 'switch-texture', 'photo', 'info', 'quit'],
     logLevel: 'warn',
@@ -34,7 +34,7 @@ const config = {
     // 添加模型配置以避免hitTest错误
     models: [{
         name: "yumi",
-        paths: [basePath + '/yumi/yumi.model3.json'],
+        paths: [live2dBasePath + '/yumi/yumi.model3.json'],
         message: "欢迎来到我的博客！我是yumi看板娘~"
     }]
 };
@@ -278,7 +278,7 @@ async function loadLive2DFramework() {
     
     try {
         // 加载CSS
-        const cssPath = basePath + '/assets/live2d-framework/waifu.css';
+        const cssPath = live2dBasePath + '/assets/live2d-framework/waifu.css';
         console.log('🔧 尝试加载CSS文件:', cssPath);
         const link = document.createElement('link');
         link.rel = 'stylesheet';
@@ -292,7 +292,7 @@ async function loadLive2DFramework() {
         });
         
         // 加载主要的JavaScript文件
-        const jsPath = basePath + '/assets/live2d-framework/waifu-tips.js';
+        const jsPath = live2dBasePath + '/assets/live2d-framework/waifu-tips.js';
         console.log('🔧 尝试加载JS文件:', jsPath);
         
         // 创建script标签加载JS文件
