@@ -191,11 +191,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const cursor1Path = basePath + '/assets/images/cursors/1.ico';
     const cursor2Path = basePath + '/assets/images/cursors/2.ico';
     const live2dCursorPath = basePath + '/assets/images/cursors/handwriting-ezgif.com-resize.gif';
+    const socialCursorPath = basePath + '/assets/images/cursors/AlternateSelect-ezgif.com-resize.gif';
     
     console.log('🔧 光标路径:', { 
         cursor1: cursor1Path, 
         cursor2: cursor2Path, 
-        live2d: live2dCursorPath 
+        live2d: live2dCursorPath,
+        social: socialCursorPath
     });
     
     // 为所有链接添加光标增强
@@ -245,6 +247,33 @@ document.addEventListener('DOMContentLoaded', function() {
             this.style.cursor = `url('${cursor1Path}'), auto`;
         });
     }
+    
+    // 为social-link元素添加特殊光标
+    const socialLinks = document.querySelectorAll('.social-link');
+    socialLinks.forEach(link => {
+        // 设置默认光标
+        link.style.cursor = `url('${socialCursorPath}'), auto`;
+        
+        // 添加鼠标事件监听
+        link.addEventListener('mouseenter', function() {
+            this.style.cursor = `url('${socialCursorPath}'), auto`;
+        });
+        
+        link.addEventListener('mouseleave', function() {
+            this.style.cursor = `url('${socialCursorPath}'), auto`;
+        });
+        
+        // 触摸事件
+        link.addEventListener('touchstart', function() {
+            this.style.cursor = `url('${socialCursorPath}'), auto`;
+        });
+        
+        link.addEventListener('touchend', function() {
+            this.style.cursor = `url('${socialCursorPath}'), auto`;
+        });
+    });
+    
+    console.log('🔗 social-link光标设置完成，共找到', socialLinks.length, '个元素');
     
     // 为Live2D模型添加触摸光标
     function setupLive2DCursor() {

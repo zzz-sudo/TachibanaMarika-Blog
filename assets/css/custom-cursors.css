@@ -1,7 +1,8 @@
 /* 自定义鼠标光标样式 */
 
 /* 默认光标 - 使用1.ico */
-body {
+body,
+* {
     cursor: url('/assets/images/cursors/1.ico'), auto;
 }
 
@@ -94,4 +95,24 @@ input[type="reset"]:hover {
 [onclick]:hover,
 [role="button"]:hover {
     cursor: url('/assets/images/cursors/2.ico'), pointer;
+}
+
+/* social-link特殊光标 - 使用AlternateSelect-ezgif.com-resize.gif */
+.social-link,
+.social-link:hover,
+.social-link:active,
+.social-link:visited,
+a.social-link,
+a.social-link:hover,
+a.social-link:active,
+a.social-link:visited {
+    cursor: url('/assets/images/cursors/AlternateSelect-ezgif.com-resize.gif') !important;
+}
+
+/* 确保social-link的光标优先级最高 */
+.social-link *,
+.social-link:hover *,
+.social-link:active *,
+.social-link:visited * {
+    cursor: url('/assets/images/cursors/AlternateSelect-ezgif.com-resize.gif') !important;
 } 
