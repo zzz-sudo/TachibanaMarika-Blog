@@ -16,13 +16,13 @@
         padding: 0;
         width: 125px;
         text-align: left;
-        cursor: url(https://cdn.jsdelivr.net/npm/live2d-widget@3.1.4/assets/AlternateSelect.gif),auto; /* 自定义鼠标样式 */
+        cursor: url(https://cdn.jsdelivr.net/npm/live2d-widget@3.1.4/assets/AlternateSelect.gif),auto;
         font:13px/30px  '宋体';
         background-color: #fff;
         position:fixed;
         display:none;
-        box-shadow: 0 0 6px #0000FF;
-        border:1px solid #FF0000;
+        box-shadow: 0 0 6px rgba(0,0,0,0.15);
+        border:1px solid rgba(200,200,200,0.5);
         border-radius:8px ;
         z-index:9999999999999999999;
     }
@@ -46,6 +46,60 @@
 
 <!-- 自定义样式 -->
 <style>
+/* ========== 全局自定义鼠标适配 ========== */
+* {
+    cursor: url(https://cdn.jsdelivr.net/npm/live2d-widget@3.1.4/assets/cursor.cur), auto !important;
+}
+
+a, button, label, input[type="submit"], input[type="button"],
+.btn, .category-card, .nav__list label, .toc__menu a,
+.page__taxonomy-item, .pagination a, .greedy-nav a,
+.author__urls a, .social-icons a, [role="button"], select {
+    cursor: url(https://cdn.jsdelivr.net/npm/live2d-widget@3.1.4/assets/AlternateSelect.gif), pointer !important;
+}
+
+/* ========== 导航栏字体加大 ========== */
+.greedy-nav a {
+    font-size: 0.95em !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.02em !important;
+}
+
+.greedy-nav .visible-links a {
+    font-size: 0.95em !important;
+}
+
+.masthead__menu-item a {
+    font-size: 0.95em !important;
+    font-weight: 500 !important;
+}
+
+/* 导航栏背景透明融入壁纸 */
+.masthead {
+    background: rgba(255, 255, 255, 0.72) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border-bottom: 1px solid rgba(255,255,255,0.3) !important;
+}
+
+.greedy-nav {
+    background: transparent !important;
+}
+
+/* 隐藏 hidden-links 下拉菜单白色背景改透明 */
+.greedy-nav .hidden-links {
+    background: rgba(255,255,255,0.88) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255,255,255,0.4) !important;
+}
+
+/* ========== breadcrumb 分隔符去红色 ========== */
+.breadcrumbs .sep {
+    color: #999 !important;
+    margin: 0 0.3em !important;
+}
+
 /* 头像样式 */
 .author__avatar {
     width: 120px !important;
@@ -285,29 +339,33 @@
     gap: 0.6em;
 }
 
+/* 卡片：透明毛玻璃，融入壁纸背景 */
 .category-card {
     display: flex;
     align-items: center;
     gap: 0.5em;
     padding: 0.55em 0.85em;
-    background: rgba(250,250,248,0.9);
-    border: 1px solid rgba(61,90,71,0.15);
+    background: rgba(255, 255, 255, 0.18) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.28);
     border-radius: 7px;
     text-decoration: none !important;
-    color: #3d5a47 !important;
+    color: #2d3748 !important;
     font-size: 0.78em;
     font-weight: 500;
     transition: all 0.18s ease;
     line-height: 1.3;
+    cursor: url(https://cdn.jsdelivr.net/npm/live2d-widget@3.1.4/assets/AlternateSelect.gif), pointer !important;
 }
 
 .category-card:hover {
-    background: rgba(61,90,71,0.08);
-    border-color: rgba(61,90,71,0.35);
+    background: rgba(255, 255, 255, 0.32) !important;
+    border-color: rgba(255, 255, 255, 0.5);
     transform: translateY(-1px);
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.10);
     text-decoration: none !important;
-    color: #2d6a4f !important;
+    color: #1a202c !important;
 }
 
 .category-card__icon {
