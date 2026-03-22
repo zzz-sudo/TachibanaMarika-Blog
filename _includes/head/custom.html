@@ -512,33 +512,10 @@ body {
     color: #718096 !important;
 }
 
-/* TOC 容器高度自适应，最大高度跟随视口，响应式 */
+/* TOC 容器高度自适应，最大高度跟随视口 */
 .sidebar__right.sticky .toc .toc__menu {
     overflow-y: auto !important;
     max-height: calc(100vh - 6em) !important;
-}
-
-/* TOC 宽度响应式：大屏更宽 */
-@media (min-width: 1280px) {
-    .sidebar__right {
-        width: 320px !important;
-        margin-inline-end: -320px !important;
-    }
-    .page {
-        width: calc(100% - 320px) !important;
-        padding-inline-end: 320px !important;
-    }
-}
-
-@media (min-width: 1024px) and (max-width: 1279px) {
-    .sidebar__right {
-        width: 260px !important;
-        margin-inline-end: -260px !important;
-    }
-    .page {
-        width: calc(100% - 260px) !important;
-        padding-inline-end: 260px !important;
-    }
 }
 
 .toc__menu li ul > li a:hover {
@@ -826,42 +803,40 @@ body {
     padding: 0 !important;
 }
 
-/* ========== 全屏布局修复：内容区拉伸到最右 ========== */
+/* ========== 全屏布局修复 ========== */
 #main {
     max-width: 100% !important;
     width: 100% !important;
     box-sizing: border-box !important;
-}
-
-/* 文章页全宽适配 */
-.layout--single #main,
-.layout--archive #main {
-    padding-inline: 1em !important;
+    padding-inline: 1.5em !important;
 }
 
 @media (min-width: 1280px) {
-    #main {
-        max-width: 100% !important;
-        padding-inline: 2em !important;
-    }
+    #main { padding-inline: 2.5em !important; }
     .sidebar__right {
-        width: 300px !important;
-        margin-inline-end: -300px !important;
+        width: 320px !important;
+        margin-inline-end: -320px !important;
     }
     .page {
-        width: calc(100% - 300px) !important;
-        padding-inline-end: 300px !important;
+        width: calc(100% - 320px) !important;
+        padding-inline-end: 320px !important;
     }
-    /* 全屏下页面主区域不设固定最大宽度 */
-    .page__inner-wrap {
+    .page__inner-wrap { max-width: 100% !important; }
+    /* 评论区全宽铺满 */
+    .page__comments {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    .giscus, .giscus-frame {
+        width: 100% !important;
+        min-width: unset !important;
         max-width: 100% !important;
     }
 }
 
 @media (min-width: 1024px) and (max-width: 1279px) {
-    #main {
-        padding-inline: 1.5em !important;
-    }
+    #main { padding-inline: 1.5em !important; }
     .sidebar__right {
         width: 260px !important;
         margin-inline-end: -260px !important;
