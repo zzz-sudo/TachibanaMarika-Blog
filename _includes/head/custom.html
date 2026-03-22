@@ -779,6 +779,43 @@ body {
 .author__content > *:last-child {
     margin-bottom: 0;
 }
+
+/* ========== giscus 评论区美化 ========== */
+.page__comments {
+    margin-top: 2em;
+    padding-top: 1.5em;
+    border-top: 1px solid rgba(61, 90, 71, 0.15);
+}
+
+.page__comments-title {
+    font-size: 0.88em !important;
+    font-weight: 600 !important;
+    color: #3d5a47 !important;
+    letter-spacing: 0.06em !important;
+    text-transform: uppercase !important;
+    margin-bottom: 1em !important;
+    padding-bottom: 0.4em !important;
+    border-bottom: 1.5px solid rgba(61,90,71,0.12) !important;
+}
+
+/* giscus iframe 容器圆角毛玻璃 */
+.giscus,
+.giscus-frame {
+    border-radius: 12px !important;
+    overflow: hidden !important;
+}
+
+/* 分类页评论区额外间距 */
+.category-comments {
+    margin-top: 2.5em;
+    padding: 1.5em;
+    background: rgba(255,255,255,0.45);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
 </style>
 
 <!-- end custom head snippets -->
