@@ -68,30 +68,31 @@ a, button, label, input[type="submit"], input[type="button"],
 
 /* ========== 导航栏字体加大 ========== */
 .greedy-nav a {
-    font-size: 0.95em !important;
+    font-size: 1.05em !important;
     font-weight: 500 !important;
     letter-spacing: 0.02em !important;
 }
 
 .greedy-nav .visible-links a {
-    font-size: 0.95em !important;
+    font-size: 1.05em !important;
 }
 
 .masthead__menu-item a {
-    font-size: 0.95em !important;
+    font-size: 1.05em !important;
     font-weight: 500 !important;
 }
 
-/* 导航栏背景透明融入壁纸 */
+/* 导航栏高度加大，更宽敞 */
+.greedy-nav {
+    min-height: 3em !important;
+    background: transparent !important;
+}
+
 .masthead {
     background: rgba(255, 255, 255, 0.72) !important;
     backdrop-filter: blur(10px) !important;
     -webkit-backdrop-filter: blur(10px) !important;
     border-bottom: 1px solid rgba(255,255,255,0.3) !important;
-}
-
-.greedy-nav {
-    background: transparent !important;
 }
 
 /* 隐藏 hidden-links 下拉菜单白色背景改透明 */
@@ -100,6 +101,18 @@ a, button, label, input[type="submit"], input[type="button"],
     backdrop-filter: blur(10px) !important;
     -webkit-backdrop-filter: blur(10px) !important;
     border: 1px solid rgba(255,255,255,0.4) !important;
+}
+
+/* ========== 隐藏"移除"红色标签（Live2D插件注入） ========== */
+.remove-hint,
+div[style*="background: rgb(255, 68, 68)"],
+div[style*="background:rgb(255,68,68)"],
+div[style*="background: #ff4444"],
+div[style*="background:#ff4444"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
 }
 
 /* ========== breadcrumb 分隔符去红色 ========== */
@@ -424,12 +437,12 @@ a, button, label, input[type="submit"], input[type="button"],
 /* TOC 各链接项 */
 .toc__menu a {
     color: #4a5568 !important;
-    font-size: 0.70em !important;
+    font-size: 0.82em !important;
     font-weight: 400 !important;
-    padding: 0.18rem 0.85rem !important;
+    padding: 0.22rem 0.85rem !important;
     border-bottom: 1px solid rgba(0,0,0,0.05) !important;
     transition: background 0.15s ease, color 0.15s ease !important;
-    line-height: 1.55 !important;
+    line-height: 1.65 !important;
     display: block !important;
 }
 
