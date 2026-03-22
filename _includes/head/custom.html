@@ -798,11 +798,21 @@ body {
     border-bottom: 1.5px solid rgba(61,90,71,0.12) !important;
 }
 
-/* giscus iframe 容器圆角毛玻璃 */
+/* giscus iframe 容器：透明毛玻璃风格 */
 .giscus,
 .giscus-frame {
     border-radius: 12px !important;
     overflow: hidden !important;
+    background: rgba(255,255,255,0.45) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+}
+
+/* giscus 内部强制透明背景 */
+.giscus-frame {
+    background: transparent !important;
+    border: 1px solid rgba(255,255,255,0.35) !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06) !important;
 }
 
 /* 分类页评论区额外间距 */
@@ -815,6 +825,43 @@ body {
     border: 1px solid rgba(255,255,255,0.35);
     border-radius: 14px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+
+/* 主页评论区 */
+.home-comments {
+    margin-top: 3em;
+    padding: 1.5em;
+    background: rgba(255,255,255,0.45);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+
+/* 右侧边栏评论区（文章页） */
+.sidebar-comments {
+    margin-top: 1.5em;
+    padding: 1em;
+    background: rgba(255,255,255,0.45);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    max-height: calc(100vh - 12em);
+    overflow-y: auto;
+}
+
+.sidebar-comments-title {
+    font-size: 0.75em !important;
+    font-weight: 600 !important;
+    color: #3d5a47 !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+    margin-bottom: 0.8em !important;
+    padding-bottom: 0.3em !important;
+    border-bottom: 1px solid rgba(61,90,71,0.12) !important;
 }
 </style>
 
