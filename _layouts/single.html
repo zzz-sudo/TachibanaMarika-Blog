@@ -46,15 +46,6 @@ layout: default
               <header><h4 class="nav__title"><i class="fas fa-{{ page.toc_icon | default: 'file-alt' }}"></i> {{ page.toc_label | default: site.data.ui-text[site.locale].toc_label | default: "On this page" }}</h4></header>
               {% include toc.html sanitize=true html=content h_min=1 h_max=6 class="toc__menu" skip_no_ids=true %}
             </nav>
-            <!-- 文章评论区在右侧 TOC 下方 -->
-            {% if site.comments.provider and page.comments %}
-              {% if jekyll.environment == 'production' %}
-                <div class="sidebar-comments">
-                  <h4 class="sidebar-comments-title">💬 评论</h4>
-                  {% include comments.html %}
-                </div>
-              {% endif %}
-            {% endif %}
           </aside>
         {% endif %}
         {{ content }}
@@ -74,15 +65,12 @@ layout: default
       {% include post_pagination.html %}
     </div>
 
-    <!-- 文章底部评论区（仅在没有右侧 TOC 时显示） -->
-    {% if site.comments.provider and page.comments and page.toc == nil %}
+    <!-- 文章评论区：正文底部 -->
+    {% if site.comments.provider and page.comments %}
       {% if jekyll.environment == 'production' %}
         {% include comments.html %}
       {% else %}
-        <p>
-          Comments are configured with provider: <strong>{{ site.comments.provider }}</strong>,
-          but are disabled in non-production environments.
-        </p>
+        <p>Comments disabled in non-production environments.</p>
       {% endif %}
     {% endif %}
   </article>

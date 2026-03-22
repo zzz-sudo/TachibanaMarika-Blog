@@ -785,6 +785,7 @@ body {
     margin-top: 2em;
     padding-top: 1.5em;
     border-top: 1px solid rgba(61, 90, 71, 0.15);
+    /* 无外框，直接融入背景 */
 }
 
 .page__comments-title {
@@ -798,70 +799,69 @@ body {
     border-bottom: 1.5px solid rgba(61,90,71,0.12) !important;
 }
 
-/* giscus iframe 容器：透明毛玻璃风格 */
-.giscus,
-.giscus-frame {
-    border-radius: 12px !important;
-    overflow: hidden !important;
-    background: rgba(255,255,255,0.45) !important;
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
+/* giscus iframe 透明背景 */
+.giscus {
+    width: 100% !important;
 }
 
-/* giscus 内部强制透明背景 */
 .giscus-frame {
+    border-radius: 8px !important;
+    border: none !important;
     background: transparent !important;
-    border: 1px solid rgba(255,255,255,0.35) !important;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.06) !important;
 }
 
-/* 分类页评论区额外间距 */
+/* 分类页评论区 */
 .category-comments {
     margin-top: 2.5em;
-    padding: 1.5em;
-    background: rgba(255,255,255,0.45);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.35);
-    border-radius: 14px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    padding-top: 1.5em;
+    border-top: 1px solid rgba(61, 90, 71, 0.15);
 }
 
-/* 主页评论区 */
-.home-comments {
-    margin-top: 3em;
-    padding: 1.5em;
-    background: rgba(255,255,255,0.45);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.35);
-    border-radius: 14px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+/* 侧边栏评论样式清除 */
+.sidebar-comments, .home-comments {
+    background: none !important;
+    backdrop-filter: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
 }
 
-/* 右侧边栏评论区（文章页） */
-.sidebar-comments {
-    margin-top: 1.5em;
-    padding: 1em;
-    background: rgba(255,255,255,0.45);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.35);
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-    max-height: calc(100vh - 12em);
-    overflow-y: auto;
+/* ========== 全屏布局修复：内容区拉伸到最右 ========== */
+#main {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding-inline: 1em !important;
 }
 
-.sidebar-comments-title {
-    font-size: 0.75em !important;
-    font-weight: 600 !important;
-    color: #3d5a47 !important;
-    letter-spacing: 0.05em !important;
-    text-transform: uppercase !important;
-    margin-bottom: 0.8em !important;
-    padding-bottom: 0.3em !important;
-    border-bottom: 1px solid rgba(61,90,71,0.12) !important;
+@media (min-width: 1280px) {
+    #main {
+        max-width: 1600px !important;
+        margin: 0 auto !important;
+        padding-inline: 2em !important;
+    }
+    .sidebar__right {
+        width: 300px !important;
+        margin-inline-end: -300px !important;
+    }
+    .page {
+        width: calc(100% - 300px) !important;
+        padding-inline-end: 300px !important;
+    }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+    #main {
+        max-width: 100% !important;
+        padding-inline: 1.5em !important;
+    }
+    .sidebar__right {
+        width: 260px !important;
+        margin-inline-end: -260px !important;
+    }
+    .page {
+        width: calc(100% - 260px) !important;
+        padding-inline-end: 260px !important;
+    }
 }
 </style>
 
