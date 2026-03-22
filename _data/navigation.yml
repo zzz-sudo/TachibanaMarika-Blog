@@ -1,12 +1,20 @@
 # main links
 main:
-  # - title: "Quick-Start Guide"
-  #   url: https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/
-  # - title: "About"
-  #   url: https://mmistakes.github.io/minimal-mistakes/about/
-  # - title: "Sample Posts"
-  #   url: /year-archive/
-  # - title: "Sample Collections"
-  #   url: /collection-archive/
-  # - title: "Sitemap"
-  #   url: /sitemap/
+  - title: "分类"
+    url: /categories/
+  - title: "生理与分子机制"
+    url: /categories/生理与分子机制/
+  - title: "单细胞与空间组学"
+    url: /categories/单细胞与空间组学/
+  - title: "机器学习与深度学习"
+    url: /categories/机器学习与深度学习/
+  - title: "大模型与智能体架构"
+    url: /categories/大模型与智能体架构/
+  - title: "AI蛋白设计"
+    url: /categories/AI蛋白设计/
+  - title: "生信平台与软件工程"
+    url: /categories/生信平台与软件工程/
+  - title: "宏观综述"
+    url: /categories/宏观综述/
+  - title: "其他"
+    url: /categories/其他/
