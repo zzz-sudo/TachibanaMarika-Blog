@@ -830,13 +830,18 @@ body {
 #main {
     max-width: 100% !important;
     width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* 文章页全宽适配 */
+.layout--single #main,
+.layout--archive #main {
     padding-inline: 1em !important;
 }
 
 @media (min-width: 1280px) {
     #main {
-        max-width: 1600px !important;
-        margin: 0 auto !important;
+        max-width: 100% !important;
         padding-inline: 2em !important;
     }
     .sidebar__right {
@@ -847,11 +852,14 @@ body {
         width: calc(100% - 300px) !important;
         padding-inline-end: 300px !important;
     }
+    /* 全屏下页面主区域不设固定最大宽度 */
+    .page__inner-wrap {
+        max-width: 100% !important;
+    }
 }
 
 @media (min-width: 1024px) and (max-width: 1279px) {
     #main {
-        max-width: 100% !important;
         padding-inline: 1.5em !important;
     }
     .sidebar__right {
@@ -862,6 +870,33 @@ body {
         width: calc(100% - 260px) !important;
         padding-inline-end: 260px !important;
     }
+}
+
+/* ========== 右侧 TOC 下方评论区样式 ========== */
+.toc-comments {
+    margin-top: 1.2em;
+    border-top: 1px solid rgba(61,90,71,0.15);
+    padding-top: 0.8em;
+    max-height: 60vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.toc-comments__title {
+    font-size: 0.72em !important;
+    font-weight: 600 !important;
+    color: #3d5a47 !important;
+    letter-spacing: 0.06em !important;
+    text-transform: uppercase !important;
+    margin-bottom: 0.6em !important;
+    padding-bottom: 0.3em !important;
+    border-bottom: 1px solid rgba(61,90,71,0.10) !important;
+}
+
+.toc-comments .giscus,
+.toc-comments .giscus-frame {
+    width: 100% !important;
+    min-width: unset !important;
 }
 </style>
 

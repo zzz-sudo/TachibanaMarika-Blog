@@ -46,6 +46,27 @@ layout: default
               <header><h4 class="nav__title"><i class="fas fa-{{ page.toc_icon | default: 'file-alt' }}"></i> {{ page.toc_label | default: site.data.ui-text[site.locale].toc_label | default: "On this page" }}</h4></header>
               {% include toc.html sanitize=true html=content h_min=1 h_max=6 class="toc__menu" skip_no_ids=true %}
             </nav>
+            <!-- 右侧：本文评论展示（只读滚动，按文章路径隔离） -->
+            {% if site.comments.provider and page.comments %}
+            <div class="toc-comments">
+              <h4 class="toc-comments__title">💬 本文讨论</h4>
+              <script src="https://giscus.app/client.js"
+                      data-repo="zzz-sudo/TachibanaMarika-Blog"
+                      data-repo-id="R_kgDOPh_6TQ"
+                      data-category="General"
+                      data-category-id="DIC_kwDOPh_6Tc4C5BCi"
+                      data-mapping="pathname"
+                      data-strict="1"
+                      data-reactions-enabled="1"
+                      data-emit-metadata="0"
+                      data-input-position="top"
+                      data-theme="light"
+                      data-lang="zh-CN"
+                      crossorigin="anonymous"
+                      async>
+              </script>
+            </div>
+            {% endif %}
           </aside>
         {% endif %}
         {{ content }}
@@ -65,7 +86,7 @@ layout: default
       {% include post_pagination.html %}
     </div>
 
-    <!-- 文章评论区：正文底部 -->
+    <!-- 文章底部：留下评论板块（按文章路径隔离，独立于主页） -->
     {% if site.comments.provider and page.comments %}
       {% if jekyll.environment == 'production' %}
         {% include comments.html %}
@@ -75,10 +96,8 @@ layout: default
     {% endif %}
   </article>
 
-  {% comment %}<!-- only show related on a post page when `related: true` -->{% endcomment %}
   {% if page.id and page.related and site.related_posts.size > 0 %}
     {% include page__related.html posts=site.related_posts %}
-  {% comment %}<!-- otherwise show recent posts if no related when `related: true` -->{% endcomment %}
   {% elsif page.id and page.related %}
     {% include page__related.html posts=site.posts %}
   {% endif %}
