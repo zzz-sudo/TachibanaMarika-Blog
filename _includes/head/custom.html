@@ -263,16 +263,112 @@
     }
 }
 
-/* 联系QQ样式 */
-.qq-contact {
-    text-align: center;
-    margin: 5px 0; /* 减少margin */
+/* ========== 右侧 TOC 卡通风格 ========== */
+/* TOC 容器：毛玻璃 + 圆角 + 柔和阴影，融入背景 */
+.toc {
+    background: rgba(255, 255, 255, 0.55) !important;
+    backdrop-filter: blur(12px) saturate(160%) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(160%) !important;
+    border: 1.5px solid rgba(180, 210, 255, 0.45) !important;
+    border-radius: 18px !important;
+    box-shadow: 0 4px 24px rgba(100, 160, 255, 0.10), 0 1.5px 6px rgba(0,0,0,0.06) !important;
+    overflow: hidden !important;
+    transition: box-shadow 0.3s ease !important;
 }
 
-.qq-contact img {
-    border: 0;
-    vertical-align: middle;
-    max-height: 20px; /* 限制图片高度 */
+.toc:hover {
+    box-shadow: 0 8px 32px rgba(100, 160, 255, 0.18), 0 2px 8px rgba(0,0,0,0.08) !important;
+}
+
+/* TOC 标题栏：渐变彩色，卡通感 */
+.toc .nav__title {
+    background: linear-gradient(135deg, #a8d8ff 0%, #c9b8ff 50%, #ffd6f0 100%) !important;
+    color: #3a3a5c !important;
+    font-size: 0.82em !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.06em !important;
+    padding: 0.55rem 1rem !important;
+    border-radius: 16px 16px 0 0 !important;
+    text-shadow: none !important;
+    border-bottom: 1.5px solid rgba(180, 180, 255, 0.25) !important;
+}
+
+/* TOC 菜单整体 */
+.toc__menu {
+    background: transparent !important;
+}
+
+/* TOC 各链接项 */
+.toc__menu a {
+    color: #5a6a8a !important;
+    font-size: 0.78em !important;
+    font-weight: 500 !important;
+    padding: 0.22rem 0.9rem !important;
+    border-bottom: 1px solid rgba(180, 210, 255, 0.18) !important;
+    border-radius: 0 !important;
+    transition: background 0.2s ease, color 0.2s ease, padding-left 0.2s ease !important;
+    line-height: 1.6 !important;
+    display: block !important;
+}
+
+.toc__menu a:hover {
+    background: rgba(168, 216, 255, 0.22) !important;
+    color: #3a6ecf !important;
+    padding-left: 1.3rem !important;
+    text-decoration: none !important;
+}
+
+/* TOC 激活项高亮 */
+.toc__menu .active a {
+    background: rgba(168, 216, 255, 0.35) !important;
+    color: #2a5ecf !important;
+    font-weight: 700 !important;
+    border-left: 3px solid #a8d8ff !important;
+}
+
+/* 二级缩进 */
+.toc__menu li ul > li a {
+    padding-left: 1.5rem !important;
+    font-size: 0.74em !important;
+    color: #7a8aaa !important;
+}
+
+.toc__menu li ul > li a:hover {
+    padding-left: 1.9rem !important;
+    color: #3a6ecf !important;
+}
+
+/* ========== 正文内容字体缩小美化 ========== */
+/* 基础正文字号：从默认 1em 缩小 */
+.page__content p,
+.page__content li,
+.page__content dl {
+    font-size: 0.88em !important;
+    line-height: 1.85 !important;
+    color: #3a3a3a !important;
+}
+
+/* 标题层级缩小 */
+.page__content h1 { font-size: 1.55em !important; }
+.page__content h2 { font-size: 1.28em !important; }
+.page__content h3 { font-size: 1.10em !important; }
+.page__content h4 { font-size: 0.98em !important; }
+.page__content h5, .page__content h6 { font-size: 0.90em !important; }
+
+/* 引用块小字 */
+.page__content blockquote {
+    font-size: 0.86em !important;
+    border-left: 4px solid rgba(168, 216, 255, 0.7) !important;
+    background: rgba(168, 216, 255, 0.10) !important;
+    padding: 0.6em 1em !important;
+    border-radius: 0 10px 10px 0 !important;
+    color: #556 !important;
+}
+
+/* 代码块字号 */
+.page__content pre,
+.page__content code {
+    font-size: 0.82em !important;
 }
 
 /* 地址栏图标功能 */
