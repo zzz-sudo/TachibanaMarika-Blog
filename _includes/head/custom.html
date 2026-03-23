@@ -187,6 +187,36 @@ body {
     padding-top: 0 !important;
 }
 
+/* 仅修复手机端遮挡视线：不做其他改版 */
+@media (max-width: 1023px) {
+    .sidebar,
+    .sidebar.sticky {
+        position: static !important;
+        top: auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        float: none !important;
+        margin: 0 0 0.8rem 0 !important;
+        padding-top: 0 !important;
+    }
+
+    /* 手机端减少左侧信息高度，避免首屏被占满 */
+    .author__avatar img {
+        width: 64px !important;
+        height: 64px !important;
+    }
+
+    .author__bio,
+    .author__urls-wrapper {
+        display: none !important;
+    }
+
+    /* 左下角角色在手机端容易遮挡正文，直接隐藏 */
+    #anime-character {
+        display: none !important;
+    }
+}
+
 /* 二次元角色动画系统样式 */
 #anime-character {
     position: fixed !important;
