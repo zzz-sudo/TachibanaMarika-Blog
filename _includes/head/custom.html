@@ -147,6 +147,96 @@ div[style*="background:#ff4444"] {
     padding-top: 0.5em !important;
 }
 
+/* ========== 手机端侧边栏优化 ========== */
+@media (max-width: 1023px) {
+    /* 手机端侧边栏默认折叠，不遮挡内容 */
+    .sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        max-height: 60px !important;
+        overflow: hidden !important;
+        z-index: 9000 !important;
+        background: rgba(255,255,255,0.92) !important;
+        backdrop-filter: blur(10px) !important;
+        -webkit-backdrop-filter: blur(10px) !important;
+        border-bottom: 1px solid rgba(200,200,200,0.3) !important;
+        transition: max-height 0.3s ease !important;
+        padding: 0 !important;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1) !important;
+    }
+
+    .sidebar.expanded {
+        max-height: 400px !important;
+        overflow-y: auto !important;
+    }
+
+    /* 头像在折叠状态下横向排列 */
+    .author__avatar {
+        display: inline-block !important;
+        width: 44px !important;
+        height: 44px !important;
+        margin: 8px 10px !important;
+        vertical-align: middle !important;
+    }
+
+    .author__avatar img {
+        width: 44px !important;
+        height: 44px !important;
+        margin: 0 !important;
+    }
+
+    .author__content {
+        display: inline-block !important;
+        vertical-align: middle !important;
+        text-align: left !important;
+        margin-bottom: 0 !important;
+    }
+
+    .author__name {
+        font-size: 0.95em !important;
+        margin: 0 !important;
+        line-height: 44px !important;
+    }
+
+    /* 隐藏手机端侧边栏中的社交链接等多余内容（折叠时） */
+    .author__urls-wrapper {
+        display: none !important;
+    }
+
+    .sidebar.expanded .author__urls-wrapper {
+        display: block !important;
+        padding: 0 1em 1em !important;
+    }
+
+    /* 展开按钮 */
+    .sidebar-toggle-btn {
+        position: absolute !important;
+        right: 12px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        background: none !important;
+        border: none !important;
+        font-size: 1.2em !important;
+        color: #3d5a47 !important;
+        cursor: pointer !important;
+        z-index: 9001 !important;
+        padding: 8px !important;
+    }
+
+    /* 主内容区域向下偏移，避免被固定侧边栏遮挡 */
+    .initial-content {
+        padding-top: 65px !important;
+        margin-top: 0 !important;
+    }
+
+    /* 手机端隐藏侧边栏中的分类卡片等 */
+    .sidebar .category-nav {
+        display: none !important;
+    }
+}
+
 /* 作者区域整体上移 */
 .sidebar.sticky {
     top: 0.5em !important;
