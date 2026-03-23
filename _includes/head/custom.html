@@ -189,7 +189,6 @@ body {
 
 /* 仅修复手机端遮挡视线：不做其他改版 */
 @media (max-width: 1023px) {
-    /* 强制手机端单列布局，正文可见 */
     .sidebar,
     .sidebar.sticky {
         position: static !important;
@@ -201,23 +200,6 @@ body {
         padding-top: 0 !important;
     }
 
-    .page,
-    .archive,
-    .page__inner-wrap,
-    #main,
-    .initial-content {
-        width: 100% !important;
-        max-width: 100% !important;
-        float: none !important;
-        clear: both !important;
-        padding-right: 0 !important;
-        margin-right: 0 !important;
-    }
-
-    .sidebar__right {
-        display: none !important;
-    }
-
     /* 手机端减少左侧信息高度，避免首屏被占满 */
     .author__avatar img {
         width: 64px !important;
@@ -225,11 +207,7 @@ body {
     }
 
     .author__bio,
-    .author__urls-wrapper,
-    .category-nav,
-    .social-links,
-    .calendar-container,
-    .author__content > *:not(.author__avatar):not(.author__name) {
+    .author__urls-wrapper {
         display: none !important;
     }
 
